@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IoT Platform</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #1a1a1a; display: flex; height: 100vh; overflow: hidden; }
+
+    /* Sidebar */
+    .sidebar { width: 200px; background: #fff; border-right: 1px solid #e5e5e5; display: flex; flex-direction: column; padding: 20px 0; flex-shrink: 0; }
+    .logo { font-size: 16px; font-weight: 600; padding: 0 20px 20px; color: #1a1a1a; border-bottom: 1px solid #e5e5e5; margin-bottom: 12px; }
+    .logo span { color: #1D9E75; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; font-size: 14px; color: #666; cursor: pointer; transition: all 0.15s; }
+    .nav-item:hover { background: #f5f5f5; color: #1a1a1a; }
+    .nav-item.active { background: #E1F5EE; color: #0F6E56; font-weight: 500; }
+    .nav-icon { width: 18px; text-align: center; }
+
+    /* Main */
+    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .topbar { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .topbar h1 { font-size: 16px; font-weight: 600; }
+    .status-badge { background: #E1F5EE; color: #0F6E56; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
+    .content { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+    /* Auth screen */
+    .auth-screen { display: flex; align-items: center; justify-content: center; height: 100vh; background: #f5f5f5; }
+    .auth-card { background: #fff; border-radius: 12px; border: 1px solid #e5e5e5; padding: 32px; width: 360px; }
+    .auth-card h2 { font-size: 20px; margin-bottom: 6px; }
+    .auth-card p { color: #666; font-size: 14px; margin-bottom: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #444; }
+    .form-group input { width: 100%; padding: 10px 12px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 14px; outline: none; transition: border 0.15s; }
+    .form-group input:focus { border-color: #1D9E75; }
+    .btn { width: 100%; padding: 10px; background: #1D9E75; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+    .btn:hover { background: #0F6E56; }
+    .btn-secondary { background: transparent; color: #1D9E75; border: 1px solid #1D9E75; margin-top: 10px; }
+    .btn-secondary:hover { background: #E1F5EE; }
+    .error-msg { color: #993C1D; font-size: 13px; margin-top: 8px; display: none; }
+
+    /* Metrics */
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+    .metric-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 16px; }
+    .metric-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+    .metric-value { font-size: 26px; font-weight: 600; color: #1a1a1a; }
+    .metric-unit { font-size: 14px; font-weight: 400; color: #888; }
+    .metric-sub { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+    /* Cards */
+    .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 16px; }
+    .card-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #1D9E75; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Device list */
+    .device-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+    .device-item:last-child { border-bottom: none; }
+    .device-name { font-weight: 500; }
+    .device-meta { font-size: 11px; color: #aaa; margin-top: 2px; }
+    .badge-online { background: #E1F5EE; color: #0F6E56; padding: 2px 8px; border-radius: 20px; font-size: 11px; }
+    .badge-offline { background: #FAECE7; color: #993C1D; padding: 2px 8px; border-radius: 20px; font-size: 11px; }
+
+    /* Toggle */
+    .toggle { width: 38px; height: 22px; border-radius: 11px; background: #e5e5e5; position: relative; cursor: pointer; transition: background 0.2s; border: none; }
+    .toggle.on { background: #1D9E75; }
+    .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left 0.2s; }
+    .toggle.on::after { left: 19px; }
+
+    /* Log */
+    .log-box { background: #1a1a1a; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 12px; color: #aaa; height: 120px; overflow-y: auto; }
+    .log-line { margin-bottom: 4px; }
+    .log-line .topic { color: #5DCAA5; }
+    .log-line .val { color: #FAC775; }
+    .log-line .time { color: #666; }
+  </style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div class="auth-screen" id="auth-screen">
+  <div class="auth-card">
+    <h2 id="auth-title">Sign in</h2>
+    <p id="auth-sub">Access your IoT dashboard</p>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="auth-email" placeholder="you@example.com">
+    </div>
+    <div class="form-group" id="name-group" style="display:none">
+      <label>Name</label>
+      <input type="text" id="auth-name" placeholder="Your name">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="auth-password" placeholder="••••••••">
+    </div>
+    <div class="error-msg" id="auth-error"></div>
+    <button class="btn" onclick="submitAuth()">Sign in</button>
+    <button class="btn btn-secondary" onclick="toggleAuthMode()">Create an account instead</button>
+  </div>
+</div>
+
+<!-- DASHBOARD (hidden until logged in) -->
+<div id="dashboard" style="display:none;width:100%;height:100vh;overflow:hidden;display:none;flex-direction:row">
+  <div class="sidebar">
+    <div class="logo">IoT <span>Platform</span></div>
+    <div class="nav-item active"><span class="nav-icon">⬛</span> Dashboard</div>
+    <div class="nav-item"><span class="nav-icon">📡</span> Devices</div>
+    <div class="nav-item"><span class="nav-icon">📊</span> Analytics</div>
+    <div class="nav-item"><span class="nav-icon">🔔</span> Alerts</div>
+    <div style="flex:1"></div>
+    <div class="nav-item" onclick="logout()"><span class="nav-icon">🚪</span> Sign out</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1>Dashboard</h1>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="status-badge" id="conn-status">Connecting...</span>
+        <span id="user-name" style="font-size:14px;color:#666"></span>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-label">Temperature</div>
+          <div class="metric-value"><span id="m-temp">--</span><span class="metric-unit">°C</span></div>
+          <div class="metric-sub" id="m-temp-time">waiting...</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Humidity</div>
+          <div class="metric-value"><span id="m-hum">--</span><span class="metric-unit">%</span></div>
+          <div class="metric-sub" id="m-hum-time">waiting...</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Messages today</div>
+          <div class="metric-value"><span id="m-msgs">0</span></div>
+          <div class="metric-sub">from all devices</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Connection</div>
+          <div class="metric-value" id="m-conn" style="font-size:16px;margin-top:4px">--</div>
+          <div class="metric-sub">WebSocket</div>
+        </div>
+      </div>
+
+      <!-- Chart + Devices -->
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title"><span class="live-dot"></span> Live temperature</div>
+          <canvas id="tempChart" height="160"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">📡 Devices</div>
+          <div id="device-list"><div style="color:#aaa;font-size:13px">No devices yet — send an MQTT message to see them here</div></div>
+        </div>
+      </div>
+
+      <!-- Live log -->
+      <div class="card">
+        <div class="card-title">Live message log</div>
+        <div class="log-box" id="log-box"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  let token = localStorage.getItem('iot_token');
+  let userName = localStorage.getItem('iot_user');
+  let isRegister = false;
+  let ws = null;
+  let msgCount = 0;
+  let tempHistory = [];
+  let tempChart = null;
+  let devices = {};
+
+  if (token) showDashboard();
+
+  function toggleAuthMode() {
+    isRegister = !isRegister;
+    document.getElementById('auth-title').textContent = isRegister ? 'Create account' : 'Sign in';
+    document.getElementById('auth-sub').textContent = isRegister ? 'Join your IoT platform' : 'Access your IoT dashboard';
+    document.getElementById('name-group').style.display = isRegister ? 'block' : 'none';
+    document.querySelector('.btn').textContent = isRegister ? 'Create account' : 'Sign in';
+    document.querySelector('.btn-secondary').textContent = isRegister ? 'Sign in instead' : 'Create an account instead';
+  }
+
+  async function submitAuth() {
+    const email    = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const name     = document.getElementById('auth-name').value;
+    const errEl    = document.getElementById('auth-error');
+    errEl.style.display = 'none';
+    const url  = isRegister ? '/api/auth/register' : '/api/auth/login';
+    const body = isRegister ? { email, password, name } : { email, password };
+    try {
+      const res  = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const data = await res.json();
+      if (data.error) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
+      if (isRegister) { toggleAuthMode(); return; }
+      token = data.token;
+      userName = data.user.name || data.user.email;
+      localStorage.setItem('iot_token', token);
+      localStorage.setItem('iot_user', userName);
+      showDashboard();
+    } catch(e) { errEl.textContent = 'Connection error — is your server running?'; errEl.style.display = 'block'; }
+  }
+
+  function showDashboard() {
+    document.getElementById('auth-screen').style.display = 'none';
+    const dash = document.getElementById('dashboard');
+    dash.style.display = 'flex';
+    document.getElementById('user-name').textContent = userName || '';
+    initChart();
+    connectWebSocket();
+    loadDevices();
+  }
+
+  function logout() {
+    localStorage.removeItem('iot_token');
+    localStorage.removeItem('iot_user');
+    location.reload();
+  }
+
+  function initChart() {
+    const ctx = document.getElementById('tempChart').getContext('2d');
+    tempChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [{ label: 'Temperature °C', data: [], borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,0.08)', borderWidth: 2, pointRadius: 3, tension: 0.4, fill: true }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false }, x: { ticks: { maxTicksLimit: 6 } } } }
+    });
+  }
+
+  function connectWebSocket() {
+    ws = new WebSocket('ws://localhost:3000');
+    ws.onopen = () => {
+      document.getElementById('conn-status').textContent = '● Connected';
+      document.getElementById('conn-status').style.background = '#E1F5EE';
+      document.getElementById('conn-status').style.color = '#0F6E56';
+      document.getElementById('m-conn').textContent = 'Live';
+    };
+    ws.onclose = () => {
+      document.getElementById('conn-status').textContent = '○ Disconnected';
+      document.getElementById('m-conn').textContent = 'Offline';
+      setTimeout(connectWebSocket, 3000);
+    };
+    ws.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+      handleMessage(msg);
+    };
+  }
+
+  function handleMessage(msg) {
+    msgCount++;
+    document.getElementById('m-msgs').textContent = msgCount;
+    const parts = msg.topic.split('/');
+    const deviceKey = parts[1];
+    const pin = parts[2];
+
+    if (pin === 'temperature') {
+      const val = parseFloat(msg.value).toFixed(1);
+      document.getElementById('m-temp').textContent = val;
+      document.getElementById('m-temp-time').textContent = 'just now · ' + deviceKey;
+      const now = new Date().toLocaleTimeString();
+      tempHistory.push({ t: now, v: parseFloat(val) });
+      if (tempHistory.length > 20) tempHistory.shift();
+      tempChart.data.labels = tempHistory.map(d => d.t);
+      tempChart.data.datasets[0].data = tempHistory.map(d => d.v);
+      tempChart.update('none');
+    }
+    if (pin === 'humidity') {
+      document.getElementById('m-hum').textContent = parseFloat(msg.value).toFixed(0);
+      document.getElementById('m-hum-time').textContent = 'just now · ' + deviceKey;
+    }
+
+    devices[deviceKey] = { key: deviceKey, lastSeen: new Date(), online: true };
+    renderDevices();
+    addLog(msg);
+  }
+
+  function renderDevices() {
+    const el = document.getElementById('device-list');
+    el.innerHTML = Object.values(devices).map(d => `
+      <div class="device-item">
+        <div>
+          <div class="device-name">${d.key}</div>
+          <div class="device-meta">Last seen: ${d.lastSeen.toLocaleTimeString()}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="badge-online">online</span>
+          <button class="toggle on" onclick="sendCmd('${d.key}')"></button>
+        </div>
+      </div>`).join('');
+  }
+
+  function sendCmd(deviceKey) {
+    fetch('/api/devices/' + deviceKey + '/command', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ command: 'toggle' })
+    });
+  }
+
+  async function loadDevices() {
+    try {
+      const res  = await fetch('/api/devices');
+      const data = await res.json();
+      Object.entries(data).forEach(([topic, info]) => {
+        const deviceKey = topic.split('/')[1];
+        if (deviceKey) devices[deviceKey] = { key: deviceKey, lastSeen: new Date(info.time), online: true };
+      });
+      if (Object.keys(devices).length) renderDevices();
+    } catch(e) {}
+  }
+
+  function addLog(msg) {
+    const box = document.getElementById('log-box');
+    const line = document.createElement('div');
+    line.className = 'log-line';
+    line.innerHTML = `<span class="time">${new Date().toLocaleTimeString()}</span> <span class="topic">${msg.topic}</span> → <span class="val">${msg.value}</span>`;
+    box.appendChild(line);
+    box.scrollTop = box.scrollHeight;
+    if (box.children.length > 50) box.removeChild(box.firstChild);
+  }
+</script>
+</body>
+</

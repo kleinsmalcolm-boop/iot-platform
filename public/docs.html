@@ -1,0 +1,315 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IoT Platform — Developer Docs</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0f0f1a; color: #e2e8f0; font-family: system-ui, sans-serif; display: flex; }
+    .sidebar { position: fixed; left: 0; top: 0; width: 240px; height: 100vh; background: #1a1a2e; border-right: 1px solid #2a2a3e; padding: 24px 0; overflow-y: auto; }
+    .sidebar h1 { color: #7c3aed; font-size: 18px; padding: 0 20px 20px; border-bottom: 1px solid #2a2a3e; margin-bottom: 8px; }
+    .sidebar a { display: block; padding: 9px 20px; color: #888; text-decoration: none; font-size: 14px; transition: all 0.2s; }
+    .sidebar a:hover { color: #7c3aed; background: rgba(124,58,237,0.1); }
+    .sidebar .section { color: #444; font-size: 11px; text-transform: uppercase; padding: 16px 20px 4px; letter-spacing: 1px; }
+    .main { margin-left: 240px; padding: 48px 56px; max-width: 900px; }
+    .hero { background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(124,58,237,0.05)); border: 1px solid rgba(124,58,237,0.3); border-radius: 16px; padding: 36px; margin-bottom: 48px; }
+    .hero h1 { font-size: 36px; color: #fff; margin-bottom: 8px; }
+    .hero p { color: #94a3b8; font-size: 16px; margin: 0; }
+    h2 { color: #fff; font-size: 26px; margin: 48px 0 8px; padding-top: 48px; border-top: 1px solid #1a1a2e; }
+    h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+    h3 { color: #a78bfa; font-size: 17px; margin: 28px 0 10px; }
+    p { color: #94a3b8; line-height: 1.8; margin-bottom: 14px; font-size: 15px; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-right: 8px; }
+    .get  { background: rgba(34,197,94,0.15);  color: #22c55e; }
+    .post { background: rgba(124,58,237,0.15); color: #a78bfa; }
+    .endpoint { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 12px; padding: 20px 24px; margin: 14px 0; }
+    .endpoint-title { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .endpoint-url { font-family: monospace; color: #fff; font-size: 15px; }
+    .endpoint-desc { color: #94a3b8; font-size: 14px; margin: 0; }
+    pre { background: #080812; border: 1px solid #2a2a3e; border-radius: 10px; padding: 20px; overflow-x: auto; font-size: 13px; line-height: 1.7; margin: 14px 0; }
+    code { font-family: 'Courier New', monospace; }
+    .c-green  { color: #22c55e; }
+    .c-purple { color: #a78bfa; }
+    .c-yellow { color: #fbbf24; }
+    .c-blue   { color: #60a5fa; }
+    .c-gray   { color: #4a5568; }
+    .c-white  { color: #fff; }
+    table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+    th { text-align: left; color: #7c3aed; font-size: 11px; text-transform: uppercase; padding: 8px 14px; border-bottom: 1px solid #2a2a3e; letter-spacing: 0.5px; }
+    td { padding: 10px 14px; border-bottom: 1px solid #1a1a2e; color: #94a3b8; }
+    td:first-child { color: #fff; font-family: monospace; }
+    .tip  { background: rgba(251,191,36,0.08); border-left: 3px solid #fbbf24; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; color: #fbbf24; font-size: 14px; line-height: 1.6; }
+    .info { background: rgba(96,165,250,0.08); border-left: 3px solid #60a5fa; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; color: #60a5fa; font-size: 14px; line-height: 1.6; }
+    .steps { counter-reset: step; }
+    .step { display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
+    .step-num { background: #7c3aed; color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; flex-shrink: 0; margin-top: 2px; }
+    .step-content h4 { color: #fff; margin-bottom: 4px; font-size: 15px; }
+    .step-content p { margin: 0; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h1>⚡ IoT Docs</h1>
+  <div class="section">Getting Started</div>
+  <a href="#intro">Introduction</a>
+  <a href="#quickstart">Quick Start</a>
+  <a href="#authentication">Authentication</a>
+  <div class="section">Device API</div>
+  <a href="#send-data">Send Sensor Data</a>
+  <a href="#send-multiple">Send Multiple</a>
+  <a href="#commands">Receive Commands</a>
+  <div class="section">Dashboard API</div>
+  <a href="#register">Register Device</a>
+  <a href="#list-devices">List Devices</a>
+  <a href="#readings">Get Readings</a>
+  <a href="#send-command">Send Command</a>
+  <div class="section">SDK</div>
+  <a href="#arduino-sdk">Arduino / ESP32</a>
+  <a href="#download">Download SDK</a>
+</div>
+
+<div class="main">
+
+  <div class="hero">
+    <h1>⚡ IoT Platform API</h1>
+    <p>Connect any device to your IoT platform in minutes. Send sensor data, receive commands, and monitor everything in real time.</p>
+  </div>
+
+  <!-- INTRO -->
+  <h2 id="intro">Introduction</h2>
+  <p>The IoT Platform API lets your devices send sensor data to the cloud and receive commands from your dashboard. It works with any device that can make HTTP requests — Arduino, ESP32, ESP8266, Raspberry Pi, and more.</p>
+  <div class="info">Base URL: <code>http://192.168.2.11:3000</code></div>
+
+  <!-- QUICK START -->
+  <h2 id="quickstart">Quick Start</h2>
+  <p>Get your first device sending data in 4 steps:</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Create an account</h4>
+        <p>Register at <code>POST /api/auth/register</code> with your email and password.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Register a device</h4>
+        <p>Call <code>POST /api/my-devices</code> — you'll get back an API key automatically.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Copy your API key</h4>
+        <p>It looks like <code>iot_a3f9b2c1d4e5f6...</code> — keep it safe, your device needs it.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Send your first reading</h4>
+        <p>POST to <code>/api/device/data</code> with your API key in the header. Done!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTHENTICATION -->
+  <h2 id="authentication">Authentication</h2>
+  <p>There are two types of authentication depending on who is making the request:</p>
+  <table>
+    <tr><th>Who</th><th>Method</th><th>Header</th></tr>
+    <tr><td>Users / Dashboard</td><td>JWT Token</td><td><code>Authorization: Bearer &lt;token&gt;</code></td></tr>
+    <tr><td>IoT Devices</td><td>API Key</td><td><code>X-API-Key: iot_abc123...</code></td></tr>
+  </table>
+  <div class="tip">Never share your API key publicly. If it gets leaked, regenerate it from your dashboard immediately.</div>
+
+  <!-- SEND DATA -->
+  <h2 id="send-data">Send Sensor Data</h2>
+  <p>Your device calls this endpoint to send a single sensor reading. Use the API key you got when registering the device.</p>
+  <div class="endpoint">
+    <div class="endpoint-title">
+      <span class="badge post">POST</span>
+      <span class="endpoint-url">/api/device/data</span>
+    </div>
+    <p class="endpoint-desc">Send a single sensor reading from your device.</p>
+  </div>
+
+  <h3>Headers</h3>
+  <table>
+    <tr><th>Header</th><th>Value</th></tr>
+    <tr><td>X-API-Key</td><td>Your device API key</td></tr>
+    <tr><td>Content-Type</td><td>application/json</td></tr>
+  </table>
+
+  <h3>Request Body</h3>
+  <pre><code><span class="c-gray">// Single reading</span>
+<span class="c-white">{</span>
+  <span class="c-purple">"pin"</span><span class="c-white">:</span>   <span class="c-yellow">"temperature"</span><span class="c-white">,</span>
+  <span class="c-purple">"value"</span><span class="c-white">:</span> <span class="c-green">25.6</span>
+<span class="c-white">}</span></code></pre>
+
+  <h3>Response</h3>
+  <pre><code><span class="c-white">{</span>
+  <span class="c-purple">"success"</span><span class="c-white">:</span> <span class="c-green">true</span><span class="c-white">,</span>
+  <span class="c-purple">"device"</span><span class="c-white">:</span>  <span class="c-yellow">"My Arduino"</span>
+<span class="c-white">}</span></code></pre>
+
+  <h3>Example — curl</h3>
+  <pre><code><span class="c-blue">curl</span> <span class="c-white">-X POST http://192.168.2.11:3000/api/device/data \</span>
+  <span class="c-white">-H </span><span class="c-yellow">"X-API-Key: iot_YOUR_KEY"</span><span class="c-white"> \</span>
+  <span class="c-white">-H </span><span class="c-yellow">"Content-Type: application/json"</span><span class="c-white"> \</span>
+  <span class="c-white">-d </span><span class="c-yellow">'{"pin":"temperature","value":25.6}'</span></code></pre>
+
+  <!-- SEND MULTIPLE -->
+  <h2 id="send-multiple">Send Multiple Readings</h2>
+  <p>Send several sensor readings in one request. Much more efficient than making a separate request for each sensor — use this when your device has multiple sensors.</p>
+  <div class="endpoint">
+    <div class="endpoint-title">
+      <span class="badge post">POST</span>
+      <span class="endpoint-url">/api/device/data</span>
+    </div>
+    <p class="endpoint-desc">Send multiple readings at once using the data array.</p>
+  </div>
+
+  <h3>Request Body</h3>
+  <pre><code><span class="c-gray">// Multiple readings in one request</span>
+<span class="c-white">{</span>
+  <span class="c-purple">"data"</span><span class="c-white">: [</span>
+    <span class="c-white">{ </span><span class="c-purple">"pin"</span><span class="c-white">: </span><span class="c-yellow">"temperature"</span><span class="c-white">, </span><span class="c-purple">"value"</span><span class="c-white">: </span><span class="c-green">25.6</span><span class="c-white"> },</span>
+    <span class="c-white">{ </span><span class="c-purple">"pin"</span><span class="c-white">: </span><span class="c-yellow">"humidity"</span><span class="c-white">,    </span><span class="c-purple">"value"</span><span class="c-white">: </span><span class="c-green">60.2</span><span class="c-white"> },</span>
+    <span class="c-white">{ </span><span class="c-purple">"pin"</span><span class="c-white">: </span><span class="c-yellow">"motion"</span><span class="c-white">,      </span><span class="c-purple">"value"</span><span class="c-white">: </span><span class="c-green">1</span><span class="c-white"> }</span>
+  <span class="c-white">]</span>
+<span class="c-white">}</span></code></pre>
+
+  <!-- COMMANDS -->
+  <h2 id="commands">Receive Commands</h2>
+  <p>Your device polls this endpoint to check if your dashboard sent it a command — like turning on an LED or changing a threshold value.</p>
+  <div class="endpoint">
+    <div class="endpoint-title">
+      <span class="badge get">GET</span>
+      <span class="endpoint-url">/api/device/commands</span>
+    </div>
+    <p class="endpoint-desc">Get pending commands for this device. Commands are marked as delivered after retrieval.</p>
+  </div>
+
+  <h3>Response</h3>
+  <pre><code><span class="c-white">{</span>
+  <span class="c-purple">"commands"</span><span class="c-white">: [</span>
+    <span class="c-white">{</span>
+      <span class="c-purple">"id"</span><span class="c-white">:</span>      <span class="c-green">1</span><span class="c-white">,</span>
+      <span class="c-purple">"command"</span><span class="c-white">: </span><span class="c-yellow">"LED_ON"</span><span class="c-white">,</span>
+      <span class="c-purple">"value"</span><span class="c-white">:   </span><span class="c-yellow">"1"</span>
+    <span class="c-white">}</span>
+  <span class="c-white">]</span>
+<span class="c-white">}</span></code></pre>
+
+  <div class="tip">Poll this endpoint every 10 seconds in your device loop. Avoid polling faster than every 5 seconds to stay within rate limits.</div>
+
+  <!-- REGISTER DEVICE -->
+  <h2 id="register">Register a Device</h2>
+  <p>Creates a new device under your account and automatically generates an API key for it.</p>
+  <div class="endpoint">
+    <div class="endpoint-title">
+      <span class="badge post">POST</span>
+      <span class="endpoint-url">/api/my-devices</span>
+    </div>
+    <p class="endpoint-desc">Requires user JWT token in Authorization header.</p>
+  </div>
+
+  <h3>Request Body</h3>
+  <pre><code><span class="c-white">{</span>
+  <span class="c-purple">"name"</span><span class="c-white">: </span><span class="c-yellow">"Living Room Sensor"</span><span class="c-white">,</span>
+  <span class="c-purple">"type"</span><span class="c-white">: </span><span class="c-yellow">"esp32"</span>
+<span class="c-white">}</span></code></pre>
+
+  <h3>Response</h3>
+  <pre><code><span class="c-white">{</span>
+  <span class="c-purple">"id"</span><span class="c-white">:</span>         <span class="c-green">3</span><span class="c-white">,</span>
+  <span class="c-purple">"name"</span><span class="c-white">:</span>       <span class="c-yellow">"Living Room Sensor"</span><span class="c-white">,</span>
+  <span class="c-purple">"device_key"</span><span class="c-white">: </span><span class="c-yellow">"dev_a3f9b2c1d4"</span><span class="c-white">,</span>
+  <span class="c-purple">"api_key"</span><span class="c-white">:    </span><span class="c-yellow">"iot_a3f9b2c1d4e5f6789abc"</span><span class="c-white">,</span>
+  <span class="c-purple">"type"</span><span class="c-white">:</span>       <span class="c-yellow">"esp32"</span><span class="c-white">,</span>
+  <span class="c-purple">"online"</span><span class="c-white">:</span>     <span class="c-green">false</span>
+<span class="c-white">}</span></code></pre>
+
+  <!-- LIST DEVICES -->
+  <h2 id="list-devices">List Your Devices</h2>
+  <div class="endpoint">
+    <div class="endpoint-title">
+      <span class="badge get">GET</span>
+      <span class="endpoint-url">/api/my-devices</span>
+    </div>
+    <p class="endpoint-desc">Returns all devices registered to your account including their API keys.</p>
+  </div>
+
+  <!-- READINGS -->
+  <h2 id="readings">Get Device Readings</h2>
+  <div class="endpoint">
+    <div class="endpoint-title">
+      <span class="badge get">GET</span>
+      <span class="endpoint-url">/api/my-devices/:id/readings?limit=50</span>
+    </div>
+    <p class="endpoint-desc">Returns historical sensor readings for a device. Default limit is 50, max 500.</p>
+  </div>
+
+  <!-- SEND COMMAND -->
+  <h2 id="send-command">Send Command to Device</h2>
+  <p>Send a command from your dashboard to a device. The device will receive it next time it polls <code>/api/device/commands</code>.</p>
+  <div class="endpoint">
+    <div class="endpoint-title">
+      <span class="badge post">POST</span>
+      <span class="endpoint-url">/api/my-devices/:id/command</span>
+    </div>
+    <p class="endpoint-desc">Requires user JWT token. Device receives command on next poll.</p>
+  </div>
+
+  <h3>Request Body</h3>
+  <pre><code><span class="c-white">{</span>
+  <span class="c-purple">"command"</span><span class="c-white">: </span><span class="c-yellow">"LED_ON"</span><span class="c-white">,</span>
+  <span class="c-purple">"value"</span><span class="c-white">:   </span><span class="c-yellow">"1"</span>
+<span class="c-white">}</span></code></pre>
+
+  <h3>Built-in Commands</h3>
+  <table>
+    <tr><th>Command</th><th>What it does</th></tr>
+    <tr><td>LED_ON</td><td>Turns the built-in LED on</td></tr>
+    <tr><td>LED_OFF</td><td>Turns the built-in LED off</td></tr>
+    <tr><td>BLINK</td><td>Blinks LED 5 times</td></tr>
+    <tr><td>RESTART</td><td>Restarts the device</td></tr>
+  </table>
+
+  <!-- ARDUINO SDK -->
+  <h2 id="arduino-sdk">Arduino / ESP32 SDK</h2>
+  <p>The easiest way to connect your ESP32 or Arduino to the platform. Download the SDK, fill in your WiFi and API key, and upload. Your device will start sending data immediately.</p>
+
+  <h3>Required Libraries</h3>
+  <p>Install these in Arduino IDE via <strong>Tools → Manage Libraries</strong>:</p>
+  <table>
+    <tr><th>Library</th><th>Purpose</th></tr>
+    <tr><td>WiFi</td><td>Built-in with ESP32 board package</td></tr>
+    <tr><td>HTTPClient</td><td>Built-in with ESP32 board package</td></tr>
+    <tr><td>ArduinoJson</td><td>Search "ArduinoJson" by Benoit Blanchon</td></tr>
+  </table>
+
+  <h3>Configuration</h3>
+  <p>After downloading, open the file and change these 4 lines at the top:</p>
+  <pre><code><span class="c-blue">const char*</span> <span class="c-white">WIFI_SSID</span>     <span class="c-white">=</span> <span class="c-yellow">"YOUR_WIFI_NAME"</span><span class="c-white">;</span>
+<span class="c-blue">const char*</span> <span class="c-white">WIFI_PASSWORD</span> <span class="c-white">=</span> <span class="c-yellow">"YOUR_WIFI_PASSWORD"</span><span class="c-white">;</span>
+<span class="c-blue">const char*</span> <span class="c-white">API_KEY</span>       <span class="c-white">=</span> <span class="c-yellow">"iot_YOUR_API_KEY"</span><span class="c-white">;</span>
+<span class="c-blue">const char*</span> <span class="c-white">SERVER_URL</span>    <span class="c-white">=</span> <span class="c-yellow">"http://192.168.2.11:3000"</span><span class="c-white">;</span></code></pre>
+
+  <h2 id="download">Download SDK</h2>
+  <p>Click below to download the SDK file and open it in Arduino IDE:</p>
+  <a href="/sdk.ino" download style="display:inline-block;background:#7c3aed;color:#fff;padding:14px 28px;border-radius:12px;text-decoration:none;font-weight:bold;font-size:15px;margin-top:8px;">
+    ⬇ Download SDK (Arduino / ESP32)
+  </a>
+  <br><br>
+  <div class="tip">After downloading, rename the file folder to match the filename before opening in Arduino IDE — this is an Arduino requirement.</div>
+
+  <br><br><br>
+</div>
+</body>
+</html>
