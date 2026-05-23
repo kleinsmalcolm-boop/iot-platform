@@ -40,13 +40,11 @@ const authLimiter = rateLimit({
 });
 
 // ── PostgreSQL ────────────────────────────────────────
-const pool = new Pool({
-  host: 'localhost',
-  port: 5432,
-  database: 'iotplatform',
-  user: 'postgres',
-  password: 'Moses@1234', // ← change to your password
-});
+const pool = new Pool(
+  process.env.DATABASE_URL
+    ? { connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } }
+    : { host: 'localhost', port: 5432, database: 'iotplatform', user: 'postgres', password: 'Moses@1234' }
+);});
 
 pool.connect()
   .then(() => console.log('🗄️  Connected to PostgreSQL'))
