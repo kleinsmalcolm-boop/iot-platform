@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,24 +8,19 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #1a1a1a; display: flex; height: 100vh; overflow: hidden; }
-
-    /* Sidebar */
     .sidebar { width: 200px; background: #fff; border-right: 1px solid #e5e5e5; display: flex; flex-direction: column; padding: 20px 0; flex-shrink: 0; }
     .logo { font-size: 16px; font-weight: 600; padding: 0 20px 20px; color: #1a1a1a; border-bottom: 1px solid #e5e5e5; margin-bottom: 12px; }
     .logo span { color: #1D9E75; }
     .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; font-size: 14px; color: #666; cursor: pointer; transition: all 0.15s; }
     .nav-item:hover { background: #f5f5f5; color: #1a1a1a; }
     .nav-item.active { background: #E1F5EE; color: #0F6E56; font-weight: 500; }
-    .nav-icon { width: 18px; text-align: center; }
-
-    /* Main */
     .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
     .topbar { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
     .topbar h1 { font-size: 16px; font-weight: 600; }
     .status-badge { background: #E1F5EE; color: #0F6E56; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 500; }
     .content { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-
-    /* Auth screen */
+    .page { display: none; flex-direction: column; gap: 20px; }
+    .page.active { display: flex; }
     .auth-screen { display: flex; align-items: center; justify-content: center; height: 100vh; background: #f5f5f5; }
     .auth-card { background: #fff; border-radius: 12px; border: 1px solid #e5e5e5; padding: 32px; width: 360px; }
     .auth-card h2 { font-size: 20px; margin-bottom: 6px; }
@@ -34,52 +29,59 @@
     .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: #444; }
     .form-group input { width: 100%; padding: 10px 12px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 14px; outline: none; transition: border 0.15s; }
     .form-group input:focus { border-color: #1D9E75; }
-    .btn { width: 100%; padding: 10px; background: #1D9E75; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+    .btn { width: 100%; padding: 10px; background: #1D9E75; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
     .btn:hover { background: #0F6E56; }
     .btn-secondary { background: transparent; color: #1D9E75; border: 1px solid #1D9E75; margin-top: 10px; }
     .btn-secondary:hover { background: #E1F5EE; }
+    .btn-sm { width: auto; padding: 6px 14px; font-size: 13px; }
+    .btn-danger { background: #993C1D; }
+    .btn-danger:hover { background: #7a2e14; }
     .error-msg { color: #993C1D; font-size: 13px; margin-top: 8px; display: none; }
-
-    /* Metrics */
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
     .metric-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 16px; }
     .metric-label { font-size: 12px; color: #888; margin-bottom: 6px; }
     .metric-value { font-size: 26px; font-weight: 600; color: #1a1a1a; }
     .metric-unit { font-size: 14px; font-weight: 400; color: #888; }
     .metric-sub { font-size: 11px; color: #aaa; margin-top: 4px; }
-
-    /* Cards */
     .cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 16px; }
-    .card-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #1D9E75; animation: pulse 2s infinite; }
+    .card-title { font-size: 14px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #1D9E75; animation: pulse 2s infinite; display:inline-block; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-    /* Device list */
-    .device-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+    .device-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
     .device-item:last-child { border-bottom: none; }
     .device-name { font-weight: 500; }
     .device-meta { font-size: 11px; color: #aaa; margin-top: 2px; }
     .badge-online { background: #E1F5EE; color: #0F6E56; padding: 2px 8px; border-radius: 20px; font-size: 11px; }
     .badge-offline { background: #FAECE7; color: #993C1D; padding: 2px 8px; border-radius: 20px; font-size: 11px; }
-
-    /* Toggle */
-    .toggle { width: 38px; height: 22px; border-radius: 11px; background: #e5e5e5; position: relative; cursor: pointer; transition: background 0.2s; border: none; }
-    .toggle.on { background: #1D9E75; }
-    .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left 0.2s; }
-    .toggle.on::after { left: 19px; }
-
-    /* Log */
-    .log-box { background: #1a1a1a; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 12px; color: #aaa; height: 120px; overflow-y: auto; }
+    .log-box { background: #1a1a1a; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 12px; color: #aaa; height: 140px; overflow-y: auto; }
     .log-line { margin-bottom: 4px; }
-    .log-line .topic { color: #5DCAA5; }
-    .log-line .val { color: #FAC775; }
-    .log-line .time { color: #666; }
+    .alert-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px; background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; }
+    .alert-icon { font-size: 20px; }
+    .alert-title { font-weight: 600; font-size: 14px; }
+    .alert-desc { font-size: 13px; color: #666; margin-top: 3px; }
+    .alert-time { font-size: 11px; color: #aaa; margin-top: 4px; }
+    .alert-form { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 20px; }
+    .alert-form h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; align-items: end; }
+    .form-row .form-group { margin-bottom: 0; }
+    select { width: 100%; padding: 10px 12px; border: 1px solid #e5e5e5; border-radius: 8px; font-size: 14px; outline: none; background: #fff; }
+    .empty { color: #aaa; font-size: 13px; text-align: center; padding: 30px 0; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .section-header h2 { font-size: 16px; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 8px 12px; border-bottom: 2px solid #e5e5e5; color: #888; font-size: 12px; text-transform: uppercase; }
+    td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+    tr:last-child td { border-bottom: none; }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: #fff; border-radius: 12px; padding: 24px; width: 400px; }
+    .modal h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
   </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- AUTH -->
 <div class="auth-screen" id="auth-screen">
   <div class="auth-card">
     <h2 id="auth-title">Sign in</h2>
@@ -94,7 +96,7 @@
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input type="password" id="auth-password" placeholder="••••••••">
+      <input type="password" id="auth-password" placeholder="password">
     </div>
     <div class="error-msg" id="auth-error"></div>
     <button class="btn" onclick="submitAuth()">Sign in</button>
@@ -102,21 +104,21 @@
   </div>
 </div>
 
-<!-- DASHBOARD (hidden until logged in) -->
-<div id="dashboard" style="display:none;width:100%;height:100vh;overflow:hidden;display:none;flex-direction:row">
+<!-- DASHBOARD -->
+<div id="dashboard" style="display:none;width:100%;height:100vh;overflow:hidden;flex-direction:row">
   <div class="sidebar">
     <div class="logo">IoT <span>Platform</span></div>
-    <div class="nav-item active"><span class="nav-icon">⬛</span> Dashboard</div>
-    <div class="nav-item"><span class="nav-icon">📡</span> Devices</div>
-    <div class="nav-item"><span class="nav-icon">📊</span> Analytics</div>
-    <div class="nav-item"><span class="nav-icon">🔔</span> Alerts</div>
+    <div class="nav-item active" onclick="showPage('dashboard-page', this)">&#9867; Dashboard</div>
+    <div class="nav-item" onclick="showPage('devices-page', this)">&#128225; Devices</div>
+    <div class="nav-item" onclick="showPage('analytics-page', this)">&#128202; Analytics</div>
+    <div class="nav-item" onclick="showPage('alerts-page', this)">&#128276; Alerts</div>
     <div style="flex:1"></div>
-    <div class="nav-item" onclick="logout()"><span class="nav-icon">🚪</span> Sign out</div>
+    <div class="nav-item" onclick="logout()">&#128682; Sign out</div>
   </div>
 
   <div class="main">
     <div class="topbar">
-      <h1>Dashboard</h1>
+      <h1 id="page-title">Dashboard</h1>
       <div style="display:flex;align-items:center;gap:12px">
         <span class="status-badge" id="conn-status">Connecting...</span>
         <span id="user-name" style="font-size:14px;color:#666"></span>
@@ -124,61 +126,175 @@
     </div>
     <div class="content">
 
-      <!-- Metrics -->
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-label">Temperature</div>
-          <div class="metric-value"><span id="m-temp">--</span><span class="metric-unit">°C</span></div>
-          <div class="metric-sub" id="m-temp-time">waiting...</div>
+      <!-- DASHBOARD PAGE -->
+      <div class="page active" id="dashboard-page">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Temperature</div>
+            <div class="metric-value"><span id="m-temp">--</span><span class="metric-unit">C</span></div>
+            <div class="metric-sub" id="m-temp-time">waiting...</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Humidity</div>
+            <div class="metric-value"><span id="m-hum">--</span><span class="metric-unit">%</span></div>
+            <div class="metric-sub" id="m-hum-time">waiting...</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Messages</div>
+            <div class="metric-value"><span id="m-msgs">0</span></div>
+            <div class="metric-sub">this session</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Connection</div>
+            <div class="metric-value" id="m-conn" style="font-size:16px;margin-top:4px">--</div>
+            <div class="metric-sub">WebSocket</div>
+          </div>
         </div>
-        <div class="metric-card">
-          <div class="metric-label">Humidity</div>
-          <div class="metric-value"><span id="m-hum">--</span><span class="metric-unit">%</span></div>
-          <div class="metric-sub" id="m-hum-time">waiting...</div>
+        <div class="cards-grid">
+          <div class="card">
+            <div class="card-title"><span><span class="live-dot"></span> Live Temperature</span></div>
+            <canvas id="tempChart" height="160"></canvas>
+          </div>
+          <div class="card">
+            <div class="card-title">Live Devices</div>
+            <div id="device-list-dash"><div class="empty">No data yet - send an MQTT message</div></div>
+          </div>
         </div>
-        <div class="metric-card">
-          <div class="metric-label">Messages today</div>
-          <div class="metric-value"><span id="m-msgs">0</span></div>
-          <div class="metric-sub">from all devices</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Connection</div>
-          <div class="metric-value" id="m-conn" style="font-size:16px;margin-top:4px">--</div>
-          <div class="metric-sub">WebSocket</div>
+        <div class="card">
+          <div class="card-title">Live Message Log</div>
+          <div class="log-box" id="log-box"></div>
         </div>
       </div>
 
-      <!-- Chart + Devices -->
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-title"><span class="live-dot"></span> Live temperature</div>
-          <canvas id="tempChart" height="160"></canvas>
+      <!-- DEVICES PAGE -->
+      <div class="page" id="devices-page">
+        <div class="section-header">
+          <h2>My Devices</h2>
+          <button class="btn btn-sm" onclick="openAddDevice()">+ Add Device</button>
         </div>
         <div class="card">
-          <div class="card-title">📡 Devices</div>
-          <div id="device-list"><div style="color:#aaa;font-size:13px">No devices yet — send an MQTT message to see them here</div></div>
+          <div id="devices-table-wrap">
+            <div class="empty">No devices registered yet</div>
+          </div>
         </div>
       </div>
 
-      <!-- Live log -->
-      <div class="card">
-        <div class="card-title">Live message log</div>
-        <div class="log-box" id="log-box"></div>
+      <!-- ANALYTICS PAGE -->
+      <div class="page" id="analytics-page">
+        <div class="section-header">
+          <h2>Analytics</h2>
+        </div>
+        <div class="metrics-grid" id="analytics-metrics">
+          <div class="metric-card">
+            <div class="metric-label">Total Messages</div>
+            <div class="metric-value" id="a-total">0</div>
+            <div class="metric-sub">this session</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Active Topics</div>
+            <div class="metric-value" id="a-topics">0</div>
+            <div class="metric-sub">unique streams</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Peak Temp</div>
+            <div class="metric-value"><span id="a-peak">--</span><span class="metric-unit">C</span></div>
+            <div class="metric-sub">this session</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Avg Temp</div>
+            <div class="metric-value"><span id="a-avg">--</span><span class="metric-unit">C</span></div>
+            <div class="metric-sub">this session</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Temperature History</div>
+          <canvas id="analyticsChart" height="120"></canvas>
+        </div>
+        <div class="card">
+          <div class="card-title">Humidity History</div>
+          <canvas id="humChart" height="120"></canvas>
+        </div>
+      </div>
+
+      <!-- ALERTS PAGE -->
+      <div class="page" id="alerts-page">
+        <div class="section-header">
+          <h2>Alerts</h2>
+        </div>
+        <div class="alert-form">
+          <h3>Create Alert Rule</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Sensor</label>
+              <select id="alert-sensor">
+                <option value="temperature">Temperature</option>
+                <option value="humidity">Humidity</option>
+                <option value="motion">Motion</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Condition</label>
+              <select id="alert-condition">
+                <option value="above">Above</option>
+                <option value="below">Below</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Value</label>
+              <input type="number" id="alert-value" placeholder="e.g. 30">
+            </div>
+            <button class="btn btn-sm" onclick="addAlert()">Add Alert</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Alert Rules</div>
+          <div id="alert-rules-list"><div class="empty">No alert rules yet</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Triggered Alerts</div>
+          <div id="alert-triggered-list"><div class="empty">No alerts triggered yet</div></div>
+        </div>
       </div>
 
     </div>
   </div>
 </div>
 
+<!-- ADD DEVICE MODAL -->
+<div class="modal-overlay" id="add-device-modal">
+  <div class="modal">
+    <h3>Register New Device</h3>
+    <div class="form-group">
+      <label>Device Name</label>
+      <input type="text" id="new-device-name" placeholder="e.g. Arduino Uno">
+    </div>
+    <div class="form-group">
+      <label>Type</label>
+      <input type="text" id="new-device-type" placeholder="e.g. esp32, arduino">
+    </div>
+    <div class="error-msg" id="device-error"></div>
+    <button class="btn" onclick="addDevice()">Register Device</button>
+    <button class="btn btn-secondary" onclick="closeAddDevice()">Cancel</button>
+  </div>
+</div>
+
 <script>
+  const API = '';
+  const WS_URL = window.location.origin.replace('https', 'wss').replace('http', 'ws');
+
   let token = localStorage.getItem('iot_token');
   let userName = localStorage.getItem('iot_user');
   let isRegister = false;
   let ws = null;
   let msgCount = 0;
   let tempHistory = [];
+  let humHistory = [];
+  let allTopics = {};
+  let alertRules = JSON.parse(localStorage.getItem('alert_rules') || '[]');
+  let triggeredAlerts = [];
   let tempChart = null;
-  let devices = {};
+  let analyticsChart = null;
+  let humChart = null;
 
   if (token) showDashboard();
 
@@ -209,7 +325,10 @@
       localStorage.setItem('iot_token', token);
       localStorage.setItem('iot_user', userName);
       showDashboard();
-    } catch(e) { errEl.textContent = 'Connection error — is your server running?'; errEl.style.display = 'block'; }
+    } catch(e) {
+      errEl.textContent = 'Connection error';
+      errEl.style.display = 'block';
+    }
   }
 
   function showDashboard() {
@@ -217,9 +336,21 @@
     const dash = document.getElementById('dashboard');
     dash.style.display = 'flex';
     document.getElementById('user-name').textContent = userName || '';
-    initChart();
+    initCharts();
     connectWebSocket();
     loadDevices();
+    renderAlertRules();
+  }
+
+  function showPage(pageId, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    navEl.classList.add('active');
+    const titles = { 'dashboard-page': 'Dashboard', 'devices-page': 'Devices', 'analytics-page': 'Analytics', 'alerts-page': 'Alerts' };
+    document.getElementById('page-title').textContent = titles[pageId] || '';
+    if (pageId === 'analytics-page') updateAnalytics();
+    if (pageId === 'devices-page') loadDevices();
   }
 
   function logout() {
@@ -228,108 +359,226 @@
     location.reload();
   }
 
-  function initChart() {
-    const ctx = document.getElementById('tempChart').getContext('2d');
-    tempChart = new Chart(ctx, {
+  function initCharts() {
+    const opts = { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false }, x: { ticks: { maxTicksLimit: 8 } } } };
+    tempChart = new Chart(document.getElementById('tempChart').getContext('2d'), {
       type: 'line',
-      data: {
-        labels: [],
-        datasets: [{ label: 'Temperature °C', data: [], borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,0.08)', borderWidth: 2, pointRadius: 3, tension: 0.4, fill: true }]
-      },
-      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false }, x: { ticks: { maxTicksLimit: 6 } } } }
+      data: { labels: [], datasets: [{ label: 'Temp', data: [], borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,0.08)', borderWidth: 2, pointRadius: 3, tension: 0.4, fill: true }] },
+      options: opts
+    });
+    analyticsChart = new Chart(document.getElementById('analyticsChart').getContext('2d'), {
+      type: 'line',
+      data: { labels: [], datasets: [{ label: 'Temperature', data: [], borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,0.08)', borderWidth: 2, pointRadius: 2, tension: 0.4, fill: true }] },
+      options: opts
+    });
+    humChart = new Chart(document.getElementById('humChart').getContext('2d'), {
+      type: 'line',
+      data: { labels: [], datasets: [{ label: 'Humidity', data: [], borderColor: '#4A90D9', backgroundColor: 'rgba(74,144,217,0.08)', borderWidth: 2, pointRadius: 2, tension: 0.4, fill: true }] },
+      options: opts
     });
   }
 
   function connectWebSocket() {
-    ws = new WebSocket('ws://localhost:3000');
-    ws.onopen = () => {
-      document.getElementById('conn-status').textContent = '● Connected';
-      document.getElementById('conn-status').style.background = '#E1F5EE';
-      document.getElementById('conn-status').style.color = '#0F6E56';
-      document.getElementById('m-conn').textContent = 'Live';
-    };
-    ws.onclose = () => {
-      document.getElementById('conn-status').textContent = '○ Disconnected';
-      document.getElementById('m-conn').textContent = 'Offline';
-      setTimeout(connectWebSocket, 3000);
-    };
-    ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
-      handleMessage(msg);
-    };
+    try {
+      ws = new WebSocket(WS_URL);
+      ws.onopen = () => {
+        document.getElementById('conn-status').textContent = 'Connected';
+        document.getElementById('m-conn').textContent = 'Live';
+      };
+      ws.onclose = () => {
+        document.getElementById('conn-status').textContent = 'Disconnected';
+        document.getElementById('m-conn').textContent = 'Off';
+        setTimeout(connectWebSocket, 3000);
+      };
+      ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        if (data.type === 'snapshot') {
+          Object.entries(data.data).forEach(([topic, d]) => handleMessage({ topic, value: d.value, time: d.time }));
+          return;
+        }
+        handleMessage(data);
+      };
+    } catch(err) { console.error('WS error', err); }
   }
 
-  function handleMessage(msg) {
+  function handleMessage(data) {
+    const { topic, value, time } = data;
     msgCount++;
     document.getElementById('m-msgs').textContent = msgCount;
-    const parts = msg.topic.split('/');
-    const deviceKey = parts[1];
-    const pin = parts[2];
-
-    if (pin === 'temperature') {
-      const val = parseFloat(msg.value).toFixed(1);
-      document.getElementById('m-temp').textContent = val;
-      document.getElementById('m-temp-time').textContent = 'just now · ' + deviceKey;
-      const now = new Date().toLocaleTimeString();
-      tempHistory.push({ t: now, v: parseFloat(val) });
-      if (tempHistory.length > 20) tempHistory.shift();
-      tempChart.data.labels = tempHistory.map(d => d.t);
-      tempChart.data.datasets[0].data = tempHistory.map(d => d.v);
+    allTopics[topic] = { value, time };
+    const parts = topic.split('/');
+    const sensor = parts[2] || '';
+    const timeStr = new Date(time).toLocaleTimeString();
+    if (sensor === 'temperature' || sensor === 'temp') {
+      const v = parseFloat(value);
+      document.getElementById('m-temp').textContent = v.toFixed(1);
+      document.getElementById('m-temp-time').textContent = timeStr;
+      tempHistory.push({ v, t: timeStr });
+      if (tempHistory.length > 30) tempHistory.shift();
+      tempChart.data.labels = tempHistory.map(x => x.t);
+      tempChart.data.datasets[0].data = tempHistory.map(x => x.v);
       tempChart.update('none');
     }
-    if (pin === 'humidity') {
-      document.getElementById('m-hum').textContent = parseFloat(msg.value).toFixed(0);
-      document.getElementById('m-hum-time').textContent = 'just now · ' + deviceKey;
+    if (sensor === 'humidity' || sensor === 'hum') {
+      const v = parseFloat(value);
+      document.getElementById('m-hum').textContent = v.toFixed(1);
+      document.getElementById('m-hum-time').textContent = timeStr;
+      humHistory.push({ v, t: timeStr });
+      if (humHistory.length > 30) humHistory.shift();
     }
-
-    devices[deviceKey] = { key: deviceKey, lastSeen: new Date(), online: true };
-    renderDevices();
-    addLog(msg);
+    updateDeviceListDash();
+    addLogLine(topic, value, timeStr);
+    checkAlerts(sensor, parseFloat(value), timeStr);
   }
 
-  function renderDevices() {
-    const el = document.getElementById('device-list');
-    el.innerHTML = Object.values(devices).map(d => `
-      <div class="device-item">
-        <div>
-          <div class="device-name">${d.key}</div>
-          <div class="device-meta">Last seen: ${d.lastSeen.toLocaleTimeString()}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="badge-online">online</span>
-          <button class="toggle on" onclick="sendCmd('${d.key}')"></button>
-        </div>
-      </div>`).join('');
+  function updateDeviceListDash() {
+    const el = document.getElementById('device-list-dash');
+    const entries = Object.entries(allTopics);
+    if (!entries.length) { el.innerHTML = '<div class="empty">No data yet</div>'; return; }
+    el.innerHTML = entries.map(([topic, d]) => {
+      const parts = topic.split('/');
+      return `<div class="device-item">
+        <div><div class="device-name">${parts[1] || topic}</div><div class="device-meta">${parts[2] || 'value'}</div></div>
+        <div style="text-align:right"><div style="font-weight:600">${d.value}</div><div class="device-meta">${new Date(d.time).toLocaleTimeString()}</div></div>
+      </div>`;
+    }).join('');
   }
 
-  function sendCmd(deviceKey) {
-    fetch('/api/devices/' + deviceKey + '/command', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ command: 'toggle' })
-    });
-  }
-
-  async function loadDevices() {
-    try {
-      const res  = await fetch('/api/devices');
-      const data = await res.json();
-      Object.entries(data).forEach(([topic, info]) => {
-        const deviceKey = topic.split('/')[1];
-        if (deviceKey) devices[deviceKey] = { key: deviceKey, lastSeen: new Date(info.time), online: true };
-      });
-      if (Object.keys(devices).length) renderDevices();
-    } catch(e) {}
-  }
-
-  function addLog(msg) {
+  function addLogLine(topic, value, time) {
     const box = document.getElementById('log-box');
     const line = document.createElement('div');
     line.className = 'log-line';
-    line.innerHTML = `<span class="time">${new Date().toLocaleTimeString()}</span> <span class="topic">${msg.topic}</span> → <span class="val">${msg.value}</span>`;
-    box.appendChild(line);
-    box.scrollTop = box.scrollHeight;
-    if (box.children.length > 50) box.removeChild(box.firstChild);
+    line.innerHTML = `<span style="color:#666">[${time}]</span> <span style="color:#5DCAA5">${topic}</span>: <span style="color:#FAC775">${value}</span>`;
+    box.insertBefore(line, box.firstChild);
+    if (box.children.length > 50) box.removeChild(box.lastChild);
+  }
+
+  async function loadDevices() {
+    if (!token) return;
+    try {
+      const res = await fetch('/api/my-devices', { headers: { Authorization: 'Bearer ' + token } });
+      const devices = await res.json();
+      const wrap = document.getElementById('devices-table-wrap');
+      if (!devices.length) { wrap.innerHTML = '<div class="empty">No devices yet - click + Add Device</div>'; return; }
+      wrap.innerHTML = `<table>
+        <thead><tr><th>Name</th><th>Type</th><th>Status</th><th>API Key</th><th>Last Seen</th></tr></thead>
+        <tbody>${devices.map(d => `<tr>
+          <td><strong>${d.name}</strong><br><span style="font-size:11px;color:#aaa">${d.device_key}</span></td>
+          <td>${d.type}</td>
+          <td><span class="${d.online ? 'badge-online' : 'badge-offline'}">${d.online ? 'Online' : 'Offline'}</span></td>
+          <td><span style="font-family:monospace;font-size:11px;color:#666">${d.api_key ? d.api_key.substring(0,20) + '...' : 'N/A'}</span></td>
+          <td style="font-size:12px;color:#aaa">${d.last_seen ? new Date(d.last_seen).toLocaleString() : 'Never'}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+    } catch(e) { console.error(e); }
+  }
+
+  function openAddDevice() {
+    document.getElementById('add-device-modal').classList.add('open');
+  }
+
+  function closeAddDevice() {
+    document.getElementById('add-device-modal').classList.remove('open');
+    document.getElementById('new-device-name').value = '';
+    document.getElementById('new-device-type').value = '';
+  }
+
+  async function addDevice() {
+    const name = document.getElementById('new-device-name').value;
+    const type = document.getElementById('new-device-type').value;
+    const errEl = document.getElementById('device-error');
+    if (!name) { errEl.textContent = 'Enter a device name'; errEl.style.display = 'block'; return; }
+    try {
+      const res = await fetch('/api/my-devices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify({ name, type: type || 'generic' })
+      });
+      const data = await res.json();
+      if (data.error) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
+      closeAddDevice();
+      loadDevices();
+      alert('Device registered!\n\nAPI Key: ' + data.api_key + '\n\nCopy this key - you need it for your device code.');
+    } catch(e) {
+      errEl.textContent = 'Failed to add device';
+      errEl.style.display = 'block';
+    }
+  }
+
+  function updateAnalytics() {
+    document.getElementById('a-total').textContent = msgCount;
+    document.getElementById('a-topics').textContent = Object.keys(allTopics).length;
+    if (tempHistory.length) {
+      const temps = tempHistory.map(x => x.v);
+      document.getElementById('a-peak').textContent = Math.max(...temps).toFixed(1);
+      document.getElementById('a-avg').textContent = (temps.reduce((a,b) => a+b, 0) / temps.length).toFixed(1);
+      analyticsChart.data.labels = tempHistory.map(x => x.t);
+      analyticsChart.data.datasets[0].data = tempHistory.map(x => x.v);
+      analyticsChart.update();
+    }
+    if (humHistory.length) {
+      humChart.data.labels = humHistory.map(x => x.t);
+      humChart.data.datasets[0].data = humHistory.map(x => x.v);
+      humChart.update();
+    }
+  }
+
+  function addAlert() {
+    const sensor = document.getElementById('alert-sensor').value;
+    const condition = document.getElementById('alert-condition').value;
+    const value = parseFloat(document.getElementById('alert-value').value);
+    if (isNaN(value)) { alert('Enter a valid number'); return; }
+    alertRules.push({ id: Date.now(), sensor, condition, value, active: true });
+    localStorage.setItem('alert_rules', JSON.stringify(alertRules));
+    document.getElementById('alert-value').value = '';
+    renderAlertRules();
+  }
+
+  function deleteAlert(id) {
+    alertRules = alertRules.filter(a => a.id !== id);
+    localStorage.setItem('alert_rules', JSON.stringify(alertRules));
+    renderAlertRules();
+  }
+
+  function renderAlertRules() {
+    const el = document.getElementById('alert-rules-list');
+    if (!alertRules.length) { el.innerHTML = '<div class="empty">No alert rules yet</div>'; return; }
+    el.innerHTML = alertRules.map(a => `
+      <div class="device-item">
+        <div>
+          <div class="device-name">${a.sensor} ${a.condition} ${a.value}</div>
+          <div class="device-meta">Triggers when ${a.sensor} goes ${a.condition} ${a.value}</div>
+        </div>
+        <button class="btn btn-sm btn-danger" onclick="deleteAlert(${a.id})">Delete</button>
+      </div>`).join('');
+  }
+
+  function checkAlerts(sensor, value, time) {
+    alertRules.forEach(rule => {
+      if (rule.sensor !== sensor) return;
+      const triggered = (rule.condition === 'above' && value > rule.value) || (rule.condition === 'below' && value < rule.value);
+      if (triggered) {
+        const alert = { sensor, condition: rule.condition, threshold: rule.value, actual: value, time };
+        triggeredAlerts.unshift(alert);
+        if (triggeredAlerts.length > 20) triggeredAlerts.pop();
+        renderTriggered();
+      }
+    });
+  }
+
+  function renderTriggered() {
+    const el = document.getElementById('alert-triggered-list');
+    if (!triggeredAlerts.length) { el.innerHTML = '<div class="empty">No alerts triggered yet</div>'; return; }
+    el.innerHTML = triggeredAlerts.map(a => `
+      <div class="alert-item">
+        <div class="alert-icon">&#9888;</div>
+        <div>
+          <div class="alert-title">${a.sensor} is ${a.condition} ${a.threshold}</div>
+          <div class="alert-desc">Current value: ${a.actual.toFixed(1)}</div>
+          <div class="alert-time">${a.time}</div>
+        </div>
+      </div>`).join('');
   }
 </script>
 </body>
-</
+</html>
