@@ -53,7 +53,11 @@ pool.connect()
   .catch(err => console.error('PostgreSQL error:', err.message));
 
 // ── MQTT ──────────────────────────────────────────────
-const mqttClient = mqtt.connect('mqtt://localhost:1883');
+const mqttClient = mqtt.connect('mqtts://de98cb41160543d4a5a5cc840f429a2c.s1.eu.hivemq.cloud:8883', {
+  username: 'Malcolm',
+  password: 'Moses@1234',
+  rejectUnauthorized: true
+});
 let deviceData = {};
 
 mqttClient.on('connect', () => {
