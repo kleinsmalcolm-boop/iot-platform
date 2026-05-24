@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -897,7 +897,7 @@ async function addDevice() {
   } catch(e) { errEl.textContent = 'Failed to register device'; errEl.style.display = 'block'; }
 }
 
-async async async function deleteDevice(id) {
+async function deleteDevice(id) {
   if (!confirm('Delete this device and all its data?')) return;
   await apiCall('/api/my-devices/' + id, 'DELETE');
   if (currentDeviceId === id) showDeviceList();
