@@ -271,9 +271,9 @@ app.put('/api/my-devices/:id', authMiddleware, async (req, res) => {
 
 app.delete('/api/my-devices/:id', authMiddleware, async (req, res) => {
   try {
+    await pool.query('DELETE FROM api_keys WHERE device_id = $1', [req.params.id]);
     await pool.query('DELETE FROM devices WHERE id = $1 AND (org_id IS NOT DISTINCT FROM $2 OR user_id = $3)', [req.params.id, req.user.orgId, req.user.userId]);
     res.json({ success: true });
-  } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
 app.get('/api/my-devices/:id/readings', authMiddleware, async (req, res) => {
