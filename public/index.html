@@ -1,371 +1,391 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IoT Platform</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, sans-serif; background: #0f0f1a; color: #e2e8f0; height: 100vh; overflow: hidden; display: flex; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IoT Platform</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0a0a14;color:#e2e8f0;height:100vh;overflow:hidden;display:flex}
+.sidebar{width:220px;background:#12121f;border-right:1px solid #1e1e30;display:flex;flex-direction:column;flex-shrink:0;height:100vh;overflow-y:auto}
+.logo{padding:18px 16px;border-bottom:1px solid #1e1e30;background:linear-gradient(135deg,#7c3aed,#4f46e5)}
+.logo-title{font-size:16px;font-weight:700;color:#fff}
+.logo-sub{font-size:10px;color:rgba(255,255,255,0.6);margin-top:2px}
+.org-badge{margin:10px;background:#1e1e30;border-radius:8px;padding:8px 10px;font-size:11px;color:#888}
+.org-badge span{color:#a78bfa;font-weight:600;display:block;font-size:12px}
+.nav-section{padding:10px 14px 4px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#444}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:13px;color:#666;cursor:pointer;transition:all 0.15s;border-left:3px solid transparent;user-select:none}
+.nav-item:hover{background:rgba(124,58,237,0.08);color:#ccc}
+.nav-item.active{background:rgba(124,58,237,0.15);color:#a78bfa;border-left-color:#7c3aed;font-weight:500}
+.nav-item .ni{font-size:15px;width:18px;text-align:center}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:#12121f;border-bottom:1px solid #1e1e30;padding:10px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar h1{font-size:14px;font-weight:600;color:#fff}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.badge{font-size:11px;padding:3px 9px;border-radius:12px;font-weight:500}
+.badge-green{background:rgba(34,197,94,0.15);color:#22c55e}
+.badge-red{background:rgba(239,68,68,0.15);color:#ef4444}
+.badge-purple{background:rgba(124,58,237,0.2);color:#a78bfa}
+.badge-yellow{background:rgba(245,158,11,0.15);color:#f59e0b}
+.notif-btn{background:none;border:none;color:#888;cursor:pointer;font-size:16px;position:relative;padding:4px}
+.notif-count{position:absolute;top:0;right:0;background:#ef4444;color:#fff;font-size:9px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.content{flex:1;overflow-y:auto;padding:18px}
+.page{display:none}
+.page.active{display:block}
 
-    /* Sidebar */
-    .sidebar { width: 220px; background: #1a1a2e; border-right: 1px solid #2a2a3e; display: flex; flex-direction: column; padding: 0; flex-shrink: 0; height: 100vh; overflow-y: auto; }
-    .logo { font-size: 16px; font-weight: 700; padding: 20px; color: #fff; border-bottom: 1px solid #2a2a3e; background: #7c3aed; }
-    .logo span { opacity: 0.8; font-weight: 400; }
-    .nav-section { padding: 12px 16px 4px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #555; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 13px; color: #888; cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
-    .nav-item:hover { background: rgba(124,58,237,0.1); color: #fff; }
-    .nav-item.active { background: rgba(124,58,237,0.15); color: #a78bfa; border-left-color: #7c3aed; font-weight: 500; }
+/* Auth */
+.auth-screen{display:flex;align-items:center;justify-content:center;height:100vh;background:#0a0a14;width:100%;flex-direction:column;gap:20px}
+.auth-logo{font-size:28px;font-weight:700;color:#fff;text-align:center}
+.auth-logo span{color:#7c3aed}
+.auth-card{background:#12121f;border-radius:16px;border:1px solid #1e1e30;padding:32px;width:380px}
+.auth-card h2{font-size:20px;margin-bottom:4px;color:#fff}
+.auth-card p{color:#555;font-size:13px;margin-bottom:24px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:600;margin-bottom:5px;color:#666;text-transform:uppercase;letter-spacing:0.5px}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1px solid #1e1e30;border-radius:8px;font-size:13px;outline:none;background:#0a0a14;color:#fff;transition:border 0.15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#7c3aed}
+.fg textarea{resize:vertical;min-height:80px}
+.btn{padding:9px 16px;background:#7c3aed;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:#6d28d9}
+.btn-full{width:100%}
+.btn-outline{background:transparent;color:#7c3aed;border:1px solid #7c3aed}
+.btn-outline:hover{background:rgba(124,58,237,0.1)}
+.btn-sm{padding:5px 12px;font-size:12px}
+.btn-xs{padding:3px 8px;font-size:11px}
+.btn-danger{background:#dc2626}
+.btn-danger:hover{background:#b91c1c}
+.btn-green{background:#16a34a}
+.btn-green:hover{background:#15803d}
+.btn-gray{background:#1e1e30;color:#888}
+.btn-gray:hover{background:#2a2a40;color:#fff}
+.err{color:#f87171;font-size:12px;margin-top:6px;display:none}
 
-    /* Main */
-    .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-    .topbar { background: #1a1a2e; border-bottom: 1px solid #2a2a3e; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
-    .topbar h1 { font-size: 15px; font-weight: 600; color: #fff; }
-    .topbar-right { display: flex; align-items: center; gap: 10px; }
-    .badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; }
-    .badge-green { background: rgba(34,197,94,0.15); color: #22c55e; }
-    .badge-red { background: rgba(239,68,68,0.15); color: #ef4444; }
-    .badge-purple { background: rgba(124,58,237,0.2); color: #a78bfa; }
-    .content { flex: 1; overflow-y: auto; padding: 20px; }
-    .page { display: none; }
-    .page.active { display: block; }
+/* Cards & Grid */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:1200px){.grid-4{grid-template-columns:repeat(2,1fr)}}
+.card{background:#12121f;border:1px solid #1e1e30;border-radius:12px;padding:16px}
+.card-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.stat-card{background:#12121f;border:1px solid #1e1e30;border-radius:10px;padding:14px}
+.stat-label{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.stat-value{font-size:26px;font-weight:700;color:#fff}
+.stat-sub{font-size:11px;color:#444;margin-top:3px}
 
-    /* Auth */
-    .auth-screen { display: flex; align-items: center; justify-content: center; height: 100vh; background: #0f0f1a; width: 100%; }
-    .auth-card { background: #1a1a2e; border-radius: 16px; border: 1px solid #2a2a3e; padding: 36px; width: 380px; }
-    .auth-card h2 { font-size: 22px; margin-bottom: 6px; color: #fff; }
-    .auth-card p { color: #666; font-size: 14px; margin-bottom: 28px; }
-    .form-group { margin-bottom: 16px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 500; margin-bottom: 6px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
-    .form-group input, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid #2a2a3e; border-radius: 8px; font-size: 14px; outline: none; background: #0f0f1a; color: #fff; transition: border 0.15s; }
-    .form-group input:focus, .form-group select:focus { border-color: #7c3aed; }
-    .btn { width: 100%; padding: 11px; background: #7c3aed; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
-    .btn:hover { background: #6d28d9; }
-    .btn-outline { background: transparent; color: #7c3aed; border: 1px solid #7c3aed; margin-top: 10px; }
-    .btn-outline:hover { background: rgba(124,58,237,0.1); }
-    .btn-sm { width: auto; padding: 6px 14px; font-size: 12px; border-radius: 6px; }
-    .btn-danger { background: #dc2626; }
-    .btn-danger:hover { background: #b91c1c; }
-    .btn-green { background: #16a34a; }
-    .btn-green:hover { background: #15803d; }
-    .error-msg { color: #f87171; font-size: 13px; margin-top: 8px; display: none; }
+/* Section header */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.sh h2{font-size:15px;font-weight:600;color:#fff}
+.sh-actions{display:flex;gap:8px;align-items:center}
 
-    /* Widget Canvas */
-    .canvas-toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-    .canvas-toolbar h2 { font-size: 15px; font-weight: 600; color: #fff; flex: 1; }
-    .widget-canvas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; min-height: 400px; }
-    .widget-canvas.edit-mode .widget-box { border: 2px dashed #7c3aed; cursor: move; }
+/* Device cards */
+.device-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.device-card{background:#12121f;border:1px solid #1e1e30;border-radius:12px;padding:18px;cursor:pointer;transition:all 0.2s;position:relative}
+.device-card:hover{border-color:#7c3aed;transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,237,0.15)}
+.device-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.device-card-name{font-size:15px;font-weight:600;color:#fff}
+.device-card-type{font-size:11px;color:#555;margin-top:2px}
+.device-card-actions{display:flex;gap:6px}
+.device-stats{display:flex;gap:12px;margin-top:12px;padding-top:12px;border-top:1px solid #1e1e30}
+.device-stat{flex:1;text-align:center}
+.device-stat-val{font-size:14px;font-weight:600;color:#a78bfa}
+.device-stat-label{font-size:10px;color:#555;margin-top:2px}
+.token-box{background:#0a0a14;border:1px solid #1e1e30;border-radius:6px;padding:7px 10px;font-family:monospace;font-size:10px;color:#7c3aed;margin-top:10px;word-break:break-all;cursor:pointer}
+.token-box:hover{border-color:#7c3aed}
 
-    /* Widget Box */
-    .widget-box { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 12px; padding: 16px; position: relative; min-height: 120px; display: flex; flex-direction: column; }
-    .widget-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .widget-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
-    .widget-pin { font-size: 10px; color: #7c3aed; background: rgba(124,58,237,0.15); padding: 2px 6px; border-radius: 4px; }
-    .widget-body { flex: 1; display: flex; align-items: center; justify-content: center; }
-    .widget-delete { position: absolute; top: 8px; right: 8px; background: #dc2626; border: none; color: #fff; width: 20px; height: 20px; border-radius: 50%; cursor: pointer; font-size: 12px; display: none; align-items: center; justify-content: center; }
-    .edit-mode .widget-delete { display: flex; }
+/* Device dashboard */
+.device-dash-header{background:#12121f;border:1px solid #1e1e30;border-radius:12px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.device-dash-name{font-size:18px;font-weight:700;color:#fff}
+.device-dash-meta{font-size:12px;color:#555;margin-top:3px}
+.device-dash-actions{display:flex;gap:8px}
 
-    /* Button Widget */
-    .w-button { width: 100%; padding: 14px; background: #7c3aed; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
-    .w-button:hover { background: #6d28d9; transform: scale(0.98); }
-    .w-button:active { transform: scale(0.95); }
-    .w-button.pressed { background: #22c55e; }
+/* Widget canvas */
+.widget-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.widget-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:1000px){.widget-grid{grid-template-columns:repeat(2,1fr)}}
+.widget-box{background:#12121f;border:1px solid #1e1e30;border-radius:10px;padding:14px;position:relative;min-height:110px;display:flex;flex-direction:column;transition:border 0.2s}
+.widget-box:hover{border-color:#2a2a40}
+.edit-mode .widget-box{border-style:dashed;border-color:#7c3aed33}
+.wh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.wlabel{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px}
+.wpin{font-size:10px;color:#7c3aed;background:rgba(124,58,237,0.15);padding:1px 6px;border-radius:4px}
+.wbody{flex:1;display:flex;align-items:center;justify-content:center}
+.wdel{position:absolute;top:6px;right:6px;background:#dc2626;border:none;color:#fff;width:18px;height:18px;border-radius:50%;cursor:pointer;font-size:10px;display:none;align-items:center;justify-content:center}
+.edit-mode .wdel{display:flex}
+.w-btn{width:100%;padding:12px;background:#7c3aed;color:#fff;border:none;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s}
+.w-btn:hover{background:#6d28d9}
+.w-btn.pressed{background:#22c55e}
+.w-sw{width:52px;height:28px;border-radius:14px;background:#1e1e30;position:relative;cursor:pointer;transition:background 0.3s;border:none;flex-shrink:0}
+.w-sw.on{background:#7c3aed}
+.w-sw::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.4)}
+.w-sw.on::after{left:27px}
+.sw-wrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.sw-lbl{font-size:11px;color:#555}
+.w-slider{width:100%;-webkit-appearance:none;height:5px;border-radius:3px;background:#1e1e30;outline:none}
+.w-slider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#7c3aed;cursor:pointer}
+.slval{text-align:center;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px}
+.w-disp{text-align:center}
+.w-disp-val{font-size:28px;font-weight:700;color:#fff}
+.w-disp-unit{font-size:12px;color:#555;margin-top:2px}
+.gauge-wrap{width:100%}
+.gauge-bar{width:100%;height:7px;background:#1e1e30;border-radius:4px;overflow:hidden;margin-top:6px}
+.gauge-fill{height:100%;background:linear-gradient(90deg,#22c55e,#f59e0b,#ef4444);border-radius:4px;transition:width 0.5s}
+.gauge-val{font-size:22px;font-weight:700;color:#fff;text-align:center;margin-top:4px}
+.w-num{display:flex;align-items:center;gap:8px;width:100%}
+.w-nbtn{width:32px;height:32px;border-radius:7px;background:#1e1e30;border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.w-nbtn:hover{background:#7c3aed}
+.w-nval{flex:1;text-align:center;font-size:18px;font-weight:700;color:#fff}
+.w-term{width:100%;background:#050510;border-radius:6px;padding:8px;font-family:monospace;font-size:11px;color:#22c55e;height:100px;overflow-y:auto}
+.w-term-input{width:100%;background:#050510;border:1px solid #1e1e30;border-radius:5px;padding:5px 8px;color:#22c55e;font-family:monospace;font-size:11px;margin-top:5px;outline:none}
+.w-seg{display:flex;background:#0a0a14;border-radius:7px;padding:2px;gap:2px}
+.w-seg-btn{flex:1;padding:5px;border:none;border-radius:5px;background:transparent;color:#555;font-size:11px;cursor:pointer;transition:all 0.2s}
+.w-seg-btn.active{background:#7c3aed;color:#fff;font-weight:600}
+.w-alarm{text-align:center}
+.w-alarm-icon{font-size:28px}
+.w-alarm-st{font-size:11px;color:#555;margin-top:3px}
+.w-alarm.triggered .w-alarm-icon{animation:shake 0.4s infinite}
+.w-alarm.triggered .w-alarm-st{color:#ef4444}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.w-radial{display:flex;flex-direction:column;align-items:center}
+.w-radial svg{width:90px;height:54px}
+.w-radial-val{font-size:18px;font-weight:700;color:#fff;margin-top:3px}
 
-    /* Switch Widget */
-    .w-switch-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    .w-switch { width: 56px; height: 30px; border-radius: 15px; background: #2a2a3e; position: relative; cursor: pointer; transition: background 0.3s; border: none; }
-    .w-switch.on { background: #7c3aed; }
-    .w-switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: left 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-    .w-switch.on::after { left: 29px; }
-    .w-switch-label { font-size: 12px; color: #888; }
+/* Widget type picker */
+.wtype-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;margin-top:12px}
+.wtype-btn{background:#0a0a14;border:1px solid #1e1e30;border-radius:8px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.15s}
+.wtype-btn:hover{border-color:#7c3aed;background:rgba(124,58,237,0.08)}
+.wtype-icon{font-size:18px;margin-bottom:3px}
+.wtype-name{font-size:10px;color:#666}
 
-    /* Slider Widget */
-    .w-slider-wrap { width: 100%; }
-    .w-slider { width: 100%; -webkit-appearance: none; height: 6px; border-radius: 3px; background: #2a2a3e; outline: none; }
-    .w-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #7c3aed; cursor: pointer; box-shadow: 0 2px 6px rgba(124,58,237,0.4); }
-    .w-slider-val { text-align: center; font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:7px 10px;border-bottom:1px solid #1e1e30;color:#444;font-size:11px;text-transform:uppercase}
+td{padding:9px 10px;border-bottom:1px solid #0f0f1a;color:#ccc}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(124,58,237,0.04)}
 
-    /* Display Widget */
-    .w-display { text-align: center; }
-    .w-display-val { font-size: 32px; font-weight: 700; color: #fff; }
-    .w-display-unit { font-size: 14px; color: #888; margin-top: 2px; }
+/* Log */
+.logbox{background:#050510;border:1px solid #1e1e30;border-radius:8px;padding:10px;font-family:monospace;font-size:11px;color:#888;overflow-y:auto}
 
-    /* Label Widget */
-    .w-label { font-size: 18px; font-weight: 600; color: #a78bfa; text-align: center; }
+/* Automation */
+.auto-card{background:#12121f;border:1px solid #1e1e30;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.auto-info{flex:1}
+.auto-name{font-weight:600;color:#fff;font-size:14px}
+.auto-desc{font-size:11px;color:#555;margin-top:3px}
+.auto-meta{font-size:10px;color:#444;margin-top:4px}
 
-    /* Gauge Widget */
-    .w-gauge-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; }
-    .w-gauge-val { font-size: 24px; font-weight: 700; color: #fff; margin-top: 4px; }
-    .gauge-bar { width: 100%; height: 8px; background: #2a2a3e; border-radius: 4px; overflow: hidden; margin-top: 6px; }
-    .gauge-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #f59e0b, #ef4444); border-radius: 4px; transition: width 0.5s; }
+/* Alert */
+.alert-item{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:12px;margin-bottom:8px}
+.alert-title{font-weight:600;color:#ef4444;font-size:13px}
+.alert-detail{font-size:11px;color:#666;margin-top:3px}
 
-    /* Number Input Widget */
-    .w-number-wrap { display: flex; align-items: center; gap: 8px; }
-    .w-number-btn { width: 34px; height: 34px; border-radius: 8px; background: #2a2a3e; border: none; color: #fff; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-    .w-number-btn:hover { background: #7c3aed; }
-    .w-number-val { flex: 1; text-align: center; font-size: 20px; font-weight: 700; color: #fff; }
+/* Toggle */
+.toggle-pill{display:flex;align-items:center;gap:6px;cursor:pointer}
+.toggle-pill input{display:none}
+.pill{width:36px;height:20px;border-radius:10px;background:#1e1e30;position:relative;transition:background 0.2s}
+.pill::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left 0.2s}
+.toggle-pill input:checked+.pill{background:#7c3aed}
+.toggle-pill input:checked+.pill::after{left:18px}
 
-    /* Terminal Widget */
-    .w-terminal { width: 100%; background: #0a0a14; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 11px; color: #22c55e; height: 120px; overflow-y: auto; }
-    .w-terminal-input { width: 100%; background: #0a0a14; border: 1px solid #2a2a3e; border-radius: 6px; padding: 6px 10px; color: #22c55e; font-family: monospace; font-size: 11px; margin-top: 6px; outline: none; }
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#12121f;border:1px solid #1e1e30;border-radius:16px;padding:24px;width:460px;max-height:90vh;overflow-y:auto}
+.modal h3{font-size:16px;font-weight:600;color:#fff;margin-bottom:18px}
+.modal-footer{display:flex;gap:8px;margin-top:18px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
-    /* Chart Widget */
-    .w-chart { width: 100%; }
+/* Notification panel */
+.notif-panel{position:fixed;top:50px;right:16px;width:320px;background:#12121f;border:1px solid #1e1e30;border-radius:12px;z-index:200;display:none;max-height:400px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.notif-panel.open{display:block}
+.notif-item{padding:12px 14px;border-bottom:1px solid #1e1e30;font-size:12px}
+.notif-item:last-child{border-bottom:none}
+.notif-item-title{color:#fff;font-weight:600}
+.notif-item-msg{color:#666;margin-top:3px}
+.notif-item-time{color:#444;font-size:10px;margin-top:3px}
+.notif-item.unread{background:rgba(124,58,237,0.06)}
 
-    /* Radial Gauge */
-    .w-radial { display: flex; flex-direction: column; align-items: center; }
-    .w-radial svg { width: 100px; height: 60px; }
-    .w-radial-val { font-size: 20px; font-weight: 700; color: #fff; margin-top: 4px; }
-
-    /* Segmented Switch */
-    .w-segmented { display: flex; background: #0f0f1a; border-radius: 8px; padding: 3px; gap: 2px; }
-    .w-seg-btn { flex: 1; padding: 6px; border: none; border-radius: 6px; background: transparent; color: #888; font-size: 12px; cursor: pointer; transition: all 0.2s; }
-    .w-seg-btn.active { background: #7c3aed; color: #fff; font-weight: 600; }
-
-    /* Menu Widget */
-    .w-menu { width: 100%; background: #0f0f1a; border: 1px solid #2a2a3e; border-radius: 8px; padding: 8px 12px; color: #fff; font-size: 13px; outline: none; }
-
-    /* Alarm Widget */
-    .w-alarm { text-align: center; }
-    .w-alarm-icon { font-size: 32px; }
-    .w-alarm-state { font-size: 12px; color: #888; margin-top: 4px; }
-    .w-alarm.triggered .w-alarm-icon { animation: shake 0.5s infinite; }
-    .w-alarm.triggered .w-alarm-state { color: #ef4444; }
-    @keyframes shake { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} }
-
-    /* Add Widget Panel */
-    .add-widget-panel { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 12px; padding: 20px; margin-bottom: 16px; display: none; }
-    .add-widget-panel.open { display: block; }
-    .widget-types { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 8px; margin-top: 12px; }
-    .widget-type-btn { background: #0f0f1a; border: 1px solid #2a2a3e; border-radius: 8px; padding: 12px 8px; text-align: center; cursor: pointer; transition: all 0.15s; }
-    .widget-type-btn:hover { border-color: #7c3aed; background: rgba(124,58,237,0.1); }
-    .widget-type-btn .wt-icon { font-size: 20px; margin-bottom: 4px; }
-    .widget-type-btn .wt-name { font-size: 11px; color: #888; }
-
-    /* Config Modal */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; }
-    .modal-overlay.open { display: flex; }
-    .modal { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 16px; padding: 28px; width: 420px; max-height: 90vh; overflow-y: auto; }
-    .modal h3 { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
-
-    /* Devices page */
-    .devices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-    .device-card { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 12px; padding: 20px; }
-    .device-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .device-card-name { font-weight: 600; font-size: 15px; color: #fff; }
-    .device-card-key { font-size: 11px; color: #555; font-family: monospace; margin-top: 2px; }
-    .api-key-box { background: #0f0f1a; border: 1px solid #2a2a3e; border-radius: 6px; padding: 8px 10px; font-family: monospace; font-size: 11px; color: #a78bfa; margin-top: 10px; word-break: break-all; }
-
-    /* Analytics */
-    .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
-    .stat-card { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 10px; padding: 16px; }
-    .stat-label { font-size: 11px; color: #888; margin-bottom: 6px; text-transform: uppercase; }
-    .stat-value { font-size: 28px; font-weight: 700; color: #fff; }
-    .stat-sub { font-size: 11px; color: #555; margin-top: 4px; }
-    .chart-card { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-    .chart-card h3 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 14px; }
-
-    /* Alerts */
-    .alert-rule { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .alert-triggered { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; }
-    .alert-triggered-title { font-weight: 600; color: #ef4444; font-size: 14px; }
-    .alert-triggered-detail { font-size: 12px; color: #888; margin-top: 3px; }
-
-    /* Log */
-    .log-box { background: #0a0a14; border-radius: 8px; padding: 12px; font-family: monospace; font-size: 12px; color: #aaa; height: 160px; overflow-y: auto; border: 1px solid #2a2a3e; }
-
-    .empty { color: #555; font-size: 13px; text-align: center; padding: 30px 0; }
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-    .section-header h2 { font-size: 16px; font-weight: 600; color: #fff; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th { text-align: left; padding: 8px 12px; border-bottom: 1px solid #2a2a3e; color: #555; font-size: 11px; text-transform: uppercase; }
-    td { padding: 10px 12px; border-bottom: 1px solid #1a1a2e; color: #ccc; }
-  </style>
+.empty{color:#444;font-size:13px;text-align:center;padding:40px 0}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;display:inline-block}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.chip{display:inline-flex;align-items:center;gap:4px;background:#1e1e30;border-radius:6px;padding:3px 8px;font-size:11px;color:#888}
+.sep{height:1px;background:#1e1e30;margin:16px 0}
+</style>
 </head>
 <body>
 
 <!-- AUTH -->
 <div class="auth-screen" id="auth-screen">
+  <div class="auth-logo">⚡ IoT <span>Platform</span></div>
   <div class="auth-card">
-    <h2 id="auth-title">Welcome back</h2>
-    <p id="auth-sub">Sign in to your IoT dashboard</p>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" id="auth-email" placeholder="you@example.com">
-    </div>
-    <div class="form-group" id="name-group" style="display:none">
-      <label>Name</label>
-      <input type="text" id="auth-name" placeholder="Your name">
-    </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="auth-password" placeholder="password">
-    </div>
-    <div class="error-msg" id="auth-error"></div>
-    <button class="btn" onclick="submitAuth()">Sign in</button>
-    <button class="btn btn-outline" onclick="toggleAuthMode()">Create an account instead</button>
+    <h2 id="at">Welcome back</h2>
+    <p id="as">Sign in to your organization</p>
+    <div class="fg"><label>Email</label><input type="email" id="ae" placeholder="you@example.com"></div>
+    <div class="fg" id="ang" style="display:none"><label>Your Name</label><input type="text" id="an" placeholder="Malcolm"></div>
+    <div class="fg" id="aog" style="display:none"><label>Organization Name</label><input type="text" id="ao" placeholder="My IoT Company"></div>
+    <div class="fg"><label>Password</label><input type="password" id="ap" placeholder="password"></div>
+    <div class="err" id="aerr"></div>
+    <button class="btn btn-full" style="margin-bottom:8px" onclick="submitAuth()">Sign in</button>
+    <button class="btn btn-full btn-outline" onclick="toggleAuth()">Create account instead</button>
   </div>
+</div>
+
+<!-- NOTIFICATION PANEL -->
+<div class="notif-panel" id="notif-panel">
+  <div style="padding:10px 14px;border-bottom:1px solid #1e1e30;display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:13px;font-weight:600;color:#fff">Notifications</span>
+    <button class="btn btn-xs btn-gray" onclick="markNotifsRead()">Mark all read</button>
+  </div>
+  <div id="notif-list"><div class="empty" style="padding:20px 0">No notifications</div></div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" style="display:none;width:100%;height:100vh;overflow:hidden;flex-direction:row">
   <div class="sidebar">
-    <div class="logo">&#9889; IoT <span>Platform</span></div>
-    <div class="nav-section">Main</div>
-    <div class="nav-item active" onclick="showPage('page-dashboard',this)">&#9707; Dashboard</div>
-    <div class="nav-item" onclick="showPage('page-widgets',this)">&#9881; Widget Canvas</div>
-    <div class="nav-item" onclick="showPage('page-devices',this)">&#128225; Devices</div>
-    <div class="nav-section">Monitor</div>
-    <div class="nav-item" onclick="showPage('page-analytics',this)">&#128202; Analytics</div>
-    <div class="nav-item" onclick="showPage('page-alerts',this)">&#128276; Alerts</div>
-    <div class="nav-item" onclick="showPage('page-log',this)">&#128196; Live Log</div>
+    <div class="logo">
+      <div class="logo-title">⚡ IoT Platform</div>
+      <div class="logo-sub">Device Management Console</div>
+    </div>
+    <div class="org-badge">Organization<span id="sb-org">Loading...</span></div>
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" onclick="nav('pg-home',this)"><span class="ni">🏠</span> Home</div>
+    <div class="nav-item" onclick="nav('pg-devices',this)"><span class="ni">📡</span> Devices</div>
+    <div class="nav-section">Automation</div>
+    <div class="nav-item" onclick="nav('pg-auto',this)"><span class="ni">⚡</span> Automations</div>
+    <div class="nav-item" onclick="nav('pg-alerts',this)"><span class="ni">🔔</span> Alerts</div>
+    <div class="nav-section">Organization</div>
+    <div class="nav-item" onclick="nav('pg-users',this)"><span class="ni">👥</span> Users</div>
+    <div class="nav-item" onclick="nav('pg-locations',this)"><span class="ni">📍</span> Locations</div>
+    <div class="nav-section">Data</div>
+    <div class="nav-item" onclick="nav('pg-analytics',this)"><span class="ni">📊</span> Analytics</div>
+    <div class="nav-item" onclick="nav('pg-snapshots',this)"><span class="ni">📸</span> Snapshots</div>
+    <div class="nav-item" onclick="nav('pg-log',this)"><span class="ni">📄</span> Live Log</div>
     <div style="flex:1"></div>
-    <div class="nav-section">Account</div>
-    <div class="nav-item" id="user-name-nav">&#128100; User</div>
-    <div class="nav-item" onclick="logout()">&#128682; Sign out</div>
+    <div class="nav-item" onclick="nav('pg-settings',this)"><span class="ni">⚙️</span> Settings</div>
+    <div class="nav-item" onclick="logout()"><span class="ni">🚪</span> Sign out</div>
   </div>
 
   <div class="main">
     <div class="topbar">
-      <h1 id="page-title">Dashboard</h1>
+      <h1 id="page-title">Home</h1>
       <div class="topbar-right">
-        <span class="badge badge-purple" id="conn-status">Connecting...</span>
-        <span class="badge badge-green" id="msg-count">0 messages</span>
+        <span class="badge badge-purple" id="ws-status">Connecting...</span>
+        <span class="badge badge-green" id="msg-badge">0 msgs</span>
+        <button class="notif-btn" onclick="toggleNotifPanel()" id="notif-btn">🔔<span class="notif-count" id="notif-count" style="display:none">0</span></button>
+        <span style="font-size:12px;color:#555" id="user-badge"></span>
       </div>
     </div>
+
     <div class="content">
 
-      <!-- DASHBOARD PAGE -->
-      <div class="page active" id="page-dashboard">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px">
-          <div class="stat-card">
-            <div class="stat-label">Temperature</div>
-            <div class="stat-value"><span id="m-temp">--</span><span style="font-size:14px;color:#888">C</span></div>
-            <div class="stat-sub" id="m-temp-t">waiting...</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Humidity</div>
-            <div class="stat-value"><span id="m-hum">--</span><span style="font-size:14px;color:#888">%</span></div>
-            <div class="stat-sub" id="m-hum-t">waiting...</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Messages</div>
-            <div class="stat-value" id="m-msgs">0</div>
-            <div class="stat-sub">this session</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Active Topics</div>
-            <div class="stat-value" id="m-topics">0</div>
-            <div class="stat-sub">data streams</div>
-          </div>
+      <!-- HOME -->
+      <div class="page active" id="pg-home">
+        <div class="grid-4" style="margin-bottom:16px" id="home-stats">
+          <div class="stat-card"><div class="stat-label">Devices</div><div class="stat-value" id="hs-devices">0</div><div class="stat-sub">registered</div></div>
+          <div class="stat-card"><div class="stat-label">Online</div><div class="stat-value" id="hs-online" style="color:#22c55e">0</div><div class="stat-sub">active now</div></div>
+          <div class="stat-card"><div class="stat-label">Messages</div><div class="stat-value" id="hs-msgs">0</div><div class="stat-sub">this session</div></div>
+          <div class="stat-card"><div class="stat-label">Automations</div><div class="stat-value" id="hs-autos">0</div><div class="stat-sub">active rules</div></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-          <div class="chart-card">
-            <h3>&#128200; Live Temperature</h3>
-            <canvas id="dash-temp-chart" height="140"></canvas>
-          </div>
-          <div class="chart-card">
-            <h3>&#128225; Live Device Data</h3>
-            <div id="dash-device-list"><div class="empty">Send MQTT data to see it here</div></div>
-          </div>
+        <div class="grid-2" style="margin-bottom:14px">
+          <div class="card"><div class="card-title"><span><span class="live-dot"></span> Live Data</span></div><div id="home-live" style="font-size:13px"><div class="empty" style="padding:20px 0">Waiting for data...</div></div></div>
+          <div class="card"><div class="card-title">📡 Recent Devices</div><div id="home-devices" style="font-size:13px"><div class="empty" style="padding:20px 0">No devices yet</div></div></div>
         </div>
-        <div class="chart-card">
-          <h3>&#128196; Recent Messages</h3>
-          <div class="log-box" id="dash-log"></div>
+        <div class="card"><div class="card-title">📈 Temperature</div><canvas id="home-chart" height="100"></canvas></div>
+      </div>
+
+      <!-- DEVICES -->
+      <div class="page" id="pg-devices">
+        <div id="device-view-list">
+          <div class="sh"><h2>All Devices</h2><div class="sh-actions"><button class="btn btn-sm" onclick="openModal('modal-add-device')">+ New Device</button></div></div>
+          <div class="device-grid" id="device-grid"><div class="empty">Loading...</div></div>
+        </div>
+        <div id="device-view-dash" style="display:none">
+          <div class="device-dash-header">
+            <div>
+              <div class="device-dash-name" id="dd-name">Device</div>
+              <div class="device-dash-meta" id="dd-meta"></div>
+            </div>
+            <div class="device-dash-actions">
+              <span class="badge" id="dd-status">Offline</span>
+              <button class="btn btn-sm btn-gray" onclick="showDeviceList()">← Back</button>
+              <button class="btn btn-sm" onclick="openModal('modal-add-widget')">+ Widget</button>
+              <button class="btn btn-sm btn-gray" id="dd-edit-btn" onclick="toggleWidgetEdit()">✏ Edit</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px" id="dd-stats"></div>
+          <div class="widget-grid" id="device-widget-canvas"><div class="empty" style="grid-column:1/-1">No widgets — click + Widget to add one</div></div>
+          <div class="sep"></div>
+          <div class="card" style="margin-top:14px"><div class="card-title">📈 Device History</div><canvas id="dd-chart" height="100"></canvas></div>
+          <div class="card" style="margin-top:14px"><div class="card-title">📄 Recent Readings<span><button class="btn btn-xs btn-gray" onclick="loadDeviceReadings(currentDeviceId)">Refresh</button></span></div><div id="dd-readings" style="max-height:200px;overflow-y:auto"></div></div>
         </div>
       </div>
 
-      <!-- WIDGET CANVAS PAGE -->
-      <div class="page" id="page-widgets">
-        <div class="canvas-toolbar">
-          <h2>&#9881; Widget Canvas</h2>
-          <button class="btn btn-sm" id="edit-btn" onclick="toggleEditMode()">&#9998; Edit Layout</button>
-          <button class="btn btn-sm btn-green" onclick="toggleAddPanel()">+ Add Widget</button>
-          <button class="btn btn-sm" onclick="saveWidgets()" style="background:#2a2a3e">&#128190; Save</button>
-        </div>
+      <!-- AUTOMATIONS -->
+      <div class="page" id="pg-auto">
+        <div class="sh"><h2>Automations</h2><button class="btn btn-sm" onclick="openModal('modal-add-auto')">+ New Automation</button></div>
+        <div id="auto-list"><div class="empty">Loading...</div></div>
+      </div>
 
-        <div class="add-widget-panel" id="add-panel">
-          <div style="font-size:14px;font-weight:600;color:#fff;margin-bottom:4px">Choose Widget Type</div>
-          <div style="font-size:12px;color:#888">Select a widget to add to your canvas</div>
-          <div class="widget-types">
-            <div class="widget-type-btn" onclick="startAddWidget('button')"><div class="wt-icon">&#9654;</div><div class="wt-name">Button</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('switch')"><div class="wt-icon">&#9654;&#9654;</div><div class="wt-name">Switch</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('slider')"><div class="wt-icon">&#127922;</div><div class="wt-name">Slider</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('display')"><div class="wt-icon">&#128208;</div><div class="wt-name">Display</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('label')"><div class="wt-icon">&#127991;</div><div class="wt-name">Label</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('gauge')"><div class="wt-icon">&#127358;</div><div class="wt-name">Gauge</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('radial')"><div class="wt-icon">&#9684;</div><div class="wt-name">Radial Gauge</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('number')"><div class="wt-icon">&#128290;</div><div class="wt-name">Number Input</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('chart')"><div class="wt-icon">&#128200;</div><div class="wt-name">Chart</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('terminal')"><div class="wt-icon">&#62;</div><div class="wt-name">Terminal</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('alarm')"><div class="wt-icon">&#128680;</div><div class="wt-name">Alarm</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('segmented')"><div class="wt-icon">&#9635;</div><div class="wt-name">Seg. Switch</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('menu')"><div class="wt-icon">&#9776;</div><div class="wt-name">Menu</div></div>
-            <div class="widget-type-btn" onclick="startAddWidget('text-input')"><div class="wt-icon">&#9000;</div><div class="wt-name">Text Input</div></div>
+      <!-- ALERTS -->
+      <div class="page" id="pg-alerts">
+        <div class="sh"><h2>Alert Rules</h2><button class="btn btn-sm" onclick="openModal('modal-add-alert')">+ Add Alert</button></div>
+        <div id="alert-rules-list"></div>
+        <div class="sep"></div>
+        <div class="sh"><h2>Triggered Alerts</h2><button class="btn btn-xs btn-gray" onclick="triggeredAlerts=[];renderTriggered()">Clear</button></div>
+        <div id="triggered-list"><div class="empty">No alerts triggered yet</div></div>
+      </div>
+
+      <!-- USERS -->
+      <div class="page" id="pg-users">
+        <div class="sh"><h2>Team Members</h2><button class="btn btn-sm" onclick="openModal('modal-invite')">+ Invite User</button></div>
+        <div class="card"><div id="users-table"><div class="empty">Loading...</div></div></div>
+      </div>
+
+      <!-- LOCATIONS -->
+      <div class="page" id="pg-locations">
+        <div class="sh"><h2>Locations</h2><button class="btn btn-sm" onclick="openModal('modal-add-loc')">+ Add Location</button></div>
+        <div class="device-grid" id="loc-grid"><div class="empty">No locations yet</div></div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="page" id="pg-analytics">
+        <div class="sh"><h2>Analytics</h2></div>
+        <div class="grid-4" style="margin-bottom:16px">
+          <div class="stat-card"><div class="stat-label">Total Messages</div><div class="stat-value" id="an-msgs">0</div></div>
+          <div class="stat-card"><div class="stat-label">Active Streams</div><div class="stat-value" id="an-streams">0</div></div>
+          <div class="stat-card"><div class="stat-label">Peak Temp</div><div class="stat-value"><span id="an-peak">--</span><span style="font-size:14px;color:#555">°C</span></div></div>
+          <div class="stat-card"><div class="stat-label">Avg Temp</div><div class="stat-value"><span id="an-avg">--</span><span style="font-size:14px;color:#555">°C</span></div></div>
+        </div>
+        <div class="card" style="margin-bottom:14px"><div class="card-title">Temperature History</div><canvas id="an-temp" height="100"></canvas></div>
+        <div class="card"><div class="card-title">Humidity History</div><canvas id="an-hum" height="100"></canvas></div>
+      </div>
+
+      <!-- SNAPSHOTS -->
+      <div class="page" id="pg-snapshots">
+        <div class="sh"><h2>Snapshots</h2><button class="btn btn-sm" onclick="createSnapshot()">📸 Take Snapshot</button></div>
+        <div id="snapshots-list"><div class="empty">No snapshots yet</div></div>
+      </div>
+
+      <!-- LIVE LOG -->
+      <div class="page" id="pg-log">
+        <div class="sh"><h2>Live Log</h2><button class="btn btn-sm btn-gray" onclick="document.getElementById('full-log').innerHTML=''">Clear</button></div>
+        <div class="card"><div class="logbox" id="full-log" style="height:500px"></div></div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="pg-settings">
+        <div class="sh"><h2>Settings</h2></div>
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">Organization</div>
+            <div class="fg"><label>Organization Name</label><input type="text" id="set-org-name" placeholder="My Organization"></div>
+            <button class="btn btn-sm" onclick="saveOrgSettings()">Save Changes</button>
           </div>
-        </div>
-
-        <div class="widget-canvas" id="widget-canvas">
-          <div class="empty" id="canvas-empty" style="grid-column:1/-1">No widgets yet. Click + Add Widget to get started.</div>
-        </div>
-      </div>
-
-      <!-- DEVICES PAGE -->
-      <div class="page" id="page-devices">
-        <div class="section-header">
-          <h2>My Devices</h2>
-          <button class="btn btn-sm" onclick="openModal('add-device-modal')">+ Register Device</button>
-        </div>
-        <div class="devices-grid" id="devices-grid">
-          <div class="empty">Loading...</div>
-        </div>
-      </div>
-
-      <!-- ANALYTICS PAGE -->
-      <div class="page" id="page-analytics">
-        <div class="section-header"><h2>Analytics</h2></div>
-        <div class="analytics-grid">
-          <div class="stat-card"><div class="stat-label">Total Messages</div><div class="stat-value" id="a-total">0</div></div>
-          <div class="stat-card"><div class="stat-label">Active Topics</div><div class="stat-value" id="a-topics">0</div></div>
-          <div class="stat-card"><div class="stat-label">Peak Temp</div><div class="stat-value"><span id="a-peak">--</span><span style="font-size:14px;color:#888">C</span></div></div>
-          <div class="stat-card"><div class="stat-label">Avg Temp</div><div class="stat-value"><span id="a-avg">--</span><span style="font-size:14px;color:#888">C</span></div></div>
-          <div class="stat-card"><div class="stat-label">Peak Humidity</div><div class="stat-value"><span id="a-hpeak">--</span><span style="font-size:14px;color:#888">%</span></div></div>
-          <div class="stat-card"><div class="stat-label">Avg Humidity</div><div class="stat-value"><span id="a-havg">--</span><span style="font-size:14px;color:#888">%</span></div></div>
-        </div>
-        <div class="chart-card"><h3>Temperature History</h3><canvas id="a-temp-chart" height="100"></canvas></div>
-        <div class="chart-card"><h3>Humidity History</h3><canvas id="a-hum-chart" height="100"></canvas></div>
-      </div>
-
-      <!-- ALERTS PAGE -->
-      <div class="page" id="page-alerts">
-        <div class="section-header"><h2>Alert Rules</h2></div>
-        <div class="chart-card" style="margin-bottom:16px">
-          <h3>Create New Alert</h3>
-          <div class="form-row" style="margin-bottom:12px">
-            <div class="form-group"><label>Sensor/Pin</label><select id="al-sensor"><option value="temperature">Temperature</option><option value="humidity">Humidity</option><option value="motion">Motion</option><option value="pressure">Pressure</option></select></div>
-            <div class="form-group"><label>Condition</label><select id="al-cond"><option value="above">Above</option><option value="below">Below</option><option value="equals">Equals</option></select></div>
+          <div class="card">
+            <div class="card-title">Account</div>
+            <div style="font-size:13px;color:#888;margin-bottom:10px" id="set-user-info">Loading...</div>
+            <div class="chip" id="set-role-chip">role</div>
           </div>
-          <div class="form-row">
-            <div class="form-group"><label>Threshold Value</label><input type="number" id="al-val" placeholder="e.g. 35"></div>
-            <div class="form-group"><label>Alert Name</label><input type="text" id="al-name" placeholder="e.g. High Temp Alert"></div>
-          </div>
-          <button class="btn btn-sm" style="margin-top:12px" onclick="addAlertRule()">Add Alert Rule</button>
-        </div>
-        <div id="alert-rules"></div>
-        <div class="section-header" style="margin-top:20px"><h2>Triggered Alerts</h2></div>
-        <div id="alert-triggered"></div>
-      </div>
-
-      <!-- LIVE LOG PAGE -->
-      <div class="page" id="page-log">
-        <div class="section-header">
-          <h2>Live Message Log</h2>
-          <button class="btn btn-sm" style="background:#2a2a3e" onclick="document.getElementById('full-log').innerHTML=''">Clear</button>
-        </div>
-        <div class="chart-card">
-          <div class="log-box" id="full-log" style="height:400px"></div>
         </div>
       </div>
 
@@ -373,593 +393,886 @@
   </div>
 </div>
 
-<!-- ADD DEVICE MODAL -->
-<div class="modal-overlay" id="add-device-modal">
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-add-device">
   <div class="modal">
     <h3>Register New Device</h3>
-    <div class="form-group"><label>Device Name</label><input type="text" id="nd-name" placeholder="e.g. Living Room ESP32"></div>
-    <div class="form-group"><label>Device Type</label><input type="text" id="nd-type" placeholder="e.g. esp32, arduino"></div>
-    <div class="error-msg" id="nd-error"></div>
-    <button class="btn" onclick="addDevice()" style="margin-bottom:8px">Register Device</button>
-    <button class="btn btn-outline" onclick="closeModal('add-device-modal')">Cancel</button>
+    <div class="fg"><label>Device Name</label><input type="text" id="nd-name" placeholder="e.g. Living Room ESP32"></div>
+    <div class="frow">
+      <div class="fg"><label>Type</label><select id="nd-type"><option value="esp32">ESP32</option><option value="esp8266">ESP8266</option><option value="arduino">Arduino</option><option value="raspberry-pi">Raspberry Pi</option><option value="generic">Generic</option></select></div>
+      <div class="fg"><label>Location</label><input type="text" id="nd-location" placeholder="e.g. Office"></div>
+    </div>
+    <div class="fg"><label>Description</label><input type="text" id="nd-desc" placeholder="What does this device do?"></div>
+    <div class="err" id="nd-err"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="addDevice()">Register Device</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-add-device')">Cancel</button>
+    </div>
   </div>
 </div>
 
-<!-- WIDGET CONFIG MODAL -->
-<div class="modal-overlay" id="widget-config-modal">
+<div class="modal-overlay" id="modal-add-widget">
   <div class="modal">
-    <h3 id="wc-title">Configure Widget</h3>
-    <div class="form-group"><label>Widget Label</label><input type="text" id="wc-label" placeholder="e.g. LED Control"></div>
-    <div class="form-group"><label>Device Pin (V0, V1, D1...)</label><input type="text" id="wc-pin" placeholder="e.g. V0"></div>
-    <div class="form-group"><label>Device</label>
-      <select id="wc-device"><option value="">-- Select Device --</option></select>
+    <h3 id="mw-title">Add Widget</h3>
+    <div id="mw-step1">
+      <div style="font-size:12px;color:#666;margin-bottom:10px">Select widget type:</div>
+      <div class="wtype-grid">
+        <div class="wtype-btn" onclick="selectWidgetType('button')"><div class="wtype-icon">▶</div><div class="wtype-name">Button</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('switch')"><div class="wtype-icon">⏺</div><div class="wtype-name">Switch</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('slider')"><div class="wtype-icon">🎚</div><div class="wtype-name">Slider</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('display')"><div class="wtype-icon">📟</div><div class="wtype-name">Display</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('label')"><div class="wtype-icon">🏷</div><div class="wtype-name">Label</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('gauge')"><div class="wtype-icon">⏲</div><div class="wtype-name">Gauge</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('radial')"><div class="wtype-icon">◔</div><div class="wtype-name">Radial Gauge</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('number')"><div class="wtype-icon">🔢</div><div class="wtype-name">Number Input</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('chart')"><div class="wtype-icon">📈</div><div class="wtype-name">Chart</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('terminal')"><div class="wtype-icon">⌨</div><div class="wtype-name">Terminal</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('alarm')"><div class="wtype-icon">🚨</div><div class="wtype-name">Alarm</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('segmented')"><div class="wtype-icon">⊞</div><div class="wtype-name">Seg. Switch</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('menu')"><div class="wtype-icon">☰</div><div class="wtype-name">Menu</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('text-input')"><div class="wtype-icon">✏</div><div class="wtype-name">Text Input</div></div>
+      </div>
     </div>
-    <div id="wc-extra"></div>
-    <div class="error-msg" id="wc-error"></div>
-    <button class="btn" onclick="confirmAddWidget()" style="margin-bottom:8px">Add Widget</button>
-    <button class="btn btn-outline" onclick="closeModal('widget-config-modal')">Cancel</button>
+    <div id="mw-step2" style="display:none">
+      <div class="fg"><label>Widget Label</label><input type="text" id="wc-label" placeholder="e.g. LED Control"></div>
+      <div class="fg"><label>Pin (V0, V1, D1...)</label><input type="text" id="wc-pin" placeholder="e.g. V0"></div>
+      <div id="wc-extra"></div>
+      <div class="err" id="wc-err"></div>
+      <div class="modal-footer">
+        <button class="btn" onclick="confirmWidget()">Add Widget</button>
+        <button class="btn btn-outline" onclick="document.getElementById('mw-step2').style.display='none';document.getElementById('mw-step1').style.display='block'">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-auto">
+  <div class="modal">
+    <h3>New Automation</h3>
+    <div class="fg"><label>Automation Name</label><input type="text" id="auto-name" placeholder="e.g. Cool Fan when hot"></div>
+    <div style="font-size:12px;font-weight:600;color:#7c3aed;margin:12px 0 8px">TRIGGER — When this happens...</div>
+    <div class="frow">
+      <div class="fg"><label>Device</label><select id="auto-tdev"></select></div>
+      <div class="fg"><label>Pin</label><input type="text" id="auto-tpin" placeholder="e.g. temperature"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label>Condition</label><select id="auto-tcond"><option value="above">Above</option><option value="below">Below</option><option value="equals">Equals</option></select></div>
+      <div class="fg"><label>Value</label><input type="number" id="auto-tval" placeholder="e.g. 35"></div>
+    </div>
+    <div style="font-size:12px;font-weight:600;color:#7c3aed;margin:12px 0 8px">ACTION — Then do this...</div>
+    <div class="fg"><label>Action Type</label><select id="auto-atype" onchange="updateAutoAction()"><option value="device_command">Send command to device</option><option value="notification">Send notification</option></select></div>
+    <div id="auto-action-device">
+      <div class="frow">
+        <div class="fg"><label>Target Device</label><select id="auto-adev"></select></div>
+        <div class="fg"><label>Pin</label><input type="text" id="auto-apin" placeholder="e.g. relay"></div>
+      </div>
+      <div class="fg"><label>Value to Send</label><input type="text" id="auto-aval" placeholder="e.g. 1"></div>
+    </div>
+    <div class="err" id="auto-err"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="addAutomation()">Create Automation</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-add-auto')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-alert">
+  <div class="modal">
+    <h3>New Alert Rule</h3>
+    <div class="fg"><label>Alert Name</label><input type="text" id="al-name" placeholder="e.g. High Temperature"></div>
+    <div class="frow">
+      <div class="fg"><label>Sensor</label><select id="al-sensor"><option value="temperature">Temperature</option><option value="humidity">Humidity</option><option value="motion">Motion</option><option value="pressure">Pressure</option><option value="light">Light</option></select></div>
+      <div class="fg"><label>Condition</label><select id="al-cond"><option value="above">Above</option><option value="below">Below</option><option value="equals">Equals</option></select></div>
+    </div>
+    <div class="fg"><label>Threshold Value</label><input type="number" id="al-val" placeholder="e.g. 35"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="addAlertRule()">Add Alert</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-add-alert')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-invite">
+  <div class="modal">
+    <h3>Invite Team Member</h3>
+    <div class="fg"><label>Email Address</label><input type="email" id="inv-email" placeholder="colleague@example.com"></div>
+    <div class="fg"><label>Role</label><select id="inv-role"><option value="admin">Admin — full access</option><option value="developer">Developer — manage devices</option><option value="viewer">Viewer — read only</option></select></div>
+    <div class="err" id="inv-err"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="inviteUser()">Send Invite</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-invite')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-loc">
+  <div class="modal">
+    <h3>Add Location</h3>
+    <div class="fg"><label>Location Name</label><input type="text" id="loc-name" placeholder="e.g. Main Office"></div>
+    <div class="fg"><label>Address</label><input type="text" id="loc-addr" placeholder="e.g. 123 Main St, Kampala"></div>
+    <div class="frow">
+      <div class="fg"><label>Latitude</label><input type="number" id="loc-lat" placeholder="e.g. 0.3476"></div>
+      <div class="fg"><label>Longitude</label><input type="number" id="loc-lng" placeholder="e.g. 32.5825"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="addLocation()">Add Location</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-add-loc')">Cancel</button>
+    </div>
   </div>
 </div>
 
 <script>
-const WS_URL = window.location.origin.replace('https','wss').replace('http','ws');
+const WS_URL = location.origin.replace('https','wss').replace('http','ws');
 let token = localStorage.getItem('iot_token');
-let userName = localStorage.getItem('iot_user');
-let isRegister = false;
+let currentUser = JSON.parse(localStorage.getItem('iot_user') || 'null');
+let isReg = false;
 let ws = null;
 let msgCount = 0;
 let allTopics = {};
-let tempHistory = [], humHistory = [];
-let dashTempChart = null, aTempChart = null, aHumChart = null;
-let alertRules = JSON.parse(localStorage.getItem('iot_alert_rules') || '[]');
+let tempHist = [], humHist = [];
+let homeChart = null, anTempChart = null, anHumChart = null, ddChart = null;
+let alertRules = JSON.parse(localStorage.getItem('iot_alerts') || '[]');
 let triggeredAlerts = [];
-let widgets = JSON.parse(localStorage.getItem('iot_widgets') || '[]');
-let editMode = false;
-let pendingWidgetType = null;
-let myDevices = [];
+let allDevices = [];
+let currentDeviceId = null;
+let deviceWidgets = {};
 let widgetCharts = {};
-let widgetTerminals = {};
+let wEditMode = false;
+let pendingWidgetType = null;
+let notifs = [];
 
-if (token) showDashboard();
+if (token && currentUser) initDashboard();
 
 // ── Auth ──────────────────────────────────────────────
-function toggleAuthMode() {
-  isRegister = !isRegister;
-  document.getElementById('auth-title').textContent = isRegister ? 'Create account' : 'Welcome back';
-  document.getElementById('auth-sub').textContent = isRegister ? 'Join IoT Platform' : 'Sign in to your IoT dashboard';
-  document.getElementById('name-group').style.display = isRegister ? 'block' : 'none';
-  document.querySelector('#auth-screen .btn').textContent = isRegister ? 'Create account' : 'Sign in';
-  document.querySelector('#auth-screen .btn-outline').textContent = isRegister ? 'Sign in instead' : 'Create an account instead';
+function toggleAuth() {
+  isReg = !isReg;
+  document.getElementById('at').textContent = isReg ? 'Create account' : 'Welcome back';
+  document.getElementById('as').textContent = isReg ? 'Start your IoT organization' : 'Sign in to your organization';
+  document.getElementById('ang').style.display = isReg ? 'block' : 'none';
+  document.getElementById('aog').style.display = isReg ? 'block' : 'none';
+  const btn = document.querySelector('#auth-screen .btn-full:not(.btn-outline)');
+  btn.textContent = isReg ? 'Create account' : 'Sign in';
+  document.querySelector('#auth-screen .btn-outline').textContent = isReg ? 'Sign in instead' : 'Create account instead';
 }
 
 async function submitAuth() {
-  const email = document.getElementById('auth-email').value;
-  const password = document.getElementById('auth-password').value;
-  const name = document.getElementById('auth-name').value;
-  const errEl = document.getElementById('auth-error');
-  errEl.style.display = 'none';
-  const url = isRegister ? '/api/auth/register' : '/api/auth/login';
-  const body = isRegister ? { email, password, name } : { email, password };
+  const email = document.getElementById('ae').value;
+  const password = document.getElementById('ap').value;
+  const name = document.getElementById('an').value;
+  const orgName = document.getElementById('ao').value;
+  const err = document.getElementById('aerr');
+  err.style.display = 'none';
+  const url = isReg ? '/api/auth/register' : '/api/auth/login';
+  const body = isReg ? { email, password, name, orgName } : { email, password };
   try {
     const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const data = await res.json();
-    if (data.error) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
-    if (isRegister) { alert('Account created! Please sign in.'); toggleAuthMode(); return; }
+    if (data.error) { err.textContent = data.error; err.style.display = 'block'; return; }
+    if (isReg) { alert('Account created! Please sign in.'); toggleAuth(); return; }
     token = data.token;
-    userName = data.user?.name || data.user?.email || 'User';
+    currentUser = data.user;
     localStorage.setItem('iot_token', token);
-    localStorage.setItem('iot_user', userName);
-    showDashboard();
-  } catch(e) { errEl.textContent = 'Connection error'; errEl.style.display = 'block'; }
+    localStorage.setItem('iot_user', JSON.stringify(data.user));
+    initDashboard();
+  } catch(e) { err.textContent = 'Connection error'; err.style.display = 'block'; }
 }
 
-function showDashboard() {
+function initDashboard() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'flex';
-  document.getElementById('user-name-nav').textContent = '👤 ' + (userName || 'User');
+  document.getElementById('user-badge').textContent = currentUser?.name || currentUser?.email || '';
+  document.getElementById('sb-org').textContent = currentUser?.org_name || 'My Organization';
   initCharts();
   connectWS();
-  loadDevices();
-  renderWidgets();
+  loadAll();
   renderAlertRules();
-  renderTriggered();
+  setInterval(loadNotifs, 30000);
+  loadNotifs();
 }
 
-function logout() {
-  localStorage.removeItem('iot_token');
-  localStorage.removeItem('iot_user');
-  location.reload();
-}
+function logout() { localStorage.clear(); location.reload(); }
 
 // ── Navigation ────────────────────────────────────────
-function showPage(id, el) {
+function nav(id, el) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
-  const titles = { 'page-dashboard':'Dashboard','page-widgets':'Widget Canvas','page-devices':'Devices','page-analytics':'Analytics','page-alerts':'Alerts','page-log':'Live Log' };
+  const titles = { 'pg-home':'Home','pg-devices':'Devices','pg-auto':'Automations','pg-alerts':'Alerts','pg-users':'Users','pg-locations':'Locations','pg-analytics':'Analytics','pg-snapshots':'Snapshots','pg-log':'Live Log','pg-settings':'Settings' };
   document.getElementById('page-title').textContent = titles[id] || '';
-  if (id === 'page-analytics') updateAnalytics();
-  if (id === 'page-devices') loadDevices();
+  if (id === 'pg-analytics') updateAnalytics();
+  if (id === 'pg-devices') { loadDevices(); showDeviceList(); }
+  if (id === 'pg-users') loadUsers();
+  if (id === 'pg-auto') loadAutomations();
+  if (id === 'pg-locations') loadLocations();
+  if (id === 'pg-snapshots') loadSnapshots();
+  if (id === 'pg-settings') loadSettings();
+  document.getElementById('notif-panel').classList.remove('open');
 }
 
 // ── WebSocket ─────────────────────────────────────────
 function connectWS() {
   try {
     ws = new WebSocket(WS_URL);
-    ws.onopen = () => { document.getElementById('conn-status').textContent = '● Connected'; document.getElementById('conn-status').className = 'badge badge-green'; };
-    ws.onclose = () => { document.getElementById('conn-status').textContent = '● Disconnected'; document.getElementById('conn-status').className = 'badge badge-red'; setTimeout(connectWS, 3000); };
+    ws.onopen = () => { document.getElementById('ws-status').textContent = '● Live'; document.getElementById('ws-status').className = 'badge badge-green'; };
+    ws.onclose = () => { document.getElementById('ws-status').textContent = '● Offline'; document.getElementById('ws-status').className = 'badge badge-red'; setTimeout(connectWS, 3000); };
     ws.onmessage = e => {
-      const data = JSON.parse(e.data);
-      if (data.type === 'snapshot') { Object.entries(data.data).forEach(([t,d]) => handleMsg({topic:t,value:d.value,time:d.time})); return; }
-      handleMsg(data);
+      const d = JSON.parse(e.data);
+      if (d.type === 'snapshot') { Object.entries(d.data).forEach(([t,v]) => handleMsg({topic:t,value:v.value,time:v.time})); return; }
+      handleMsg(d);
     };
   } catch(e) {}
 }
 
-function handleMsg(data) {
-  const { topic, value, time } = data;
+function handleMsg(d) {
+  const { topic, value, time } = d;
   msgCount++;
-  document.getElementById('m-msgs').textContent = msgCount;
-  document.getElementById('msg-count').textContent = msgCount + ' messages';
+  document.getElementById('msg-badge').textContent = msgCount + ' msgs';
+  document.getElementById('hs-msgs').textContent = msgCount;
   allTopics[topic] = { value, time };
-  document.getElementById('m-topics').textContent = Object.keys(allTopics).length;
   const parts = topic.split('/');
   const sensor = (parts[2] || '').toLowerCase();
   const t = new Date(time).toLocaleTimeString();
   if (sensor === 'temperature' || sensor === 'temp') {
     const v = parseFloat(value);
-    document.getElementById('m-temp').textContent = v.toFixed(1);
-    document.getElementById('m-temp-t').textContent = t;
-    tempHistory.push({v,t});
-    if (tempHistory.length > 50) tempHistory.shift();
-    dashTempChart.data.labels = tempHistory.map(x=>x.t);
-    dashTempChart.data.datasets[0].data = tempHistory.map(x=>x.v);
-    dashTempChart.update('none');
+    tempHist.push({v,t});
+    if (tempHist.length > 60) tempHist.shift();
+    homeChart.data.labels = tempHist.map(x=>x.t);
+    homeChart.data.datasets[0].data = tempHist.map(x=>x.v);
+    homeChart.update('none');
   }
   if (sensor === 'humidity' || sensor === 'hum') {
     const v = parseFloat(value);
-    document.getElementById('m-hum').textContent = v.toFixed(1);
-    document.getElementById('m-hum-t').textContent = t;
-    humHistory.push({v,t});
-    if (humHistory.length > 50) humHistory.shift();
+    humHist.push({v,t});
+    if (humHist.length > 60) humHist.shift();
   }
-  updateDashDeviceList();
+  updateHomeLive();
   addLog(topic, value, t);
   checkAlerts(sensor, parseFloat(value), t);
-  updateWidgetsFromData(topic, value);
+  updateDeviceWidgets(topic, value);
+  updateDeviceDashStats(topic, value);
 }
 
-function updateDashDeviceList() {
-  const el = document.getElementById('dash-device-list');
-  const entries = Object.entries(allTopics);
+function updateHomeLive() {
+  const el = document.getElementById('home-live');
+  const entries = Object.entries(allTopics).slice(-6);
   if (!entries.length) return;
-  el.innerHTML = entries.slice(-8).map(([topic,d]) => {
+  el.innerHTML = entries.map(([topic,d]) => {
     const p = topic.split('/');
-    return `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #2a2a3e;font-size:13px">
-      <div><div style="font-weight:500;color:#fff">${p[1]||topic}</div><div style="font-size:11px;color:#555">${p[2]||'value'}</div></div>
-      <div style="text-align:right"><div style="font-weight:600;color:#a78bfa">${d.value}</div><div style="font-size:11px;color:#555">${new Date(d.time).toLocaleTimeString()}</div></div>
+    return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e30">
+      <div><div style="font-weight:500;color:#fff;font-size:12px">${p[1]||topic}</div><div style="font-size:10px;color:#555">${p[2]||'value'}</div></div>
+      <div style="text-align:right"><div style="font-weight:600;color:#a78bfa;font-size:13px">${d.value}</div><div style="font-size:10px;color:#444">${new Date(d.time).toLocaleTimeString()}</div></div>
     </div>`;
   }).join('');
 }
 
 function addLog(topic, value, time) {
-  const addTo = (id) => {
-    const box = document.getElementById(id);
-    if (!box) return;
-    const line = document.createElement('div');
-    line.innerHTML = `<span style="color:#555">[${time}]</span> <span style="color:#5DCAA5">${topic}</span>: <span style="color:#FAC775">${value}</span>`;
-    box.insertBefore(line, box.firstChild);
-    if (box.children.length > 100) box.removeChild(box.lastChild);
-  };
-  addTo('dash-log');
-  addTo('full-log');
+  const box = document.getElementById('full-log');
+  if (!box) return;
+  const line = document.createElement('div');
+  line.style.marginBottom = '3px';
+  line.innerHTML = `<span style="color:#444">[${time}]</span> <span style="color:#5DCAA5">${topic}</span>: <span style="color:#FAC775">${value}</span>`;
+  box.insertBefore(line, box.firstChild);
+  if (box.children.length > 200) box.removeChild(box.lastChild);
 }
 
 // ── Charts ────────────────────────────────────────────
 function initCharts() {
-  const base = { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, grid: { color: '#2a2a3e' }, ticks: { color: '#555' } }, x: { ticks: { maxTicksLimit: 6, color: '#555' }, grid: { color: '#2a2a3e' } } } };
-  dashTempChart = mkChart('dash-temp-chart', '#7c3aed');
-  aTempChart = mkChart('a-temp-chart', '#7c3aed');
-  aHumChart = mkChart('a-hum-chart', '#4A90D9');
+  homeChart = mkChart('home-chart', '#7c3aed');
+  anTempChart = mkChart('an-temp', '#7c3aed');
+  anHumChart = mkChart('an-hum', '#4A90D9');
+  ddChart = mkChart('dd-chart', '#22c55e');
 }
 
 function mkChart(id, color) {
-  return new Chart(document.getElementById(id).getContext('2d'), {
+  const el = document.getElementById(id);
+  if (!el) return null;
+  return new Chart(el.getContext('2d'), {
     type: 'line',
-    data: { labels: [], datasets: [{ data: [], borderColor: color, backgroundColor: color+'22', borderWidth: 2, pointRadius: 2, tension: 0.4, fill: true }] },
-    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, grid: { color: '#2a2a3e' }, ticks: { color: '#555' } }, x: { ticks: { maxTicksLimit: 6, color: '#555' }, grid: { color: '#2a2a3e' } } } }
+    data: { labels: [], datasets: [{ data: [], borderColor: color, backgroundColor: color+'18', borderWidth: 2, pointRadius: 0, tension: 0.4, fill: true }] },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, grid: { color: '#1e1e30' }, ticks: { color: '#444', font: { size: 10 } } }, x: { ticks: { maxTicksLimit: 6, color: '#444', font: { size: 10 } }, grid: { color: '#1e1e30' } } } }
   });
 }
 
 function updateAnalytics() {
-  document.getElementById('a-total').textContent = msgCount;
-  document.getElementById('a-topics').textContent = Object.keys(allTopics).length;
-  if (tempHistory.length) {
-    const t = tempHistory.map(x=>x.v);
-    document.getElementById('a-peak').textContent = Math.max(...t).toFixed(1);
-    document.getElementById('a-avg').textContent = (t.reduce((a,b)=>a+b,0)/t.length).toFixed(1);
-    aTempChart.data.labels = tempHistory.map(x=>x.t);
-    aTempChart.data.datasets[0].data = t;
-    aTempChart.update();
+  document.getElementById('an-msgs').textContent = msgCount;
+  document.getElementById('an-streams').textContent = Object.keys(allTopics).length;
+  if (tempHist.length) {
+    const t = tempHist.map(x=>x.v);
+    document.getElementById('an-peak').textContent = Math.max(...t).toFixed(1);
+    document.getElementById('an-avg').textContent = (t.reduce((a,b)=>a+b,0)/t.length).toFixed(1);
+    anTempChart.data.labels = tempHist.map(x=>x.t);
+    anTempChart.data.datasets[0].data = t;
+    anTempChart.update();
   }
-  if (humHistory.length) {
-    const h = humHistory.map(x=>x.v);
-    document.getElementById('a-hpeak').textContent = Math.max(...h).toFixed(1);
-    document.getElementById('a-havg').textContent = (h.reduce((a,b)=>a+b,0)/h.length).toFixed(1);
-    aHumChart.data.labels = humHistory.map(x=>x.t);
-    aHumChart.data.datasets[0].data = h;
-    aHumChart.update();
+  if (humHist.length) {
+    anHumChart.data.labels = humHist.map(x=>x.t);
+    anHumChart.data.datasets[0].data = humHist.map(x=>x.v);
+    anHumChart.update();
   }
+}
+
+// ── Load all data ─────────────────────────────────────
+async function loadAll() {
+  await loadDevices();
+  await loadAutomations();
+  await loadLocations();
 }
 
 // ── Devices ───────────────────────────────────────────
 async function loadDevices() {
-  if (!token) return;
   try {
-    const res = await fetch('/api/my-devices', { headers: { Authorization: 'Bearer ' + token } });
-    myDevices = await res.json();
-    const grid = document.getElementById('devices-grid');
-    if (!myDevices.length) { grid.innerHTML = '<div class="empty">No devices yet — click Register Device</div>'; return; }
-    grid.innerHTML = myDevices.map(d => `
-      <div class="device-card">
-        <div class="device-card-header">
+    const res = await api('/api/my-devices');
+    allDevices = await res.json();
+    document.getElementById('hs-devices').textContent = allDevices.length;
+    document.getElementById('hs-online').textContent = allDevices.filter(d=>d.online).length;
+    const grid = document.getElementById('device-grid');
+    const homeDevs = document.getElementById('home-devices');
+    if (!allDevices.length) {
+      grid.innerHTML = '<div class="empty">No devices yet — click + New Device</div>';
+      homeDevs.innerHTML = '<div class="empty" style="padding:20px 0">No devices</div>';
+      return;
+    }
+    grid.innerHTML = allDevices.map(d => `
+      <div class="device-card" onclick="openDeviceDash(${d.id})">
+        <div class="device-card-top">
           <div>
             <div class="device-card-name">${d.name}</div>
-            <div class="device-card-key">${d.device_key}</div>
+            <div class="device-card-type">${d.type} ${d.location ? '· ' + d.location : ''}</div>
           </div>
-          <span class="${d.online ? 'badge badge-green' : 'badge badge-red'}">${d.online ? 'Online' : 'Offline'}</span>
+          <div class="device-card-actions" onclick="event.stopPropagation()">
+            <span class="badge ${d.online ? 'badge-green' : 'badge-red'}">${d.online ? 'Online' : 'Offline'}</span>
+            <button class="btn btn-xs btn-danger" onclick="deleteDevice(${d.id})">🗑</button>
+          </div>
         </div>
-        <div style="font-size:12px;color:#555;margin-bottom:8px">Type: ${d.type} &nbsp;|&nbsp; Last seen: ${d.last_seen ? new Date(d.last_seen).toLocaleString() : 'Never'}</div>
-        <div style="font-size:11px;color:#888;margin-bottom:4px">API Key:</div>
-        <div class="api-key-box">${d.api_key || 'N/A'}</div>
+        ${d.description ? `<div style="font-size:11px;color:#555;margin-bottom:8px">${d.description}</div>` : ''}
+        <div class="token-box" onclick="copyText('${d.api_key||''}');event.stopPropagation()" title="Click to copy API key">
+          🔑 ${d.api_key ? d.api_key.substring(0,32) + '...' : 'No key'}
+        </div>
+        <div class="device-stats">
+          <div class="device-stat"><div class="device-stat-val">${d.type}</div><div class="device-stat-label">Type</div></div>
+          <div class="device-stat"><div class="device-stat-val">${d.last_seen ? timeAgo(d.last_seen) : 'Never'}</div><div class="device-stat-label">Last Seen</div></div>
+        </div>
       </div>`).join('');
-    const sel = document.getElementById('wc-device');
-    if (sel) {
-      sel.innerHTML = '<option value="">-- Select Device --</option>' + myDevices.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
-    }
+    homeDevs.innerHTML = allDevices.slice(0,4).map(d => `
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e30;cursor:pointer" onclick="openDeviceDash(${d.id});nav('pg-devices',document.querySelector('.nav-item:nth-child(5)'))">
+        <div style="font-size:12px;color:#fff;font-weight:500">${d.name}</div>
+        <span class="badge ${d.online ? 'badge-green' : 'badge-red'}" style="font-size:10px">${d.online ? 'Online' : 'Offline'}</span>
+      </div>`).join('');
+    const sels = ['auto-tdev','auto-adev'];
+    sels.forEach(id => {
+      const sel = document.getElementById(id);
+      if (sel) sel.innerHTML = '<option value="">Select device...</option>' + allDevices.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');
+    });
   } catch(e) {}
 }
 
 async function addDevice() {
   const name = document.getElementById('nd-name').value;
   const type = document.getElementById('nd-type').value;
-  const errEl = document.getElementById('nd-error');
-  if (!name) { errEl.textContent = 'Enter a device name'; errEl.style.display = 'block'; return; }
+  const location = document.getElementById('nd-location').value;
+  const description = document.getElementById('nd-desc').value;
+  const err = document.getElementById('nd-err');
+  if (!name) { err.textContent = 'Name required'; err.style.display = 'block'; return; }
   try {
-    const res = await fetch('/api/my-devices', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ name, type: type || 'generic' }) });
+    const res = await api('/api/my-devices', 'POST', { name, type, location, description });
     const data = await res.json();
-    if (data.error) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
-    closeModal('add-device-modal');
-    loadDevices();
-    alert('Device registered!\n\nAPI Key: ' + data.api_key + '\n\nSave this key — your device needs it!');
-  } catch(e) { errEl.textContent = 'Failed'; errEl.style.display = 'block'; }
+    if (data.error) { err.textContent = data.error; err.style.display = 'block'; return; }
+    closeModal('modal-add-device');
+    document.getElementById('nd-name').value = '';
+    await loadDevices();
+    alert('Device registered!\n\nAPI Key:\n' + data.api_key + '\n\nCopy and save this — your device needs it!');
+  } catch(e) { err.textContent = 'Failed'; err.style.display = 'block'; }
 }
 
-// ── Widget System ─────────────────────────────────────
-function toggleEditMode() {
-  editMode = !editMode;
-  const canvas = document.getElementById('widget-canvas');
-  canvas.classList.toggle('edit-mode', editMode);
-  document.getElementById('edit-btn').textContent = editMode ? '✓ Done Editing' : '✏ Edit Layout';
-}
-
-function toggleAddPanel() {
-  document.getElementById('add-panel').classList.toggle('open');
-}
-
-function saveWidgets() {
-  localStorage.setItem('iot_widgets', JSON.stringify(widgets));
-  alert('Widgets saved!');
-}
-
-function startAddWidget(type) {
-  pendingWidgetType = type;
-  document.getElementById('wc-title').textContent = 'Configure ' + type.charAt(0).toUpperCase() + type.slice(1) + ' Widget';
-  document.getElementById('wc-label').value = '';
-  document.getElementById('wc-pin').value = '';
-  document.getElementById('wc-error').style.display = 'none';
-  const extra = document.getElementById('wc-extra');
-  extra.innerHTML = '';
-  if (type === 'slider') {
-    extra.innerHTML = `<div class="form-row"><div class="form-group"><label>Min Value</label><input type="number" id="wc-min" value="0"></div><div class="form-group"><label>Max Value</label><input type="number" id="wc-max" value="100"></div></div>`;
-  }
-  if (type === 'gauge') {
-    extra.innerHTML = `<div class="form-row"><div class="form-group"><label>Min</label><input type="number" id="wc-min" value="0"></div><div class="form-group"><label>Max</label><input type="number" id="wc-max" value="100"></div></div><div class="form-group"><label>Unit</label><input type="text" id="wc-unit" placeholder="e.g. C, %, km/h"></div>`;
-  }
-  if (type === 'display') {
-    extra.innerHTML = `<div class="form-group"><label>Unit</label><input type="text" id="wc-unit" placeholder="e.g. C, %, V"></div>`;
-  }
-  if (type === 'alarm') {
-    extra.innerHTML = `<div class="form-row"><div class="form-group"><label>Trigger Above</label><input type="number" id="wc-min" placeholder="e.g. 35"></div><div class="form-group"><label>Unit</label><input type="text" id="wc-unit" placeholder="e.g. C"></div></div>`;
-  }
-  if (type === 'segmented') {
-    extra.innerHTML = `<div class="form-group"><label>Options (comma separated)</label><input type="text" id="wc-opts" placeholder="e.g. Low,Medium,High"></div>`;
-  }
-  if (type === 'menu') {
-    extra.innerHTML = `<div class="form-group"><label>Options (comma separated)</label><input type="text" id="wc-opts" placeholder="e.g. Mode1,Mode2,Mode3"></div>`;
-  }
-  if (type === 'radial') {
-    extra.innerHTML = `<div class="form-row"><div class="form-group"><label>Min</label><input type="number" id="wc-min" value="0"></div><div class="form-group"><label>Max</label><input type="number" id="wc-max" value="100"></div></div><div class="form-group"><label>Unit</label><input type="text" id="wc-unit" placeholder="e.g. C"></div>`;
-  }
+async function deleteDevice(id) {
+  if (!confirm('Delete this device?')) return;
+  await api('/api/my-devices/' + id, 'DELETE');
   loadDevices();
-  openModal('widget-config-modal');
 }
 
-function confirmAddWidget() {
-  const label = document.getElementById('wc-label').value || pendingWidgetType;
-  const pin = document.getElementById('wc-pin').value || 'V0';
-  const deviceId = document.getElementById('wc-device').value;
-  const errEl = document.getElementById('wc-error');
-  const widget = {
-    id: Date.now(),
-    type: pendingWidgetType,
-    label, pin, deviceId,
-    value: 0,
-    min: parseFloat(document.getElementById('wc-min')?.value || 0),
-    max: parseFloat(document.getElementById('wc-max')?.value || 100),
-    unit: document.getElementById('wc-unit')?.value || '',
-    opts: document.getElementById('wc-opts')?.value?.split(',').map(s=>s.trim()) || [],
-  };
-  widgets.push(widget);
-  localStorage.setItem('iot_widgets', JSON.stringify(widgets));
-  closeModal('widget-config-modal');
-  document.getElementById('add-panel').classList.remove('open');
-  renderWidgets();
+// ── Per-Device Dashboard ──────────────────────────────
+async function openDeviceDash(id) {
+  currentDeviceId = id;
+  const device = allDevices.find(d => d.id == id);
+  if (!device) return;
+  document.getElementById('device-view-list').style.display = 'none';
+  document.getElementById('device-view-dash').style.display = 'block';
+  document.getElementById('dd-name').textContent = device.name;
+  document.getElementById('dd-meta').textContent = device.type + (device.location ? ' · ' + device.location : '') + ' · ' + device.device_key;
+  document.getElementById('dd-status').textContent = device.online ? 'Online' : 'Offline';
+  document.getElementById('dd-status').className = 'badge ' + (device.online ? 'badge-green' : 'badge-red');
+  await loadDeviceWidgets(id);
+  await loadDeviceReadings(id);
 }
 
-function deleteWidget(id) {
-  widgets = widgets.filter(w => w.id !== id);
-  localStorage.setItem('iot_widgets', JSON.stringify(widgets));
-  renderWidgets();
+function showDeviceList() {
+  currentDeviceId = null;
+  document.getElementById('device-view-list').style.display = 'block';
+  document.getElementById('device-view-dash').style.display = 'none';
 }
 
-function renderWidgets() {
-  const canvas = document.getElementById('widget-canvas');
-  const empty = document.getElementById('canvas-empty');
-  if (!widgets.length) { canvas.innerHTML = '<div class="empty" style="grid-column:1/-1">No widgets yet. Click + Add Widget to get started.</div>'; return; }
-  canvas.innerHTML = widgets.map(w => renderWidget(w)).join('');
+function toggleWidgetEdit() {
+  wEditMode = !wEditMode;
+  const canvas = document.getElementById('device-widget-canvas');
+  canvas.classList.toggle('edit-mode', wEditMode);
+  document.getElementById('dd-edit-btn').textContent = wEditMode ? '✓ Done' : '✏ Edit';
+}
+
+async function loadDeviceWidgets(deviceId) {
+  try {
+    const res = await api('/api/my-devices/' + deviceId + '/widgets');
+    const widgets = await res.json();
+    deviceWidgets[deviceId] = widgets;
+    renderDeviceWidgets(deviceId);
+  } catch(e) {}
+}
+
+function renderDeviceWidgets(deviceId) {
+  const canvas = document.getElementById('device-widget-canvas');
+  const widgets = deviceWidgets[deviceId] || [];
+  if (!widgets.length) { canvas.innerHTML = '<div class="empty" style="grid-column:1/-1">No widgets — click + Widget to add one</div>'; return; }
+  canvas.innerHTML = widgets.map(w => renderWidget(w, deviceId)).join('');
   widgets.forEach(w => {
-    if (w.type === 'chart') initWidgetChart(w);
-    if (w.type === 'slider') {
+    if (w.widget_type === 'chart') initWidgetChart(w);
+    if (w.widget_type === 'slider') {
       const sl = document.getElementById('sl-' + w.id);
-      if (sl) sl.oninput = () => { document.getElementById('slv-' + w.id).textContent = sl.value; sendWidgetCmd(w, sl.value); };
-    }
-    if (w.type === 'number') {
-      document.getElementById('nbv-' + w.id) && (window['nbval_' + w.id] = parseInt(w.value) || 0);
+      if (sl) sl.oninput = () => { document.getElementById('slv-' + w.id).textContent = sl.value; sendCmd(deviceId, w.pin, sl.value); };
     }
   });
+  if (wEditMode) canvas.classList.add('edit-mode');
 }
 
-function renderWidget(w) {
+function renderWidget(w, deviceId) {
+  const cfg = w.config || {};
   let body = '';
-  switch(w.type) {
-    case 'button':
-      body = `<button class="w-button" id="wbtn-${w.id}" onmousedown="btnPress('${w.id}')" onmouseup="btnRelease('${w.id}')" ontouchstart="btnPress('${w.id}')" ontouchend="btnRelease('${w.id}')">${w.label}</button>`;
-      break;
-    case 'switch':
-      body = `<div class="w-switch-wrap"><button class="w-switch" id="wsw-${w.id}" onclick="toggleSwitch('${w.id}')"></button><div class="w-switch-label" id="swl-${w.id}">OFF</div></div>`;
-      break;
-    case 'slider':
-      body = `<div class="w-slider-wrap"><div class="w-slider-val" id="slv-${w.id}">${w.value}</div><input type="range" class="w-slider" id="sl-${w.id}" min="${w.min}" max="${w.max}" value="${w.value}"></div>`;
-      break;
-    case 'display':
-      body = `<div class="w-display"><div class="w-display-val" id="wdv-${w.id}">${w.value || '--'}</div><div class="w-display-unit">${w.unit}</div></div>`;
-      break;
-    case 'label':
-      body = `<div class="w-label" id="wlv-${w.id}">${w.value || w.label}</div>`;
-      break;
-    case 'gauge':
-      const pct = Math.min(100, Math.max(0, ((parseFloat(w.value)||0) - w.min) / (w.max - w.min) * 100));
-      body = `<div class="w-gauge-wrap"><div class="gauge-bar"><div class="gauge-fill" id="gf-${w.id}" style="width:${pct}%"></div></div><div class="w-gauge-val" id="gv-${w.id}">${w.value || 0} ${w.unit}</div></div>`;
-      break;
-    case 'radial':
-      body = `<div class="w-radial"><svg viewBox="0 0 100 60"><path d="M10,55 A45,45 0 0,1 90,55" fill="none" stroke="#2a2a3e" stroke-width="8" stroke-linecap="round"/><path id="rp-${w.id}" d="M10,55 A45,45 0 0,1 90,55" fill="none" stroke="#7c3aed" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 141"/></svg><div class="w-radial-val" id="rv-${w.id}">${w.value||0} ${w.unit}</div></div>`;
-      break;
-    case 'number':
-      body = `<div class="w-number-wrap"><button class="w-number-btn" onclick="changeNumber('${w.id}',-1)">−</button><div class="w-number-val" id="nbv-${w.id}">${w.value||0}</div><button class="w-number-btn" onclick="changeNumber('${w.id}',1)">+</button></div>`;
-      break;
-    case 'chart':
-      body = `<div class="w-chart"><canvas id="wc-${w.id}" height="80"></canvas></div>`;
-      break;
-    case 'terminal':
-      body = `<div style="width:100%"><div class="w-terminal" id="wt-${w.id}"><div style="color:#7c3aed">Terminal ready. Pin: ${w.pin}</div></div><input class="w-terminal-input" placeholder="Send command..." onkeydown="if(event.key==='Enter'){sendTerminalCmd('${w.id}',this);this.value=''}"></div>`;
-      break;
-    case 'alarm':
-      body = `<div class="w-alarm" id="wa-${w.id}"><div class="w-alarm-icon">🔔</div><div class="w-alarm-state">Monitoring ${w.pin} > ${w.min}${w.unit}</div></div>`;
-      break;
-    case 'segmented':
-      body = `<div class="w-segmented">${(w.opts||['A','B','C']).map((o,i)=>`<button class="w-seg-btn${i===0?' active':''}" id="seg-${w.id}-${i}" onclick="segClick('${w.id}',${i},'${o}')">${o}</button>`).join('')}</div>`;
-      break;
-    case 'menu':
-      body = `<select class="w-menu" onchange="sendWidgetCmd(widgets.find(x=>x.id==${w.id}),this.value)">${(w.opts||['Option1']).map(o=>`<option>${o}</option>`).join('')}</select>`;
-      break;
-    case 'text-input':
-      body = `<div style="width:100%;display:flex;gap:6px"><input style="flex:1;background:#0f0f1a;border:1px solid #2a2a3e;border-radius:6px;padding:8px;color:#fff;font-size:13px" id="ti-${w.id}" placeholder="Type value..."><button class="btn btn-sm" onclick="sendWidgetCmd(widgets.find(x=>x.id==${w.id}),document.getElementById('ti-${w.id}').value)">Send</button></div>`;
-      break;
-    default:
-      body = `<div class="empty">${w.type}</div>`;
+  switch(w.widget_type) {
+    case 'button': body = `<button class="w-btn" id="wbtn-${w.id}" onmousedown="wBtnPress(${deviceId},'${w.pin}','${w.id}')" onmouseup="wBtnRelease('${w.id}')" ontouchstart="wBtnPress(${deviceId},'${w.pin}','${w.id}')" ontouchend="wBtnRelease('${w.id}')">${w.label}</button>`; break;
+    case 'switch': body = `<div class="sw-wrap"><button class="w-sw" id="wsw-${w.id}" onclick="wToggle(${deviceId},'${w.pin}','${w.id}')"></button><div class="sw-lbl" id="swl-${w.id}">OFF</div></div>`; break;
+    case 'slider': body = `<div style="width:100%"><div class="slval" id="slv-${w.id}">${cfg.min||0}</div><input type="range" class="w-slider" id="sl-${w.id}" min="${cfg.min||0}" max="${cfg.max||100}" value="${cfg.min||0}"></div>`; break;
+    case 'display': body = `<div class="w-disp"><div class="w-disp-val" id="wdv-${w.id}">--</div><div class="w-disp-unit">${cfg.unit||''}</div></div>`; break;
+    case 'label': body = `<div style="font-size:16px;font-weight:600;color:#a78bfa;text-align:center" id="wlv-${w.id}">${w.label}</div>`; break;
+    case 'gauge': body = `<div class="gauge-wrap"><div class="gauge-bar"><div class="gauge-fill" id="gf-${w.id}" style="width:0%"></div></div><div class="gauge-val" id="gv-${w.id}">0 ${cfg.unit||''}</div></div>`; break;
+    case 'radial': body = `<div class="w-radial"><svg viewBox="0 0 100 60"><path d="M10,55 A45,45 0 0,1 90,55" fill="none" stroke="#1e1e30" stroke-width="8" stroke-linecap="round"/><path id="rp-${w.id}" d="M10,55 A45,45 0 0,1 90,55" fill="none" stroke="#7c3aed" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 141"/></svg><div class="w-radial-val" id="rv-${w.id}">0 ${cfg.unit||''}</div></div>`; break;
+    case 'number': body = `<div class="w-num"><button class="w-nbtn" onclick="wNum(${deviceId},'${w.pin}','${w.id}',-1)">−</button><div class="w-nval" id="nbv-${w.id}">0</div><button class="w-nbtn" onclick="wNum(${deviceId},'${w.pin}','${w.id}',1)">+</button></div>`; break;
+    case 'chart': body = `<div style="width:100%"><canvas id="wc-${w.id}" height="70"></canvas></div>`; break;
+    case 'terminal': body = `<div style="width:100%"><div class="w-term" id="wt-${w.id}"><div style="color:#7c3aed">Terminal · ${w.pin}</div></div><input class="w-term-input" placeholder="Send command..." onkeydown="if(event.key==='Enter'){sendTermCmd(${deviceId},'${w.pin}','${w.id}',this)}"></div>`; break;
+    case 'alarm': body = `<div class="w-alarm" id="wa-${w.id}"><div class="w-alarm-icon">🔔</div><div class="w-alarm-st">Monitoring ${w.pin}</div></div>`; break;
+    case 'segmented': body = `<div class="w-seg">${(cfg.opts||['A','B','C']).map((o,i)=>`<button class="w-seg-btn${i===0?' active':''}" id="seg-${w.id}-${i}" onclick="wSeg(${deviceId},'${w.pin}','${w.id}',${i},'${o}')">${o}</button>`).join('')}</div>`; break;
+    case 'menu': body = `<select style="width:100%;background:#0a0a14;border:1px solid #1e1e30;border-radius:7px;padding:7px 10px;color:#fff;font-size:13px;outline:none" onchange="sendCmd(${deviceId},'${w.pin}',this.value)">${(cfg.opts||['Option 1']).map(o=>`<option>${o}</option>`).join('')}</select>`; break;
+    case 'text-input': body = `<div style="width:100%;display:flex;gap:6px"><input style="flex:1;background:#0a0a14;border:1px solid #1e1e30;border-radius:6px;padding:7px;color:#fff;font-size:12px;outline:none" id="ti-${w.id}" placeholder="Type value..."><button class="btn btn-sm" onclick="sendCmd(${deviceId},'${w.pin}',document.getElementById('ti-${w.id}').value)">Send</button></div>`; break;
+    default: body = `<div class="empty" style="padding:10px">${w.widget_type}</div>`;
   }
   return `<div class="widget-box" id="wb-${w.id}">
-    <div class="widget-header">
-      <span class="widget-label">${w.label}</span>
-      <span class="widget-pin">${w.pin}</span>
-    </div>
-    <div class="widget-body">${body}</div>
-    <button class="widget-delete" onclick="deleteWidget(${w.id})">×</button>
+    <div class="wh"><span class="wlabel">${w.label}</span><span class="wpin">${w.pin}</span></div>
+    <div class="wbody">${body}</div>
+    <button class="wdel" onclick="deleteWidget(${deviceId},${w.id})">×</button>
   </div>`;
 }
 
 function initWidgetChart(w) {
-  const ctx = document.getElementById('wc-' + w.id);
-  if (!ctx) return;
-  widgetCharts[w.id] = new Chart(ctx.getContext('2d'), {
+  const el = document.getElementById('wc-' + w.id);
+  if (!el) return;
+  widgetCharts[w.id] = new Chart(el.getContext('2d'), {
     type: 'line',
-    data: { labels: [], datasets: [{ data: [], borderColor: '#7c3aed', backgroundColor: '#7c3aed22', borderWidth: 2, pointRadius: 0, tension: 0.4, fill: true }] },
-    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, ticks: { color: '#555' }, grid: { color: '#2a2a3e' } }, x: { display: false } } }
+    data: { labels: [], datasets: [{ data: [], borderColor: '#7c3aed', backgroundColor: '#7c3aed18', borderWidth: 1.5, pointRadius: 0, tension: 0.4, fill: true }] },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, grid: { color: '#1e1e30' }, ticks: { color: '#444', font: { size: 9 } } }, x: { display: false } } }
   });
 }
 
-function updateWidgetsFromData(topic, value) {
+function updateDeviceWidgets(topic, value) {
+  if (!currentDeviceId) return;
+  const widgets = deviceWidgets[currentDeviceId] || [];
   const parts = topic.split('/');
   const pin = parts[2] || '';
+  const v = parseFloat(value);
+  const t = new Date().toLocaleTimeString();
   widgets.forEach(w => {
-    if (w.pin.toLowerCase() !== pin.toLowerCase() && w.pin !== topic) return;
-    w.value = value;
-    const v = parseFloat(value);
-    const t = new Date().toLocaleTimeString();
-    switch(w.type) {
+    if (w.pin.toLowerCase() !== pin.toLowerCase()) return;
+    const cfg = w.config || {};
+    switch(w.widget_type) {
       case 'display': { const el = document.getElementById('wdv-' + w.id); if(el) el.textContent = isNaN(v) ? value : v.toFixed(2); break; }
       case 'label': { const el = document.getElementById('wlv-' + w.id); if(el) el.textContent = value; break; }
       case 'gauge': {
-        const pct = Math.min(100, Math.max(0, (v - w.min) / (w.max - w.min) * 100));
-        const fill = document.getElementById('gf-' + w.id); if(fill) fill.style.width = pct + '%';
-        const gv = document.getElementById('gv-' + w.id); if(gv) gv.textContent = v.toFixed(1) + ' ' + w.unit;
+        const min = cfg.min||0, max = cfg.max||100;
+        const pct = Math.min(100, Math.max(0, (v-min)/(max-min)*100));
+        const f = document.getElementById('gf-' + w.id); if(f) f.style.width = pct + '%';
+        const gv = document.getElementById('gv-' + w.id); if(gv) gv.textContent = v.toFixed(1) + ' ' + (cfg.unit||'');
         break;
       }
       case 'radial': {
-        const pct = Math.min(1, Math.max(0, (v - w.min) / (w.max - w.min)));
-        const path = document.getElementById('rp-' + w.id); if(path) path.setAttribute('stroke-dasharray', (pct*141) + ' 141');
-        const rv = document.getElementById('rv-' + w.id); if(rv) rv.textContent = v.toFixed(1) + ' ' + w.unit;
+        const min = cfg.min||0, max = cfg.max||100;
+        const pct = Math.min(1, Math.max(0, (v-min)/(max-min)));
+        const p = document.getElementById('rp-' + w.id); if(p) p.setAttribute('stroke-dasharray', (pct*141) + ' 141');
+        const rv = document.getElementById('rv-' + w.id); if(rv) rv.textContent = v.toFixed(1) + ' ' + (cfg.unit||'');
         break;
       }
       case 'chart': {
         const ch = widgetCharts[w.id];
-        if (ch) { ch.data.labels.push(t); ch.data.datasets[0].data.push(v); if(ch.data.labels.length > 20) { ch.data.labels.shift(); ch.data.datasets[0].data.shift(); } ch.update('none'); }
+        if(ch) { ch.data.labels.push(t); ch.data.datasets[0].data.push(v); if(ch.data.labels.length>20){ch.data.labels.shift();ch.data.datasets[0].data.shift();} ch.update('none'); }
         break;
       }
       case 'terminal': {
         const term = document.getElementById('wt-' + w.id);
-        if (term) { const line = document.createElement('div'); line.style.color = '#aaa'; line.textContent = '[' + t + '] ' + pin + ': ' + value; term.appendChild(line); term.scrollTop = term.scrollHeight; }
+        if(term) { const line = document.createElement('div'); line.style.color='#aaa'; line.textContent='['+t+'] '+pin+': '+value; term.appendChild(line); term.scrollTop=term.scrollHeight; }
         break;
       }
       case 'alarm': {
         const alarm = document.getElementById('wa-' + w.id);
-        if (alarm) { const triggered = v > w.min; alarm.classList.toggle('triggered', triggered); alarm.querySelector('.w-alarm-state').textContent = triggered ? '⚠ ALARM! ' + v.toFixed(1) + w.unit : 'OK - monitoring'; }
+        const triggered = !isNaN(v) && v > (cfg.threshold || 100);
+        if(alarm) { alarm.classList.toggle('triggered', triggered); alarm.querySelector('.w-alarm-st').textContent = triggered ? '⚠ ALARM: ' + v.toFixed(1) : 'OK · monitoring'; }
         break;
       }
     }
   });
 }
 
-async function sendWidgetCmd(w, value) {
-  if (!w || !w.deviceId) return;
+function updateDeviceDashStats(topic, value) {
+  if (!currentDeviceId) return;
+  const parts = topic.split('/');
+  const devKey = parts[1];
+  const device = allDevices.find(d => d.device_key === devKey);
+  if (!device || device.id !== currentDeviceId) return;
+  const pin = parts[2];
+  const v = parseFloat(value);
+  const statsEl = document.getElementById('dd-stats');
+  if (!statsEl) return;
+  const existingStats = {};
+  statsEl.querySelectorAll('[data-pin]').forEach(el => { existingStats[el.dataset.pin] = el; });
+  if (existingStats[pin]) {
+    existingStats[pin].querySelector('.device-stat-val').textContent = isNaN(v) ? value : v.toFixed(1);
+  } else {
+    const div = document.createElement('div');
+    div.className = 'stat-card'; div.dataset.pin = pin;
+    div.innerHTML = `<div class="stat-label">${pin}</div><div class="stat-value" style="font-size:20px">${isNaN(v)?value:v.toFixed(1)}</div><div class="stat-sub">live</div>`;
+    statsEl.appendChild(div);
+  }
+  if (ddChart && (pin === 'temperature' || pin === 'temp')) {
+    ddChart.data.labels.push(new Date().toLocaleTimeString());
+    ddChart.data.datasets[0].data.push(v);
+    if (ddChart.data.labels.length > 30) { ddChart.data.labels.shift(); ddChart.data.datasets[0].data.shift(); }
+    ddChart.update('none');
+  }
+}
+
+async function loadDeviceReadings(deviceId) {
   try {
-    await fetch('/api/my-devices/' + w.deviceId + '/command', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-      body: JSON.stringify({ command: w.pin, value: String(value) })
-    });
+    const res = await api('/api/my-devices/' + deviceId + '/readings?limit=20');
+    const readings = await res.json();
+    const el = document.getElementById('dd-readings');
+    if (!readings.length) { el.innerHTML = '<div class="empty" style="padding:15px 0">No readings yet</div>'; return; }
+    el.innerHTML = `<table><thead><tr><th>Pin</th><th>Value</th><th>Time</th></tr></thead><tbody>${readings.map(r=>`<tr><td>${r.pin}</td><td style="color:#a78bfa;font-weight:600">${r.value}</td><td style="color:#444;font-size:11px">${new Date(r.recorded_at).toLocaleString()}</td></tr>`).join('')}</tbody></table>`;
   } catch(e) {}
 }
 
-function btnPress(id) {
-  const w = widgets.find(x => x.id == id);
-  const btn = document.getElementById('wbtn-' + id);
-  if (btn) btn.classList.add('pressed');
-  sendWidgetCmd(w, '1');
+// ── Widget actions ────────────────────────────────────
+async function sendCmd(deviceId, pin, value) {
+  try { await api('/api/my-devices/' + deviceId + '/command', 'POST', { command: pin, value: String(value) }); }
+  catch(e) {}
 }
 
-function btnRelease(id) {
-  const w = widgets.find(x => x.id == id);
-  const btn = document.getElementById('wbtn-' + id);
-  if (btn) btn.classList.remove('pressed');
-  sendWidgetCmd(w, '0');
-}
-
-function toggleSwitch(id) {
-  const w = widgets.find(x => x.id == id);
-  const sw = document.getElementById('wsw-' + id);
-  const lbl = document.getElementById('swl-' + id);
+function wBtnPress(deviceId, pin, wid) { document.getElementById('wbtn-'+wid)?.classList.add('pressed'); sendCmd(deviceId, pin, '1'); }
+function wBtnRelease(wid) { document.getElementById('wbtn-'+wid)?.classList.remove('pressed'); }
+function wToggle(deviceId, pin, wid) {
+  const sw = document.getElementById('wsw-'+wid);
   const isOn = sw.classList.toggle('on');
-  if (lbl) lbl.textContent = isOn ? 'ON' : 'OFF';
-  w.value = isOn ? 1 : 0;
-  sendWidgetCmd(w, isOn ? '1' : '0');
+  document.getElementById('swl-'+wid).textContent = isOn ? 'ON' : 'OFF';
+  sendCmd(deviceId, pin, isOn ? '1' : '0');
+}
+function wNum(deviceId, pin, wid, delta) {
+  const el = document.getElementById('nbv-'+wid);
+  const v = (parseInt(el.textContent)||0) + delta;
+  el.textContent = v;
+  sendCmd(deviceId, pin, v);
+}
+function wSeg(deviceId, pin, wid, idx, val) {
+  document.querySelectorAll('[id^="seg-'+wid+'-"]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('seg-'+wid+'-'+idx)?.classList.add('active');
+  sendCmd(deviceId, pin, val);
+}
+function sendTermCmd(deviceId, pin, wid, input) {
+  const term = document.getElementById('wt-'+wid);
+  if (term) { const line = document.createElement('div'); line.style.color='#7c3aed'; line.textContent='> '+input.value; term.appendChild(line); term.scrollTop=term.scrollHeight; }
+  sendCmd(deviceId, pin, input.value);
+  input.value = '';
 }
 
-function changeNumber(id, delta) {
-  const w = widgets.find(x => x.id == id);
-  w.value = (parseFloat(w.value) || 0) + delta;
-  const el = document.getElementById('nbv-' + id);
-  if (el) el.textContent = w.value;
-  sendWidgetCmd(w, w.value);
+// ── Widget type picker ────────────────────────────────
+let pendingWType = null;
+function selectWidgetType(type) {
+  pendingWType = type;
+  document.getElementById('mw-step1').style.display = 'none';
+  document.getElementById('mw-step2').style.display = 'block';
+  document.getElementById('mw-title').textContent = 'Configure ' + type;
+  document.getElementById('wc-label').value = '';
+  document.getElementById('wc-pin').value = '';
+  const extra = document.getElementById('wc-extra');
+  extra.innerHTML = '';
+  if (['slider','gauge','radial'].includes(type)) extra.innerHTML += `<div class="frow"><div class="fg"><label>Min</label><input type="number" id="wc-min" value="0"></div><div class="fg"><label>Max</label><input type="number" id="wc-max" value="100"></div></div>`;
+  if (['gauge','display','radial','alarm'].includes(type)) extra.innerHTML += `<div class="fg"><label>Unit</label><input type="text" id="wc-unit" placeholder="e.g. °C"></div>`;
+  if (['segmented','menu'].includes(type)) extra.innerHTML += `<div class="fg"><label>Options (comma separated)</label><input type="text" id="wc-opts" placeholder="Low,Medium,High"></div>`;
+  if (type === 'alarm') extra.innerHTML += `<div class="fg"><label>Trigger Threshold</label><input type="number" id="wc-thresh" placeholder="e.g. 35"></div>`;
 }
 
-function segClick(wid, idx, val) {
-  const w = widgets.find(x => x.id == wid);
-  document.querySelectorAll('[id^="seg-' + wid + '-"]').forEach(b => b.classList.remove('active'));
-  document.getElementById('seg-' + wid + '-' + idx)?.classList.add('active');
-  sendWidgetCmd(w, val);
+async function confirmWidget() {
+  if (!currentDeviceId) return;
+  const label = document.getElementById('wc-label').value || pendingWType;
+  const pin = document.getElementById('wc-pin').value || 'V0';
+  const config = {
+    min: parseFloat(document.getElementById('wc-min')?.value || 0),
+    max: parseFloat(document.getElementById('wc-max')?.value || 100),
+    unit: document.getElementById('wc-unit')?.value || '',
+    opts: document.getElementById('wc-opts')?.value?.split(',').map(s=>s.trim()) || [],
+    threshold: parseFloat(document.getElementById('wc-thresh')?.value || 100),
+  };
+  try {
+    const res = await api('/api/my-devices/' + currentDeviceId + '/widgets', 'POST', { widget_type: pendingWType, label, pin, config, position: (deviceWidgets[currentDeviceId]||[]).length });
+    await loadDeviceWidgets(currentDeviceId);
+    closeModal('modal-add-widget');
+    document.getElementById('mw-step1').style.display = 'block';
+    document.getElementById('mw-step2').style.display = 'none';
+  } catch(e) {}
 }
 
-function sendTerminalCmd(wid, input) {
-  const w = widgets.find(x => x.id == wid);
-  const term = document.getElementById('wt-' + wid);
-  if (term) { const line = document.createElement('div'); line.style.color = '#7c3aed'; line.textContent = '> ' + input.value; term.appendChild(line); term.scrollTop = term.scrollHeight; }
-  sendWidgetCmd(w, input.value);
+async function deleteWidget(deviceId, wid) {
+  await api('/api/my-devices/' + deviceId + '/widgets/' + wid, 'DELETE');
+  await loadDeviceWidgets(deviceId);
+}
+
+// ── Automations ───────────────────────────────────────
+async function loadAutomations() {
+  try {
+    const res = await api('/api/automations');
+    const autos = await res.json();
+    document.getElementById('hs-autos').textContent = autos.filter(a=>a.active).length;
+    const el = document.getElementById('auto-list');
+    if (!autos.length) { el.innerHTML = '<div class="empty">No automations yet</div>'; return; }
+    el.innerHTML = autos.map(a => `
+      <div class="auto-card">
+        <div class="auto-info">
+          <div class="auto-name">${a.name}</div>
+          <div class="auto-desc">When <strong style="color:#a78bfa">${a.trigger_device_name||'device'}</strong> · ${a.trigger_pin} ${a.trigger_condition} ${a.trigger_value}</div>
+          <div class="auto-desc">→ ${a.action_type === 'device_command' ? 'Send ' + a.action_value + ' to ' + (a.action_device_name||'device') + ' · ' + a.action_pin : 'Send notification'}</div>
+          <div class="auto-meta">${a.last_triggered ? 'Last triggered: ' + new Date(a.last_triggered).toLocaleString() : 'Never triggered'}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+          <label class="toggle-pill"><input type="checkbox" ${a.active?'checked':''} onchange="toggleAuto(${a.id},this.checked)"><span class="pill"></span></label>
+          <button class="btn btn-xs btn-danger" onclick="deleteAuto(${a.id})">Delete</button>
+        </div>
+      </div>`).join('');
+  } catch(e) {}
+}
+
+async function addAutomation() {
+  const name = document.getElementById('auto-name').value;
+  const trigger_device_id = document.getElementById('auto-tdev').value;
+  const trigger_pin = document.getElementById('auto-tpin').value;
+  const trigger_condition = document.getElementById('auto-tcond').value;
+  const trigger_value = document.getElementById('auto-tval').value;
+  const action_type = document.getElementById('auto-atype').value;
+  const action_device_id = document.getElementById('auto-adev')?.value;
+  const action_pin = document.getElementById('auto-apin')?.value;
+  const action_value = document.getElementById('auto-aval')?.value;
+  const err = document.getElementById('auto-err');
+  if (!name || !trigger_device_id || !trigger_pin || !trigger_value) { err.textContent = 'Fill all trigger fields'; err.style.display = 'block'; return; }
+  try {
+    const res = await api('/api/automations', 'POST', { name, trigger_device_id, trigger_pin, trigger_condition, trigger_value: parseFloat(trigger_value), action_type, action_device_id, action_pin, action_value });
+    const data = await res.json();
+    if (data.error) { err.textContent = data.error; err.style.display = 'block'; return; }
+    closeModal('modal-add-auto');
+    loadAutomations();
+  } catch(e) { err.textContent = 'Failed'; err.style.display = 'block'; }
+}
+
+async function toggleAuto(id, active) { await api('/api/automations/' + id, 'PUT', { active }); loadAutomations(); }
+async function deleteAuto(id) { if(!confirm('Delete?')) return; await api('/api/automations/' + id, 'DELETE'); loadAutomations(); }
+
+function updateAutoAction() {
+  const type = document.getElementById('auto-atype').value;
+  document.getElementById('auto-action-device').style.display = type === 'device_command' ? 'block' : 'none';
 }
 
 // ── Alerts ────────────────────────────────────────────
 function addAlertRule() {
+  const name = document.getElementById('al-name').value;
   const sensor = document.getElementById('al-sensor').value;
   const cond = document.getElementById('al-cond').value;
   const val = parseFloat(document.getElementById('al-val').value);
-  const name = document.getElementById('al-name').value || sensor + ' ' + cond + ' ' + val;
   if (isNaN(val)) { alert('Enter a valid number'); return; }
-  alertRules.push({ id: Date.now(), sensor, cond, val, name, active: true });
-  localStorage.setItem('iot_alert_rules', JSON.stringify(alertRules));
-  document.getElementById('al-val').value = '';
-  document.getElementById('al-name').value = '';
-  renderAlertRules();
-}
-
-function deleteAlertRule(id) {
-  alertRules = alertRules.filter(a => a.id !== id);
-  localStorage.setItem('iot_alert_rules', JSON.stringify(alertRules));
+  alertRules.push({ id: Date.now(), name: name || sensor + ' ' + cond + ' ' + val, sensor, cond, val });
+  localStorage.setItem('iot_alerts', JSON.stringify(alertRules));
+  closeModal('modal-add-alert');
   renderAlertRules();
 }
 
 function renderAlertRules() {
-  const el = document.getElementById('alert-rules');
+  const el = document.getElementById('alert-rules-list');
   if (!el) return;
-  if (!alertRules.length) { el.innerHTML = '<div class="empty">No alert rules yet</div>'; return; }
+  if (!alertRules.length) { el.innerHTML = '<div class="empty">No alert rules — click + Add Alert</div>'; return; }
   el.innerHTML = alertRules.map(a => `
-    <div class="alert-rule">
-      <div>
-        <div style="font-weight:600;color:#fff;font-size:14px">${a.name}</div>
-        <div style="font-size:12px;color:#888;margin-top:3px">Trigger when ${a.sensor} goes ${a.cond} ${a.val}</div>
-      </div>
-      <button class="btn btn-sm btn-danger" onclick="deleteAlertRule(${a.id})">Delete</button>
+    <div class="auto-card">
+      <div class="auto-info"><div class="auto-name">${a.name}</div><div class="auto-desc">${a.sensor} ${a.cond} ${a.val}</div></div>
+      <button class="btn btn-xs btn-danger" onclick="delAlert(${a.id})">Delete</button>
     </div>`).join('');
 }
+
+function delAlert(id) { alertRules = alertRules.filter(a=>a.id!==id); localStorage.setItem('iot_alerts',JSON.stringify(alertRules)); renderAlertRules(); }
 
 function checkAlerts(sensor, value, time) {
   alertRules.forEach(rule => {
     if (rule.sensor !== sensor) return;
-    const hit = (rule.cond === 'above' && value > rule.val) || (rule.cond === 'below' && value < rule.val) || (rule.cond === 'equals' && value == rule.val);
-    if (hit) {
-      triggeredAlerts.unshift({ name: rule.name, sensor, cond: rule.cond, threshold: rule.val, actual: value, time });
-      if (triggeredAlerts.length > 30) triggeredAlerts.pop();
-      renderTriggered();
-    }
+    const hit = (rule.cond==='above'&&value>rule.val)||(rule.cond==='below'&&value<rule.val)||(rule.cond==='equals'&&value==rule.val);
+    if (hit) { triggeredAlerts.unshift({...rule, actual:value, time}); if(triggeredAlerts.length>50) triggeredAlerts.pop(); renderTriggered(); }
   });
 }
 
 function renderTriggered() {
-  const el = document.getElementById('alert-triggered');
+  const el = document.getElementById('triggered-list');
   if (!el) return;
   if (!triggeredAlerts.length) { el.innerHTML = '<div class="empty">No alerts triggered yet</div>'; return; }
-  el.innerHTML = triggeredAlerts.map(a => `
-    <div class="alert-triggered">
-      <div class="alert-triggered-title">⚠ ${a.name}</div>
-      <div class="alert-triggered-detail">${a.sensor} = ${a.actual.toFixed ? a.actual.toFixed(1) : a.actual} (threshold: ${a.cond} ${a.threshold}) at ${a.time}</div>
-    </div>`).join('');
+  el.innerHTML = triggeredAlerts.map(a => `<div class="alert-item"><div class="alert-title">⚠ ${a.name}</div><div class="alert-detail">${a.sensor} = ${a.actual?.toFixed?.(1)||a.actual} (threshold: ${a.cond} ${a.val}) at ${a.time}</div></div>`).join('');
 }
 
-// ── Modal helpers ─────────────────────────────────────
+// ── Users ─────────────────────────────────────────────
+async function loadUsers() {
+  try {
+    const res = await api('/api/org/members');
+    const members = await res.json();
+    const el = document.getElementById('users-table');
+    if (!members.length) { el.innerHTML = '<div class="empty">No members</div>'; return; }
+    el.innerHTML = `<table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th></th></tr></thead><tbody>${members.map(m=>`<tr><td style="font-weight:500;color:#fff">${m.name||'—'}</td><td>${m.email}</td><td><span class="badge ${m.role==='admin'?'badge-purple':m.role==='developer'?'badge-green':'badge-yellow'}">${m.role}</span></td><td style="font-size:11px;color:#444">${new Date(m.created_at).toLocaleDateString()}</td><td>${m.id!==currentUser?.id?`<button class="btn btn-xs btn-danger" onclick="removeMember(${m.id})">Remove</button>`:''}</td></tr>`).join('')}</tbody></table>`;
+  } catch(e) {}
+}
+
+async function inviteUser() {
+  const email = document.getElementById('inv-email').value;
+  const role = document.getElementById('inv-role').value;
+  const err = document.getElementById('inv-err');
+  if (!email) { err.textContent = 'Enter email'; err.style.display = 'block'; return; }
+  try {
+    const res = await api('/api/org/invite', 'POST', { email, role });
+    const data = await res.json();
+    if (data.error) { err.textContent = data.error; err.style.display = 'block'; return; }
+    closeModal('modal-invite');
+    alert('Invite link:\n' + data.invite_link + '\n\nShare this with ' + email);
+  } catch(e) { err.textContent = 'Failed'; err.style.display = 'block'; }
+}
+
+async function removeMember(id) { if(!confirm('Remove member?')) return; await api('/api/org/members/'+id,'DELETE'); loadUsers(); }
+
+// ── Locations ─────────────────────────────────────────
+async function loadLocations() {
+  try {
+    const res = await api('/api/locations');
+    const locs = await res.json();
+    const el = document.getElementById('loc-grid');
+    if (!locs.length) { el.innerHTML = '<div class="empty">No locations yet</div>'; return; }
+    el.innerHTML = locs.map(l => `
+      <div class="device-card">
+        <div class="device-card-top">
+          <div><div class="device-card-name">📍 ${l.name}</div><div class="device-card-type">${l.address||'No address'}</div></div>
+          <button class="btn btn-xs btn-danger" onclick="deleteLoc(${l.id})">🗑</button>
+        </div>
+        <div style="font-size:12px;color:#555;margin-top:8px">${l.device_count||0} devices · ${l.lat&&l.lng?l.lat.toFixed(4)+', '+l.lng.toFixed(4):'No coordinates'}</div>
+      </div>`).join('');
+  } catch(e) {}
+}
+
+async function addLocation() {
+  const name = document.getElementById('loc-name').value;
+  const address = document.getElementById('loc-addr').value;
+  const lat = document.getElementById('loc-lat').value;
+  const lng = document.getElementById('loc-lng').value;
+  if (!name) return;
+  await api('/api/locations', 'POST', { name, address, lat: parseFloat(lat)||null, lng: parseFloat(lng)||null });
+  closeModal('modal-add-loc');
+  loadLocations();
+}
+
+async function deleteLoc(id) { if(!confirm('Delete location?')) return; await api('/api/locations/'+id,'DELETE'); loadLocations(); }
+
+// ── Snapshots ─────────────────────────────────────────
+async function loadSnapshots() {
+  try {
+    const res = await api('/api/snapshots');
+    const snaps = await res.json();
+    const el = document.getElementById('snapshots-list');
+    if (!snaps.length) { el.innerHTML = '<div class="empty">No snapshots yet</div>'; return; }
+    el.innerHTML = snaps.map(s => `
+      <div class="auto-card">
+        <div class="auto-info">
+          <div class="auto-name">📸 ${s.name}</div>
+          <div class="auto-meta">${new Date(s.created_at).toLocaleString()} · ${Object.keys(s.data||{}).length} data points</div>
+        </div>
+        <button class="btn btn-xs btn-danger" onclick="deleteSnap(${s.id})">Delete</button>
+      </div>`).join('');
+  } catch(e) {}
+}
+
+async function createSnapshot() {
+  const name = prompt('Snapshot name:', 'Snapshot ' + new Date().toLocaleString());
+  if (!name) return;
+  await api('/api/snapshots', 'POST', { name });
+  loadSnapshots();
+}
+
+async function deleteSnap(id) { await api('/api/snapshots/'+id,'DELETE'); loadSnapshots(); }
+
+// ── Notifications ─────────────────────────────────────
+async function loadNotifs() {
+  try {
+    const res = await api('/api/notifications');
+    notifs = await res.json();
+    const unread = notifs.filter(n=>!n.read).length;
+    const count = document.getElementById('notif-count');
+    if (unread > 0) { count.textContent = unread; count.style.display = 'flex'; } else { count.style.display = 'none'; }
+    const list = document.getElementById('notif-list');
+    if (!notifs.length) { list.innerHTML = '<div class="empty" style="padding:20px 0">No notifications</div>'; return; }
+    list.innerHTML = notifs.map(n => `<div class="notif-item ${n.read?'':'unread'}"><div class="notif-item-title">${n.title}</div><div class="notif-item-msg">${n.message}</div><div class="notif-item-time">${new Date(n.created_at).toLocaleString()}</div></div>`).join('');
+  } catch(e) {}
+}
+
+async function markNotifsRead() { await api('/api/notifications/read', 'PUT'); loadNotifs(); }
+function toggleNotifPanel() { document.getElementById('notif-panel').classList.toggle('open'); }
+
+// ── Settings ──────────────────────────────────────────
+async function loadSettings() {
+  try {
+    const res = await api('/api/org');
+    const data = await res.json();
+    document.getElementById('set-org-name').value = data.org?.name || '';
+    document.getElementById('set-user-info').textContent = currentUser?.name + ' · ' + currentUser?.email;
+    document.getElementById('set-role-chip').textContent = currentUser?.role || 'admin';
+  } catch(e) {}
+}
+
+async function saveOrgSettings() {
+  const name = document.getElementById('set-org-name').value;
+  await api('/api/org', 'PUT', { name });
+  document.getElementById('sb-org').textContent = name;
+  alert('Saved!');
+}
+
+// ── Helpers ───────────────────────────────────────────
+async function api(url, method='GET', body=null) {
+  const opts = { method, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token } };
+  if (body) opts.body = JSON.stringify(body);
+  return fetch(url, opts);
+}
+
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.addEventListener('click', e => { if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); });
+document.addEventListener('click', e => { if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); if(!e.target.closest('#notif-panel')&&!e.target.closest('#notif-btn')) document.getElementById('notif-panel').classList.remove('open'); });
+
+function copyText(text) { navigator.clipboard.writeText(text).then(()=>alert('Copied: ' + text.substring(0,40) + '...')).catch(()=>{}); }
+
+function timeAgo(date) {
+  const s = Math.floor((Date.now() - new Date(date)) / 1000);
+  if (s < 60) return s + 's ago';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
 </script>
 </body>
 </html>
