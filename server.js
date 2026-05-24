@@ -1,4 +1,4 @@
-﻿require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 const mqtt = require('mqtt');
 const WebSocket = require('ws');
@@ -145,10 +145,10 @@ async function apiKeyMiddleware(req, res, next) {
   } catch (err) { res.status(500).json({ error: 'Server error' }); }
 }
 
-// ── Health ────────────────────────────────────────────
+// -- Health --------------------------------------------
 app.get('/api/health', (req, res) => res.json({ status: 'ok', uptime: Math.floor(process.uptime()), devices: Object.keys(deviceData).length, timestamp: new Date() }));
 
-// ── Auth ──────────────────────────────────────────────
+// -- Auth ----------------------------------------------
 app.post('/api/auth/register', authLimiter, async (req, res) => {
   try {
     const { email, password, name, orgName } = req.body;
@@ -180,7 +180,7 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ── Organization ──────────────────────────────────────
+// -- Organization --------------------------------------
 app.get('/api/org', authMiddleware, async (req, res) => {
   try {
     const org = await pool.query('SELECT * FROM organizations WHERE id = $1', [req.user.orgId]);
@@ -220,12 +220,12 @@ app.delete('/api/org/members/:id', authMiddleware, async (req, res) => {
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── Devices ───────────────────────────────────────────
+// -- Devices -------------------------------------------
 app.get('/api/my-devices', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT d.*, (SELECT key_value FROM api_keys WHERE device_id = d.id AND active = true LIMIT 1) as api_key FROM devices d WHERE d.org_id = $1 ORDER BY d.created_at DESC',
-      [req.user.orgId]
+      'SELECT d.*, (SELECT key_value FROM api_keys WHERE device_id = d.id AND active = true LIMIT 1) as api_key FROM devices d WHERE (d.org_id = $1 OR d.user_id = $2) ORDER BY d.created_at DESC',
+      [req.user.orgId, req.user.userId]
     );
     res.json(result.rows);
   } catch(e) { res.status(500).json({ error: e.message }); }
@@ -301,7 +301,7 @@ app.post('/api/my-devices/:id/command', authMiddleware, async (req, res) => {
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── Device Widgets ────────────────────────────────────
+// -- Device Widgets ------------------------------------
 app.get('/api/my-devices/:id/widgets', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM device_widgets WHERE device_id = $1 ORDER BY position', [req.params.id]);
@@ -327,10 +327,10 @@ app.delete('/api/my-devices/:id/widgets/:wid', authMiddleware, async (req, res) 
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── Live Data ─────────────────────────────────────────
+// -- Live Data -----------------------------------------
 app.get('/api/devices', (req, res) => res.json(deviceData));
 
-// ── Device API (called by IoT devices) ───────────────
+// -- Device API (called by IoT devices) ---------------
 app.post('/api/device/data', deviceLimiter, apiKeyMiddleware, async (req, res) => {
   try {
     const { pin, value, data } = req.body;
@@ -359,7 +359,7 @@ app.get('/api/device/commands', deviceLimiter, apiKeyMiddleware, async (req, res
   } catch(e) { res.json({ commands: [] }); }
 });
 
-// ── Automations ───────────────────────────────────────
+// -- Automations ---------------------------------------
 app.get('/api/automations', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(
@@ -403,7 +403,7 @@ app.get('/api/automations/:id/logs', authMiddleware, async (req, res) => {
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── Notifications ─────────────────────────────────────
+// -- Notifications -------------------------------------
 app.get('/api/notifications', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM notifications WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50', [req.user.userId]);
@@ -418,7 +418,7 @@ app.put('/api/notifications/read', authMiddleware, async (req, res) => {
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── Locations ─────────────────────────────────────────
+// -- Locations -----------------------------------------
 app.get('/api/locations', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query('SELECT l.*, COUNT(d.id) as device_count FROM locations l LEFT JOIN devices d ON d.location = l.name AND d.org_id = l.org_id WHERE l.org_id = $1 GROUP BY l.id ORDER BY l.created_at DESC', [req.user.orgId]);
@@ -441,7 +441,7 @@ app.delete('/api/locations/:id', authMiddleware, async (req, res) => {
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
-// ── Snapshots ─────────────────────────────────────────
+// -- Snapshots -----------------------------------------
 app.get('/api/snapshots', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM snapshots WHERE org_id = $1 ORDER BY created_at DESC', [req.user.orgId]);
@@ -466,3 +466,4 @@ app.delete('/api/snapshots/:id', authMiddleware, async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log('IoT server running on port ' + PORT));
+
