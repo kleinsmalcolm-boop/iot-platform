@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -312,7 +312,7 @@ tr:hover td{background:rgba(124,58,237,0.04)}
             </div>
           </div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px" id="dd-stats"></div>
-          <div class="widget-grid" id="device-widget-canvas"><div class="empty" style="grid-column:1/-1">No widgets — click + Widget to add one</div></div>
+          <div class="widget-grid" id="device-widget-canvas"><div class="empty" style="grid-column:1/-1">No widgets â€” click + Widget to add one</div></div>
           <div class="sep"></div>
           <div class="card" style="margin-top:14px"><div class="card-title">&#128200; Device History<span><button class="btn btn-xs btn-gray" onclick="loadDeviceReadings(currentDeviceId)">Refresh</button></span></div><canvas id="dd-chart" height="80"></canvas></div>
           <div class="card" style="margin-top:14px"><div class="card-title">&#128196; Recent Readings</div><div id="dd-readings" style="max-height:200px;overflow-y:auto"></div></div>
@@ -457,7 +457,7 @@ tr:hover td{background:rgba(124,58,237,0.04)}
   <div class="modal">
     <h3>New Automation</h3>
     <div class="fg"><label>Automation Name</label><input type="text" id="auto-name" placeholder="e.g. Cool fan when hot"></div>
-    <div style="font-size:12px;font-weight:600;color:#7c3aed;margin:12px 0 8px">TRIGGER — When this happens...</div>
+    <div style="font-size:12px;font-weight:600;color:#7c3aed;margin:12px 0 8px">TRIGGER â€” When this happens...</div>
     <div class="frow">
       <div class="fg"><label>Device</label><select id="auto-tdev"></select></div>
       <div class="fg"><label>Pin</label><input type="text" id="auto-tpin" placeholder="e.g. temperature"></div>
@@ -466,7 +466,7 @@ tr:hover td{background:rgba(124,58,237,0.04)}
       <div class="fg"><label>Condition</label><select id="auto-tcond"><option value="above">Above</option><option value="below">Below</option><option value="equals">Equals</option></select></div>
       <div class="fg"><label>Value</label><input type="number" id="auto-tval" placeholder="e.g. 35"></div>
     </div>
-    <div style="font-size:12px;font-weight:600;color:#7c3aed;margin:12px 0 8px">ACTION — Then do this...</div>
+    <div style="font-size:12px;font-weight:600;color:#7c3aed;margin:12px 0 8px">ACTION â€” Then do this...</div>
     <div class="fg"><label>Action Type</label><select id="auto-atype" onchange="updateAutoAction()"><option value="device_command">Send command to device</option><option value="notification">Send notification</option></select></div>
     <div id="auto-action-device">
       <div class="frow">
@@ -513,9 +513,9 @@ tr:hover td{background:rgba(124,58,237,0.04)}
     <div class="fg"><label>Email Address</label><input type="email" id="inv-email" placeholder="colleague@example.com"></div>
     <div class="fg"><label>Role</label>
       <select id="inv-role">
-        <option value="admin">Admin — full access</option>
-        <option value="developer">Developer — manage devices</option>
-        <option value="viewer">Viewer — read only</option>
+        <option value="admin">Admin â€” full access</option>
+        <option value="developer">Developer â€” manage devices</option>
+        <option value="viewer">Viewer â€” read only</option>
       </select>
     </div>
     <div class="err" id="inv-err"></div>
@@ -543,9 +543,9 @@ tr:hover td{background:rgba(124,58,237,0.04)}
 </div>
 
 <script>
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // STATE
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 var token = localStorage.getItem('iot_token');
 var currentUser = null;
 try { currentUser = JSON.parse(localStorage.getItem('iot_user') || 'null'); } catch(e) {}
@@ -567,16 +567,16 @@ var wEditMode = false;
 var pendingWType = null;
 var notifs = [];
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // INIT
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 if (token && currentUser) {
   initDashboard();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // AUTH
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function toggleAuth() {
   isRegMode = !isRegMode;
   document.getElementById('auth-title').textContent = isRegMode ? 'Create account' : 'Welcome back';
@@ -628,7 +628,7 @@ async function submitAuth() {
     initDashboard();
 
   } catch(e) {
-    errEl.textContent = 'Connection error — is the server running?';
+    errEl.textContent = 'Connection error â€” is the server running?';
     errEl.style.display = 'block';
   }
 }
@@ -638,9 +638,9 @@ function doLogout() {
   location.reload();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DASHBOARD INIT
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function initDashboard() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'flex';
@@ -654,9 +654,9 @@ function initDashboard() {
   loadNotifs();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // NAVIGATION
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function navTo(id, el) {
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
@@ -674,19 +674,19 @@ function navTo(id, el) {
   if (id === 'pg-settings') loadSettings();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // WEBSOCKET
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function connectWS() {
   var wsUrl = location.origin.replace('https','wss').replace('http','ws');
   try {
     ws = new WebSocket(wsUrl);
     ws.onopen = function() {
-      document.getElementById('ws-status').textContent = '● Live';
+      document.getElementById('ws-status').textContent = 'â— Live';
       document.getElementById('ws-status').className = 'badge badge-green';
     };
     ws.onclose = function() {
-      document.getElementById('ws-status').textContent = '● Offline';
+      document.getElementById('ws-status').textContent = 'â— Offline';
       document.getElementById('ws-status').className = 'badge badge-red';
       setTimeout(connectWS, 3000);
     };
@@ -765,9 +765,9 @@ function addLog(topic, value, time) {
   if (box.children.length > 200) box.removeChild(box.lastChild);
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // CHARTS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function initCharts() {
   homeChart  = mkChart('home-chart', '#7c3aed');
   anTempChart = mkChart('an-temp', '#7c3aed');
@@ -810,18 +810,18 @@ function updateAnalytics() {
   }
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // LOAD ALL
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadAll() {
   await loadDevices();
   await loadAutomations();
   await loadLocations();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DEVICES
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadDevices() {
   try {
     var res = await apiCall('/api/my-devices');
@@ -833,13 +833,13 @@ async function loadDevices() {
     var homeDevs = document.getElementById('home-devices');
 
     if (!allDevices.length) {
-      grid.innerHTML = '<div class="empty">No devices yet — click + New Device</div>';
+      grid.innerHTML = '<div class="empty">No devices yet â€” click + New Device</div>';
       homeDevs.innerHTML = '<div class="empty" style="padding:20px 0">No devices</div>';
     } else {
       grid.innerHTML = allDevices.map(function(d) {
         return '<div class="device-card" onclick="openDeviceDash(' + d.id + ')">' +
           '<div class="device-card-top">' +
-            '<div><div class="device-card-name">' + d.name + '</div><div class="device-card-type">' + d.type + (d.location ? ' · ' + d.location : '') + '</div></div>' +
+            '<div><div class="device-card-name">' + d.name + '</div><div class="device-card-type">' + d.type + (d.location ? ' Â· ' + d.location : '') + '</div></div>' +
             '<div class="device-card-actions" onclick="event.stopPropagation()">' +
               '<span class="badge ' + (d.online ? 'badge-green' : 'badge-red') + '">' + (d.online ? 'Online' : 'Offline') + '</span>' +
               '<button class="btn btn-xs btn-danger" onclick="deleteDevice(' + d.id + ')">&#128465;</button>' +
@@ -893,7 +893,7 @@ async function addDevice() {
     document.getElementById('nd-location').value = '';
     document.getElementById('nd-desc').value = '';
     await loadDevices();
-    alert('Device registered!\n\nAPI Key:\n' + data.api_key + '\n\nCopy and save this key — your device needs it!');
+    alert('Device registered!\n\nAPI Key:\n' + data.api_key + '\n\nCopy and save this key â€” your device needs it!');
   } catch(e) { errEl.textContent = 'Failed to register device'; errEl.style.display = 'block'; }
 }
 
@@ -904,9 +904,9 @@ async function deleteDevice(id) {
   loadDevices();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PER-DEVICE DASHBOARD
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function openDeviceDash(id) {
   currentDeviceId = id;
   var device = allDevices.find(function(d){ return d.id == id; });
@@ -914,7 +914,7 @@ async function openDeviceDash(id) {
   document.getElementById('device-view-list').style.display = 'none';
   document.getElementById('device-view-dash').style.display = 'block';
   document.getElementById('dd-name').textContent = device.name;
-  document.getElementById('dd-meta').textContent = device.type + (device.location ? ' · ' + device.location : '') + ' · ' + device.device_key;
+  document.getElementById('dd-meta').textContent = device.type + (device.location ? ' Â· ' + device.location : '') + ' Â· ' + device.device_key;
   document.getElementById('dd-status').textContent = device.online ? 'Online' : 'Offline';
   document.getElementById('dd-status').className = 'badge ' + (device.online ? 'badge-green' : 'badge-red');
   document.getElementById('dd-stats').innerHTML = '';
@@ -950,7 +950,7 @@ function renderDeviceWidgets(deviceId) {
   var canvas = document.getElementById('device-widget-canvas');
   var widgets = deviceWidgets[deviceId] || [];
   if (!widgets.length) {
-    canvas.innerHTML = '<div class="empty" style="grid-column:1/-1">No widgets — click + Widget to add one</div>';
+    canvas.innerHTML = '<div class="empty" style="grid-column:1/-1">No widgets â€” click + Widget to add one</div>';
     return;
   }
   canvas.innerHTML = widgets.map(function(w){ return renderWidget(w, deviceId); }).join('');
@@ -1079,7 +1079,7 @@ function updateDeviceWidgets(topic, value) {
       case 'alarm': {
         var alarm = document.getElementById('wa-' + w.id);
         var triggered = !isNaN(v) && v > (cfg.threshold || 100);
-        if(alarm) { alarm.classList.toggle('triggered', triggered); alarm.querySelector('.w-alarm-st').textContent = triggered ? '&#9888; ALARM: ' + v.toFixed(1) : 'OK · monitoring'; }
+        if(alarm) { alarm.classList.toggle('triggered', triggered); alarm.querySelector('.w-alarm-st').textContent = triggered ? '&#9888; ALARM: ' + v.toFixed(1) : 'OK Â· monitoring'; }
         break;
       }
     }
@@ -1126,9 +1126,9 @@ async function loadDeviceReadings(deviceId) {
   } catch(e) {}
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // WIDGET ACTIONS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function sendCmd(deviceId, pin, value) {
   try { await apiCall('/api/my-devices/' + deviceId + '/command', 'POST', { command: pin, value: String(value) }); }
   catch(e) {}
@@ -1162,9 +1162,9 @@ function sendTermCmd(deviceId, pin, wid) {
   input.value = '';
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // WIDGET CONFIG MODAL
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function selectWidgetType(type) {
   pendingWType = type;
   document.getElementById('mw-step1').style.display = 'none';
@@ -1223,9 +1223,9 @@ async function deleteWidget(deviceId, wid) {
   await loadDeviceWidgets(deviceId);
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // AUTOMATIONS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadAutomations() {
   try {
     var res   = await apiCall('/api/automations');
@@ -1279,9 +1279,9 @@ function updateAutoAction() {
   document.getElementById('auto-action-device').style.display = type === 'device_command' ? 'block' : 'none';
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ALERTS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function addAlertRule() {
   var name   = document.getElementById('al-name').value.trim();
   var sensor = document.getElementById('al-sensor').value;
@@ -1297,7 +1297,7 @@ function addAlertRule() {
 function renderAlertRules() {
   var el = document.getElementById('alert-rules-list');
   if (!el) return;
-  if (!alertRules.length) { el.innerHTML = '<div class="empty">No alert rules — click + Add Alert</div>'; return; }
+  if (!alertRules.length) { el.innerHTML = '<div class="empty">No alert rules â€” click + Add Alert</div>'; return; }
   el.innerHTML = alertRules.map(function(a) {
     return '<div class="auto-card">' +
       '<div class="auto-info"><div class="auto-name">' + a.name + '</div><div class="auto-desc">' + a.sensor + ' ' + a.cond + ' ' + a.val + '</div></div>' +
@@ -1334,9 +1334,9 @@ function renderTriggered() {
   }).join('');
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // USERS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadUsers() {
   try {
     var res     = await apiCall('/api/org/members');
@@ -1346,7 +1346,7 @@ async function loadUsers() {
     el.innerHTML = '<table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th></th></tr></thead><tbody>' +
       members.map(function(m) {
         return '<tr>' +
-          '<td style="font-weight:500;color:#fff">' + (m.name||'—') + '</td>' +
+          '<td style="font-weight:500;color:#fff">' + (m.name||'â€”') + '</td>' +
           '<td>' + m.email + '</td>' +
           '<td><span class="badge ' + (m.role==='admin'?'badge-purple':m.role==='developer'?'badge-green':'badge-yellow') + '">' + m.role + '</span></td>' +
           '<td style="font-size:11px;color:#444">' + new Date(m.created_at).toLocaleDateString() + '</td>' +
@@ -1379,9 +1379,9 @@ async function removeMember(id) {
   loadUsers();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // LOCATIONS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadLocations() {
   try {
     var res  = await apiCall('/api/locations');
@@ -1419,9 +1419,9 @@ async function deleteLoc(id) {
   loadLocations();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SNAPSHOTS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadSnapshots() {
   try {
     var res   = await apiCall('/api/snapshots');
@@ -1452,9 +1452,9 @@ async function deleteSnap(id) {
   loadSnapshots();
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // NOTIFICATIONS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadNotifs() {
   try {
     var res   = await apiCall('/api/notifications');
@@ -1477,15 +1477,15 @@ async function loadNotifs() {
 async function markNotifsRead() { await apiCall('/api/notifications/read', 'PUT'); loadNotifs(); }
 function toggleNotifPanel() { document.getElementById('notif-panel').classList.toggle('open'); }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SETTINGS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 async function loadSettings() {
   try {
     var res  = await apiCall('/api/org');
     var data = await res.json();
     document.getElementById('set-org-name').value = (data.org && data.org.name) ? data.org.name : '';
-    document.getElementById('set-user-info').textContent = (currentUser ? currentUser.name + ' · ' + currentUser.email : '');
+    document.getElementById('set-user-info').textContent = (currentUser ? currentUser.name + ' Â· ' + currentUser.email : '');
     document.getElementById('set-role-chip').textContent = currentUser ? (currentUser.role || 'admin') : 'admin';
   } catch(e) {}
 }
@@ -1498,9 +1498,9 @@ async function saveOrgSettings() {
   alert('Saved!');
 }
 
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HELPERS
-// ═══════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function apiCall(url, method, body) {
   method = method || 'GET';
   var opts = { method: method, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token } };
