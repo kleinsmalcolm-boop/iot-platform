@@ -363,8 +363,8 @@ app.get('/api/device/commands', deviceLimiter, apiKeyMiddleware, async (req, res
 app.get('/api/automations', authMiddleware, async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT a.*, d1.name as trigger_device_name, d2.name as action_device_name FROM automations a LEFT JOIN devices d1 ON a.trigger_device_id = d1.id LEFT JOIN devices d2 ON a.action_device_id = d2.id WHERE a.org_id = $1 ORDER BY a.created_at DESC',
-      [req.user.orgId]
+      'SELECT a.*, d1.name as trigger_device_name, d2.name as action_device_name FROM automations a LEFT JOIN devices d1 ON a.trigger_device_id = d1.id LEFT JOIN devices d2 ON a.action_device_id = d2.id WHERE (a.org_id = $1 OR a.user_id = $2) ORDER BY a.created_at DESC',
+      [req.user.orgId, req.user.userId]
     );
     res.json(result.rows);
   } catch(e) { res.status(500).json({ error: e.message }); }
@@ -384,14 +384,14 @@ app.post('/api/automations', authMiddleware, async (req, res) => {
 app.put('/api/automations/:id', authMiddleware, async (req, res) => {
   try {
     const { active } = req.body;
-    const result = await pool.query('UPDATE automations SET active = $1 WHERE id = $2 AND org_id = $3 RETURNING *', [active, req.params.id, req.user.orgId]);
+    const result = await pool.query('UPDATE automations SET active = $1 WHERE id = $2 AND (org_id = $3 OR user_id = $4) RETURNING *', [active, req.params.id, req.user.orgId, req.user.userId]);
     res.json(result.rows[0]);
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
 
 app.delete('/api/automations/:id', authMiddleware, async (req, res) => {
   try {
-    await pool.query('DELETE FROM automations WHERE id = $1 AND org_id = $2', [req.params.id, req.user.orgId]);
+    await pool.query('DELETE FROM automations WHERE id = $1 AND (org_id = $2 OR user_id = $3)', [req.params.id, req.user.orgId, req.user.userId]);
     res.json({ success: true });
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
@@ -421,7 +421,7 @@ app.put('/api/notifications/read', authMiddleware, async (req, res) => {
 // -- Locations -----------------------------------------
 app.get('/api/locations', authMiddleware, async (req, res) => {
   try {
-    const result = await pool.query('SELECT l.*, COUNT(d.id) as device_count FROM locations l LEFT JOIN devices d ON d.location = l.name AND d.org_id = l.org_id WHERE l.org_id = $1 GROUP BY l.id ORDER BY l.created_at DESC', [req.user.orgId]);
+    const result = await pool.query('SELECT l.*, COUNT(d.id) as device_count FROM locations l LEFT JOIN devices d ON d.location = l.name WHERE l.org_id = $1 OR l.user_id = $2 GROUP BY l.id ORDER BY l.created_at DESC', [req.user.orgId, req.user.userId]);
     res.json(result.rows);
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
@@ -436,7 +436,7 @@ app.post('/api/locations', authMiddleware, async (req, res) => {
 
 app.delete('/api/locations/:id', authMiddleware, async (req, res) => {
   try {
-    await pool.query('DELETE FROM locations WHERE id = $1 AND org_id = $2', [req.params.id, req.user.orgId]);
+    await pool.query('DELETE FROM locations WHERE id = $1 AND (org_id = $2 OR user_id = $3)', [req.params.id, req.user.orgId, req.user.userId]);
     res.json({ success: true });
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
