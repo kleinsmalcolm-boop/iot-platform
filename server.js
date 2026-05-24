@@ -271,7 +271,7 @@ app.put('/api/my-devices/:id', authMiddleware, async (req, res) => {
 
 app.delete('/api/my-devices/:id', authMiddleware, async (req, res) => {
   try {
-    await pool.query('DELETE FROM devices WHERE id = $1 AND org_id = $2', [req.params.id, req.user.orgId]);
+    await pool.query('DELETE FROM devices WHERE id = $1 AND (org_id = $2 OR user_id = $3)', [req.params.id, req.user.orgId, req.user.userId]);
     res.json({ success: true });
   } catch(e) { res.status(500).json({ error: e.message }); }
 });
