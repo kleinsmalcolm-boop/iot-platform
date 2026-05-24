@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -46,18 +46,18 @@ body{font-family:system-ui,sans-serif;background:#0a0a14;color:#e2e8f0;height:10
 .fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1px solid #1e1e30;border-radius:8px;font-size:13px;outline:none;background:#0a0a14;color:#fff;transition:border 0.15s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#7c3aed}
 .fg textarea{resize:vertical;min-height:80px}
-.btn{padding:9px 16px;background:#7c3aed;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px}
+.btn{padding:9px 16px;background:#7c3aed;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 .btn:hover{background:#6d28d9}
-.btn-full{width:100%}
+.btn-full{width:100%;display:flex}
 .btn-outline{background:transparent;color:#7c3aed;border:1px solid #7c3aed}
 .btn-outline:hover{background:rgba(124,58,237,0.1)}
 .btn-sm{padding:5px 12px;font-size:12px}
 .btn-xs{padding:3px 8px;font-size:11px}
-.btn-danger{background:#dc2626}
+.btn-danger{background:#dc2626;color:#fff}
 .btn-danger:hover{background:#b91c1c}
-.btn-green{background:#16a34a}
+.btn-green{background:#16a34a;color:#fff}
 .btn-green:hover{background:#15803d}
-.btn-gray{background:#1e1e30;color:#888}
+.btn-gray{background:#1e1e30;color:#888;border:none}
 .btn-gray:hover{background:#2a2a40;color:#fff}
 .err{color:#f87171;font-size:12px;margin-top:6px;display:none}
 
@@ -94,18 +94,17 @@ body{font-family:system-ui,sans-serif;background:#0a0a14;color:#e2e8f0;height:10
 .token-box:hover{border-color:#7c3aed}
 
 /* Device dashboard */
-.device-dash-header{background:#12121f;border:1px solid #1e1e30;border-radius:12px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.device-dash-header{background:#12121f;border:1px solid #1e1e30;border-radius:12px;padding:16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .device-dash-name{font-size:18px;font-weight:700;color:#fff}
 .device-dash-meta{font-size:12px;color:#555;margin-top:3px}
-.device-dash-actions{display:flex;gap:8px}
+.device-dash-actions{display:flex;gap:8px;flex-wrap:wrap}
 
 /* Widget canvas */
-.widget-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .widget-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 @media(max-width:1000px){.widget-grid{grid-template-columns:repeat(2,1fr)}}
 .widget-box{background:#12121f;border:1px solid #1e1e30;border-radius:10px;padding:14px;position:relative;min-height:110px;display:flex;flex-direction:column;transition:border 0.2s}
 .widget-box:hover{border-color:#2a2a40}
-.edit-mode .widget-box{border-style:dashed;border-color:#7c3aed33}
+.edit-mode .widget-box{border-style:dashed;border-color:#7c3aed55}
 .wh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .wlabel{font-size:10px;color:#555;text-transform:uppercase;letter-spacing:0.5px}
 .wpin{font-size:10px;color:#7c3aed;background:rgba(124,58,237,0.15);padding:1px 6px;border-radius:4px}
@@ -168,8 +167,8 @@ tr:hover td{background:rgba(124,58,237,0.04)}
 .logbox{background:#050510;border:1px solid #1e1e30;border-radius:8px;padding:10px;font-family:monospace;font-size:11px;color:#888;overflow-y:auto}
 
 /* Automation */
-.auto-card{background:#12121f;border:1px solid #1e1e30;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.auto-info{flex:1}
+.auto-card{background:#12121f;border:1px solid #1e1e30;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.auto-info{flex:1;min-width:200px}
 .auto-name{font-weight:600;color:#fff;font-size:14px}
 .auto-desc{font-size:11px;color:#555;margin-top:3px}
 .auto-meta{font-size:10px;color:#444;margin-top:4px}
@@ -214,19 +213,19 @@ tr:hover td{background:rgba(124,58,237,0.04)}
 </head>
 <body>
 
-<!-- AUTH -->
+<!-- AUTH SCREEN -->
 <div class="auth-screen" id="auth-screen">
-  <div class="auth-logo">⚡ IoT <span>Platform</span></div>
+  <div class="auth-logo">&#9889; IoT <span>Platform</span></div>
   <div class="auth-card">
-    <h2 id="at">Welcome back</h2>
-    <p id="as">Sign in to your organization</p>
-    <div class="fg"><label>Email</label><input type="email" id="ae" placeholder="you@example.com"></div>
-    <div class="fg" id="ang" style="display:none"><label>Your Name</label><input type="text" id="an" placeholder="Malcolm"></div>
-    <div class="fg" id="aog" style="display:none"><label>Organization Name</label><input type="text" id="ao" placeholder="My IoT Company"></div>
-    <div class="fg"><label>Password</label><input type="password" id="ap" placeholder="password"></div>
-    <div class="err" id="aerr"></div>
-    <button class="btn btn-full" style="margin-bottom:8px" onclick="submitAuth()">Sign in</button>
-    <button class="btn btn-full btn-outline" onclick="toggleAuth()">Create account instead</button>
+    <h2 id="auth-title">Welcome back</h2>
+    <p id="auth-subtitle">Sign in to your organization</p>
+    <div class="fg"><label>Email</label><input type="email" id="auth-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')submitAuth()"></div>
+    <div class="fg" id="auth-name-group" style="display:none"><label>Your Name</label><input type="text" id="auth-name" placeholder="Malcolm"></div>
+    <div class="fg" id="auth-org-group" style="display:none"><label>Organization Name</label><input type="text" id="auth-org" placeholder="My IoT Company"></div>
+    <div class="fg"><label>Password</label><input type="password" id="auth-password" placeholder="password" onkeydown="if(event.key==='Enter')submitAuth()"></div>
+    <div class="err" id="auth-err"></div>
+    <button class="btn btn-full" id="auth-submit-btn" style="margin-bottom:10px" onclick="submitAuth()">Sign in</button>
+    <button class="btn btn-full btn-outline" id="auth-toggle-btn" onclick="toggleAuth()">Create account instead</button>
   </div>
 </div>
 
@@ -243,26 +242,26 @@ tr:hover td{background:rgba(124,58,237,0.04)}
 <div id="dashboard" style="display:none;width:100%;height:100vh;overflow:hidden;flex-direction:row">
   <div class="sidebar">
     <div class="logo">
-      <div class="logo-title">⚡ IoT Platform</div>
+      <div class="logo-title">&#9889; IoT Platform</div>
       <div class="logo-sub">Device Management Console</div>
     </div>
     <div class="org-badge">Organization<span id="sb-org">Loading...</span></div>
     <div class="nav-section">Overview</div>
-    <div class="nav-item active" onclick="nav('pg-home',this)"><span class="ni">🏠</span> Home</div>
-    <div class="nav-item" onclick="nav('pg-devices',this)"><span class="ni">📡</span> Devices</div>
+    <div class="nav-item active" onclick="navTo('pg-home',this)"><span class="ni">&#127968;</span> Home</div>
+    <div class="nav-item" onclick="navTo('pg-devices',this)"><span class="ni">&#128225;</span> Devices</div>
     <div class="nav-section">Automation</div>
-    <div class="nav-item" onclick="nav('pg-auto',this)"><span class="ni">⚡</span> Automations</div>
-    <div class="nav-item" onclick="nav('pg-alerts',this)"><span class="ni">🔔</span> Alerts</div>
+    <div class="nav-item" onclick="navTo('pg-auto',this)"><span class="ni">&#9889;</span> Automations</div>
+    <div class="nav-item" onclick="navTo('pg-alerts',this)"><span class="ni">&#128276;</span> Alerts</div>
     <div class="nav-section">Organization</div>
-    <div class="nav-item" onclick="nav('pg-users',this)"><span class="ni">👥</span> Users</div>
-    <div class="nav-item" onclick="nav('pg-locations',this)"><span class="ni">📍</span> Locations</div>
+    <div class="nav-item" onclick="navTo('pg-users',this)"><span class="ni">&#128101;</span> Users</div>
+    <div class="nav-item" onclick="navTo('pg-locations',this)"><span class="ni">&#128205;</span> Locations</div>
     <div class="nav-section">Data</div>
-    <div class="nav-item" onclick="nav('pg-analytics',this)"><span class="ni">📊</span> Analytics</div>
-    <div class="nav-item" onclick="nav('pg-snapshots',this)"><span class="ni">📸</span> Snapshots</div>
-    <div class="nav-item" onclick="nav('pg-log',this)"><span class="ni">📄</span> Live Log</div>
+    <div class="nav-item" onclick="navTo('pg-analytics',this)"><span class="ni">&#128202;</span> Analytics</div>
+    <div class="nav-item" onclick="navTo('pg-snapshots',this)"><span class="ni">&#128247;</span> Snapshots</div>
+    <div class="nav-item" onclick="navTo('pg-log',this)"><span class="ni">&#128196;</span> Live Log</div>
     <div style="flex:1"></div>
-    <div class="nav-item" onclick="nav('pg-settings',this)"><span class="ni">⚙️</span> Settings</div>
-    <div class="nav-item" onclick="logout()"><span class="ni">🚪</span> Sign out</div>
+    <div class="nav-item" onclick="navTo('pg-settings',this)"><span class="ni">&#9881;</span> Settings</div>
+    <div class="nav-item" onclick="doLogout()"><span class="ni">&#128682;</span> Sign out</div>
   </div>
 
   <div class="main">
@@ -271,16 +270,16 @@ tr:hover td{background:rgba(124,58,237,0.04)}
       <div class="topbar-right">
         <span class="badge badge-purple" id="ws-status">Connecting...</span>
         <span class="badge badge-green" id="msg-badge">0 msgs</span>
-        <button class="notif-btn" onclick="toggleNotifPanel()" id="notif-btn">🔔<span class="notif-count" id="notif-count" style="display:none">0</span></button>
+        <button class="notif-btn" onclick="toggleNotifPanel()" id="notif-btn">&#128276;<span class="notif-count" id="notif-count" style="display:none">0</span></button>
         <span style="font-size:12px;color:#555" id="user-badge"></span>
       </div>
     </div>
 
     <div class="content">
 
-      <!-- HOME -->
+      <!-- HOME PAGE -->
       <div class="page active" id="pg-home">
-        <div class="grid-4" style="margin-bottom:16px" id="home-stats">
+        <div class="grid-4" style="margin-bottom:16px">
           <div class="stat-card"><div class="stat-label">Devices</div><div class="stat-value" id="hs-devices">0</div><div class="stat-sub">registered</div></div>
           <div class="stat-card"><div class="stat-label">Online</div><div class="stat-value" id="hs-online" style="color:#22c55e">0</div><div class="stat-sub">active now</div></div>
           <div class="stat-card"><div class="stat-label">Messages</div><div class="stat-value" id="hs-msgs">0</div><div class="stat-sub">this session</div></div>
@@ -288,12 +287,12 @@ tr:hover td{background:rgba(124,58,237,0.04)}
         </div>
         <div class="grid-2" style="margin-bottom:14px">
           <div class="card"><div class="card-title"><span><span class="live-dot"></span> Live Data</span></div><div id="home-live" style="font-size:13px"><div class="empty" style="padding:20px 0">Waiting for data...</div></div></div>
-          <div class="card"><div class="card-title">📡 Recent Devices</div><div id="home-devices" style="font-size:13px"><div class="empty" style="padding:20px 0">No devices yet</div></div></div>
+          <div class="card"><div class="card-title">&#128225; Recent Devices</div><div id="home-devices" style="font-size:13px"><div class="empty" style="padding:20px 0">No devices yet</div></div></div>
         </div>
-        <div class="card"><div class="card-title">📈 Temperature</div><canvas id="home-chart" height="100"></canvas></div>
+        <div class="card"><div class="card-title">&#128200; Temperature</div><canvas id="home-chart" height="100"></canvas></div>
       </div>
 
-      <!-- DEVICES -->
+      <!-- DEVICES PAGE -->
       <div class="page" id="pg-devices">
         <div id="device-view-list">
           <div class="sh"><h2>All Devices</h2><div class="sh-actions"><button class="btn btn-sm" onclick="openModal('modal-add-device')">+ New Device</button></div></div>
@@ -307,72 +306,72 @@ tr:hover td{background:rgba(124,58,237,0.04)}
             </div>
             <div class="device-dash-actions">
               <span class="badge" id="dd-status">Offline</span>
-              <button class="btn btn-sm btn-gray" onclick="showDeviceList()">← Back</button>
+              <button class="btn btn-sm btn-gray" onclick="showDeviceList()">&#8592; Back</button>
               <button class="btn btn-sm" onclick="openModal('modal-add-widget')">+ Widget</button>
-              <button class="btn btn-sm btn-gray" id="dd-edit-btn" onclick="toggleWidgetEdit()">✏ Edit</button>
+              <button class="btn btn-sm btn-gray" id="dd-edit-btn" onclick="toggleWidgetEdit()">&#9998; Edit</button>
             </div>
           </div>
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px" id="dd-stats"></div>
           <div class="widget-grid" id="device-widget-canvas"><div class="empty" style="grid-column:1/-1">No widgets — click + Widget to add one</div></div>
           <div class="sep"></div>
-          <div class="card" style="margin-top:14px"><div class="card-title">📈 Device History</div><canvas id="dd-chart" height="100"></canvas></div>
-          <div class="card" style="margin-top:14px"><div class="card-title">📄 Recent Readings<span><button class="btn btn-xs btn-gray" onclick="loadDeviceReadings(currentDeviceId)">Refresh</button></span></div><div id="dd-readings" style="max-height:200px;overflow-y:auto"></div></div>
+          <div class="card" style="margin-top:14px"><div class="card-title">&#128200; Device History<span><button class="btn btn-xs btn-gray" onclick="loadDeviceReadings(currentDeviceId)">Refresh</button></span></div><canvas id="dd-chart" height="80"></canvas></div>
+          <div class="card" style="margin-top:14px"><div class="card-title">&#128196; Recent Readings</div><div id="dd-readings" style="max-height:200px;overflow-y:auto"></div></div>
         </div>
       </div>
 
-      <!-- AUTOMATIONS -->
+      <!-- AUTOMATIONS PAGE -->
       <div class="page" id="pg-auto">
         <div class="sh"><h2>Automations</h2><button class="btn btn-sm" onclick="openModal('modal-add-auto')">+ New Automation</button></div>
         <div id="auto-list"><div class="empty">Loading...</div></div>
       </div>
 
-      <!-- ALERTS -->
+      <!-- ALERTS PAGE -->
       <div class="page" id="pg-alerts">
         <div class="sh"><h2>Alert Rules</h2><button class="btn btn-sm" onclick="openModal('modal-add-alert')">+ Add Alert</button></div>
-        <div id="alert-rules-list"></div>
+        <div id="alert-rules-list"><div class="empty">No alert rules yet</div></div>
         <div class="sep"></div>
         <div class="sh"><h2>Triggered Alerts</h2><button class="btn btn-xs btn-gray" onclick="triggeredAlerts=[];renderTriggered()">Clear</button></div>
         <div id="triggered-list"><div class="empty">No alerts triggered yet</div></div>
       </div>
 
-      <!-- USERS -->
+      <!-- USERS PAGE -->
       <div class="page" id="pg-users">
         <div class="sh"><h2>Team Members</h2><button class="btn btn-sm" onclick="openModal('modal-invite')">+ Invite User</button></div>
         <div class="card"><div id="users-table"><div class="empty">Loading...</div></div></div>
       </div>
 
-      <!-- LOCATIONS -->
+      <!-- LOCATIONS PAGE -->
       <div class="page" id="pg-locations">
         <div class="sh"><h2>Locations</h2><button class="btn btn-sm" onclick="openModal('modal-add-loc')">+ Add Location</button></div>
         <div class="device-grid" id="loc-grid"><div class="empty">No locations yet</div></div>
       </div>
 
-      <!-- ANALYTICS -->
+      <!-- ANALYTICS PAGE -->
       <div class="page" id="pg-analytics">
         <div class="sh"><h2>Analytics</h2></div>
         <div class="grid-4" style="margin-bottom:16px">
           <div class="stat-card"><div class="stat-label">Total Messages</div><div class="stat-value" id="an-msgs">0</div></div>
           <div class="stat-card"><div class="stat-label">Active Streams</div><div class="stat-value" id="an-streams">0</div></div>
-          <div class="stat-card"><div class="stat-label">Peak Temp</div><div class="stat-value"><span id="an-peak">--</span><span style="font-size:14px;color:#555">°C</span></div></div>
-          <div class="stat-card"><div class="stat-label">Avg Temp</div><div class="stat-value"><span id="an-avg">--</span><span style="font-size:14px;color:#555">°C</span></div></div>
+          <div class="stat-card"><div class="stat-label">Peak Temp</div><div class="stat-value"><span id="an-peak">--</span><span style="font-size:14px;color:#555">C</span></div></div>
+          <div class="stat-card"><div class="stat-label">Avg Temp</div><div class="stat-value"><span id="an-avg">--</span><span style="font-size:14px;color:#555">C</span></div></div>
         </div>
         <div class="card" style="margin-bottom:14px"><div class="card-title">Temperature History</div><canvas id="an-temp" height="100"></canvas></div>
         <div class="card"><div class="card-title">Humidity History</div><canvas id="an-hum" height="100"></canvas></div>
       </div>
 
-      <!-- SNAPSHOTS -->
+      <!-- SNAPSHOTS PAGE -->
       <div class="page" id="pg-snapshots">
-        <div class="sh"><h2>Snapshots</h2><button class="btn btn-sm" onclick="createSnapshot()">📸 Take Snapshot</button></div>
+        <div class="sh"><h2>Snapshots</h2><button class="btn btn-sm" onclick="createSnapshot()">&#128247; Take Snapshot</button></div>
         <div id="snapshots-list"><div class="empty">No snapshots yet</div></div>
       </div>
 
-      <!-- LIVE LOG -->
+      <!-- LIVE LOG PAGE -->
       <div class="page" id="pg-log">
         <div class="sh"><h2>Live Log</h2><button class="btn btn-sm btn-gray" onclick="document.getElementById('full-log').innerHTML=''">Clear</button></div>
         <div class="card"><div class="logbox" id="full-log" style="height:500px"></div></div>
       </div>
 
-      <!-- SETTINGS -->
+      <!-- SETTINGS PAGE -->
       <div class="page" id="pg-settings">
         <div class="sh"><h2>Settings</h2></div>
         <div class="grid-2">
@@ -384,7 +383,7 @@ tr:hover td{background:rgba(124,58,237,0.04)}
           <div class="card">
             <div class="card-title">Account</div>
             <div style="font-size:13px;color:#888;margin-bottom:10px" id="set-user-info">Loading...</div>
-            <div class="chip" id="set-role-chip">role</div>
+            <div class="chip" id="set-role-chip">admin</div>
           </div>
         </div>
       </div>
@@ -399,7 +398,15 @@ tr:hover td{background:rgba(124,58,237,0.04)}
     <h3>Register New Device</h3>
     <div class="fg"><label>Device Name</label><input type="text" id="nd-name" placeholder="e.g. Living Room ESP32"></div>
     <div class="frow">
-      <div class="fg"><label>Type</label><select id="nd-type"><option value="esp32">ESP32</option><option value="esp8266">ESP8266</option><option value="arduino">Arduino</option><option value="raspberry-pi">Raspberry Pi</option><option value="generic">Generic</option></select></div>
+      <div class="fg"><label>Type</label>
+        <select id="nd-type">
+          <option value="esp32">ESP32</option>
+          <option value="esp8266">ESP8266</option>
+          <option value="arduino">Arduino</option>
+          <option value="raspberry-pi">Raspberry Pi</option>
+          <option value="generic">Generic</option>
+        </select>
+      </div>
       <div class="fg"><label>Location</label><input type="text" id="nd-location" placeholder="e.g. Office"></div>
     </div>
     <div class="fg"><label>Description</label><input type="text" id="nd-desc" placeholder="What does this device do?"></div>
@@ -417,30 +424,30 @@ tr:hover td{background:rgba(124,58,237,0.04)}
     <div id="mw-step1">
       <div style="font-size:12px;color:#666;margin-bottom:10px">Select widget type:</div>
       <div class="wtype-grid">
-        <div class="wtype-btn" onclick="selectWidgetType('button')"><div class="wtype-icon">▶</div><div class="wtype-name">Button</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('switch')"><div class="wtype-icon">⏺</div><div class="wtype-name">Switch</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('slider')"><div class="wtype-icon">🎚</div><div class="wtype-name">Slider</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('display')"><div class="wtype-icon">📟</div><div class="wtype-name">Display</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('label')"><div class="wtype-icon">🏷</div><div class="wtype-name">Label</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('gauge')"><div class="wtype-icon">⏲</div><div class="wtype-name">Gauge</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('radial')"><div class="wtype-icon">◔</div><div class="wtype-name">Radial Gauge</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('number')"><div class="wtype-icon">🔢</div><div class="wtype-name">Number Input</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('chart')"><div class="wtype-icon">📈</div><div class="wtype-name">Chart</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('terminal')"><div class="wtype-icon">⌨</div><div class="wtype-name">Terminal</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('alarm')"><div class="wtype-icon">🚨</div><div class="wtype-name">Alarm</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('segmented')"><div class="wtype-icon">⊞</div><div class="wtype-name">Seg. Switch</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('menu')"><div class="wtype-icon">☰</div><div class="wtype-name">Menu</div></div>
-        <div class="wtype-btn" onclick="selectWidgetType('text-input')"><div class="wtype-icon">✏</div><div class="wtype-name">Text Input</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('button')"><div class="wtype-icon">&#9654;</div><div class="wtype-name">Button</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('switch')"><div class="wtype-icon">&#9644;</div><div class="wtype-name">Switch</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('slider')"><div class="wtype-icon">&#127922;</div><div class="wtype-name">Slider</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('display')"><div class="wtype-icon">&#128208;</div><div class="wtype-name">Display</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('label')"><div class="wtype-icon">&#127991;</div><div class="wtype-name">Label</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('gauge')"><div class="wtype-icon">&#9711;</div><div class="wtype-name">Gauge</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('radial')"><div class="wtype-icon">&#9684;</div><div class="wtype-name">Radial Gauge</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('number')"><div class="wtype-icon">&#128290;</div><div class="wtype-name">Number Input</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('chart')"><div class="wtype-icon">&#128200;</div><div class="wtype-name">Chart</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('terminal')"><div class="wtype-icon">&#62;_</div><div class="wtype-name">Terminal</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('alarm')"><div class="wtype-icon">&#128680;</div><div class="wtype-name">Alarm</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('segmented')"><div class="wtype-icon">&#9635;</div><div class="wtype-name">Seg. Switch</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('menu')"><div class="wtype-icon">&#9776;</div><div class="wtype-name">Menu</div></div>
+        <div class="wtype-btn" onclick="selectWidgetType('text-input')"><div class="wtype-icon">&#9000;</div><div class="wtype-name">Text Input</div></div>
       </div>
     </div>
     <div id="mw-step2" style="display:none">
       <div class="fg"><label>Widget Label</label><input type="text" id="wc-label" placeholder="e.g. LED Control"></div>
-      <div class="fg"><label>Pin (V0, V1, D1...)</label><input type="text" id="wc-pin" placeholder="e.g. V0"></div>
+      <div class="fg"><label>Pin (V0, V1, D1, temperature...)</label><input type="text" id="wc-pin" placeholder="e.g. V0"></div>
       <div id="wc-extra"></div>
       <div class="err" id="wc-err"></div>
       <div class="modal-footer">
         <button class="btn" onclick="confirmWidget()">Add Widget</button>
-        <button class="btn btn-outline" onclick="document.getElementById('mw-step2').style.display='none';document.getElementById('mw-step1').style.display='block'">Back</button>
+        <button class="btn btn-outline" onclick="backToWidgetStep1()">Back</button>
       </div>
     </div>
   </div>
@@ -449,7 +456,7 @@ tr:hover td{background:rgba(124,58,237,0.04)}
 <div class="modal-overlay" id="modal-add-auto">
   <div class="modal">
     <h3>New Automation</h3>
-    <div class="fg"><label>Automation Name</label><input type="text" id="auto-name" placeholder="e.g. Cool Fan when hot"></div>
+    <div class="fg"><label>Automation Name</label><input type="text" id="auto-name" placeholder="e.g. Cool fan when hot"></div>
     <div style="font-size:12px;font-weight:600;color:#7c3aed;margin:12px 0 8px">TRIGGER — When this happens...</div>
     <div class="frow">
       <div class="fg"><label>Device</label><select id="auto-tdev"></select></div>
@@ -481,7 +488,15 @@ tr:hover td{background:rgba(124,58,237,0.04)}
     <h3>New Alert Rule</h3>
     <div class="fg"><label>Alert Name</label><input type="text" id="al-name" placeholder="e.g. High Temperature"></div>
     <div class="frow">
-      <div class="fg"><label>Sensor</label><select id="al-sensor"><option value="temperature">Temperature</option><option value="humidity">Humidity</option><option value="motion">Motion</option><option value="pressure">Pressure</option><option value="light">Light</option></select></div>
+      <div class="fg"><label>Sensor</label>
+        <select id="al-sensor">
+          <option value="temperature">Temperature</option>
+          <option value="humidity">Humidity</option>
+          <option value="motion">Motion</option>
+          <option value="pressure">Pressure</option>
+          <option value="light">Light</option>
+        </select>
+      </div>
       <div class="fg"><label>Condition</label><select id="al-cond"><option value="above">Above</option><option value="below">Below</option><option value="equals">Equals</option></select></div>
     </div>
     <div class="fg"><label>Threshold Value</label><input type="number" id="al-val" placeholder="e.g. 35"></div>
@@ -496,7 +511,13 @@ tr:hover td{background:rgba(124,58,237,0.04)}
   <div class="modal">
     <h3>Invite Team Member</h3>
     <div class="fg"><label>Email Address</label><input type="email" id="inv-email" placeholder="colleague@example.com"></div>
-    <div class="fg"><label>Role</label><select id="inv-role"><option value="admin">Admin — full access</option><option value="developer">Developer — manage devices</option><option value="viewer">Viewer — read only</option></select></div>
+    <div class="fg"><label>Role</label>
+      <select id="inv-role">
+        <option value="admin">Admin — full access</option>
+        <option value="developer">Developer — manage devices</option>
+        <option value="viewer">Viewer — read only</option>
+      </select>
+    </div>
     <div class="err" id="inv-err"></div>
     <div class="modal-footer">
       <button class="btn" onclick="inviteUser()">Send Invite</button>
@@ -522,66 +543,109 @@ tr:hover td{background:rgba(124,58,237,0.04)}
 </div>
 
 <script>
-const WS_URL = location.origin.replace('https','wss').replace('http','ws');
-let token = localStorage.getItem('iot_token');
-let currentUser = JSON.parse(localStorage.getItem('iot_user') || 'null');
-let isReg = false;
-let ws = null;
-let msgCount = 0;
-let allTopics = {};
-let tempHist = [], humHist = [];
-let homeChart = null, anTempChart = null, anHumChart = null, ddChart = null;
-let alertRules = JSON.parse(localStorage.getItem('iot_alerts') || '[]');
-let triggeredAlerts = [];
-let allDevices = [];
-let currentDeviceId = null;
-let deviceWidgets = {};
-let widgetCharts = {};
-let wEditMode = false;
-let pendingWidgetType = null;
-let notifs = [];
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+var token = localStorage.getItem('iot_token');
+var currentUser = null;
+try { currentUser = JSON.parse(localStorage.getItem('iot_user') || 'null'); } catch(e) {}
 
-if (token && currentUser) initDashboard();
+var isRegMode = false;
+var ws = null;
+var msgCount = 0;
+var allTopics = {};
+var tempHist = [], humHist = [];
+var homeChart = null, anTempChart = null, anHumChart = null, ddChart = null;
+var alertRules = [];
+try { alertRules = JSON.parse(localStorage.getItem('iot_alerts') || '[]'); } catch(e) {}
+var triggeredAlerts = [];
+var allDevices = [];
+var currentDeviceId = null;
+var deviceWidgets = {};
+var widgetCharts = {};
+var wEditMode = false;
+var pendingWType = null;
+var notifs = [];
 
-// ── Auth ──────────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+if (token && currentUser) {
+  initDashboard();
+}
+
+// ═══════════════════════════════════════════════
+// AUTH
+// ═══════════════════════════════════════════════
 function toggleAuth() {
-  isReg = !isReg;
-  document.getElementById('at').textContent = isReg ? 'Create account' : 'Welcome back';
-  document.getElementById('as').textContent = isReg ? 'Start your IoT organization' : 'Sign in to your organization';
-  document.getElementById('ang').style.display = isReg ? 'block' : 'none';
-  document.getElementById('aog').style.display = isReg ? 'block' : 'none';
-  const btn = document.querySelector('#auth-screen .btn-full:not(.btn-outline)');
-  btn.textContent = isReg ? 'Create account' : 'Sign in';
-  document.querySelector('#auth-screen .btn-outline').textContent = isReg ? 'Sign in instead' : 'Create account instead';
+  isRegMode = !isRegMode;
+  document.getElementById('auth-title').textContent = isRegMode ? 'Create account' : 'Welcome back';
+  document.getElementById('auth-subtitle').textContent = isRegMode ? 'Start your IoT organization' : 'Sign in to your organization';
+  document.getElementById('auth-name-group').style.display = isRegMode ? 'block' : 'none';
+  document.getElementById('auth-org-group').style.display = isRegMode ? 'block' : 'none';
+  document.getElementById('auth-submit-btn').textContent = isRegMode ? 'Create account' : 'Sign in';
+  document.getElementById('auth-toggle-btn').textContent = isRegMode ? 'Sign in instead' : 'Create account instead';
+  document.getElementById('auth-err').style.display = 'none';
 }
 
 async function submitAuth() {
-  const email = document.getElementById('ae').value;
-  const password = document.getElementById('ap').value;
-  const name = document.getElementById('an').value;
-  const orgName = document.getElementById('ao').value;
-  const err = document.getElementById('aerr');
-  err.style.display = 'none';
-  const url = isReg ? '/api/auth/register' : '/api/auth/login';
-  const body = isReg ? { email, password, name, orgName } : { email, password };
+  var email    = document.getElementById('auth-email').value.trim();
+  var password = document.getElementById('auth-password').value;
+  var name     = document.getElementById('auth-name').value.trim();
+  var orgName  = document.getElementById('auth-org').value.trim();
+  var errEl    = document.getElementById('auth-err');
+  errEl.style.display = 'none';
+
+  if (!email || !password) {
+    errEl.textContent = 'Email and password are required';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  var url  = isRegMode ? '/api/auth/register' : '/api/auth/login';
+  var body = isRegMode ? { email: email, password: password, name: name, orgName: orgName } : { email: email, password: password };
+
   try {
-    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    const data = await res.json();
-    if (data.error) { err.textContent = data.error; err.style.display = 'block'; return; }
-    if (isReg) { alert('Account created! Please sign in.'); toggleAuth(); return; }
+    var res  = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    var data = await res.json();
+
+    if (data.error) {
+      errEl.textContent = data.error;
+      errEl.style.display = 'block';
+      return;
+    }
+
+    if (isRegMode) {
+      alert('Account created! Please sign in.');
+      toggleAuth();
+      return;
+    }
+
     token = data.token;
     currentUser = data.user;
     localStorage.setItem('iot_token', token);
     localStorage.setItem('iot_user', JSON.stringify(data.user));
     initDashboard();
-  } catch(e) { err.textContent = 'Connection error'; err.style.display = 'block'; }
+
+  } catch(e) {
+    errEl.textContent = 'Connection error — is the server running?';
+    errEl.style.display = 'block';
+  }
 }
 
+function doLogout() {
+  localStorage.clear();
+  location.reload();
+}
+
+// ═══════════════════════════════════════════════
+// DASHBOARD INIT
+// ═══════════════════════════════════════════════
 function initDashboard() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'flex';
-  document.getElementById('user-badge').textContent = currentUser?.name || currentUser?.email || '';
-  document.getElementById('sb-org').textContent = currentUser?.org_name || 'My Organization';
+  document.getElementById('user-badge').textContent = (currentUser && currentUser.name) ? currentUser.name : (currentUser ? currentUser.email : '');
+  document.getElementById('sb-org').textContent = (currentUser && currentUser.org_name) ? currentUser.org_name : 'My Organization';
   initCharts();
   connectWS();
   loadAll();
@@ -590,16 +654,17 @@ function initDashboard() {
   loadNotifs();
 }
 
-function logout() { localStorage.clear(); location.reload(); }
-
-// ── Navigation ────────────────────────────────────────
-function nav(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function navTo(id, el) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
   document.getElementById(id).classList.add('active');
   el.classList.add('active');
-  const titles = { 'pg-home':'Home','pg-devices':'Devices','pg-auto':'Automations','pg-alerts':'Alerts','pg-users':'Users','pg-locations':'Locations','pg-analytics':'Analytics','pg-snapshots':'Snapshots','pg-log':'Live Log','pg-settings':'Settings' };
+  var titles = { 'pg-home':'Home','pg-devices':'Devices','pg-auto':'Automations','pg-alerts':'Alerts','pg-users':'Users','pg-locations':'Locations','pg-analytics':'Analytics','pg-snapshots':'Snapshots','pg-log':'Live Log','pg-settings':'Settings' };
   document.getElementById('page-title').textContent = titles[id] || '';
+  document.getElementById('notif-panel').classList.remove('open');
   if (id === 'pg-analytics') updateAnalytics();
   if (id === 'pg-devices') { loadDevices(); showDeviceList(); }
   if (id === 'pg-users') loadUsers();
@@ -607,45 +672,67 @@ function nav(id, el) {
   if (id === 'pg-locations') loadLocations();
   if (id === 'pg-snapshots') loadSnapshots();
   if (id === 'pg-settings') loadSettings();
-  document.getElementById('notif-panel').classList.remove('open');
 }
 
-// ── WebSocket ─────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// WEBSOCKET
+// ═══════════════════════════════════════════════
 function connectWS() {
+  var wsUrl = location.origin.replace('https','wss').replace('http','ws');
   try {
-    ws = new WebSocket(WS_URL);
-    ws.onopen = () => { document.getElementById('ws-status').textContent = '● Live'; document.getElementById('ws-status').className = 'badge badge-green'; };
-    ws.onclose = () => { document.getElementById('ws-status').textContent = '● Offline'; document.getElementById('ws-status').className = 'badge badge-red'; setTimeout(connectWS, 3000); };
-    ws.onmessage = e => {
-      const d = JSON.parse(e.data);
-      if (d.type === 'snapshot') { Object.entries(d.data).forEach(([t,v]) => handleMsg({topic:t,value:v.value,time:v.time})); return; }
-      handleMsg(d);
+    ws = new WebSocket(wsUrl);
+    ws.onopen = function() {
+      document.getElementById('ws-status').textContent = '● Live';
+      document.getElementById('ws-status').className = 'badge badge-green';
+    };
+    ws.onclose = function() {
+      document.getElementById('ws-status').textContent = '● Offline';
+      document.getElementById('ws-status').className = 'badge badge-red';
+      setTimeout(connectWS, 3000);
+    };
+    ws.onmessage = function(e) {
+      try {
+        var d = JSON.parse(e.data);
+        if (d.type === 'snapshot') {
+          Object.keys(d.data).forEach(function(t) { handleMsg({ topic: t, value: d.data[t].value, time: d.data[t].time }); });
+          return;
+        }
+        handleMsg(d);
+      } catch(err) {}
     };
   } catch(e) {}
 }
 
 function handleMsg(d) {
-  const { topic, value, time } = d;
+  var topic = d.topic, value = d.value, time = d.time;
   msgCount++;
   document.getElementById('msg-badge').textContent = msgCount + ' msgs';
   document.getElementById('hs-msgs').textContent = msgCount;
-  allTopics[topic] = { value, time };
-  const parts = topic.split('/');
-  const sensor = (parts[2] || '').toLowerCase();
-  const t = new Date(time).toLocaleTimeString();
+  allTopics[topic] = { value: value, time: time };
+  var parts = topic.split('/');
+  var sensor = (parts[2] || '').toLowerCase();
+  var t = new Date(time).toLocaleTimeString();
+
   if (sensor === 'temperature' || sensor === 'temp') {
-    const v = parseFloat(value);
-    tempHist.push({v,t});
-    if (tempHist.length > 60) tempHist.shift();
-    homeChart.data.labels = tempHist.map(x=>x.t);
-    homeChart.data.datasets[0].data = tempHist.map(x=>x.v);
-    homeChart.update('none');
+    var v = parseFloat(value);
+    if (!isNaN(v)) {
+      tempHist.push({ v: v, t: t });
+      if (tempHist.length > 60) tempHist.shift();
+      if (homeChart) {
+        homeChart.data.labels = tempHist.map(function(x) { return x.t; });
+        homeChart.data.datasets[0].data = tempHist.map(function(x) { return x.v; });
+        homeChart.update('none');
+      }
+    }
   }
   if (sensor === 'humidity' || sensor === 'hum') {
-    const v = parseFloat(value);
-    humHist.push({v,t});
-    if (humHist.length > 60) humHist.shift();
+    var v2 = parseFloat(value);
+    if (!isNaN(v2)) {
+      humHist.push({ v: v2, t: t });
+      if (humHist.length > 60) humHist.shift();
+    }
   }
+
   updateHomeLive();
   addLog(topic, value, t);
   checkAlerts(sensor, parseFloat(value), t);
@@ -654,147 +741,175 @@ function handleMsg(d) {
 }
 
 function updateHomeLive() {
-  const el = document.getElementById('home-live');
-  const entries = Object.entries(allTopics).slice(-6);
+  var el = document.getElementById('home-live');
+  var entries = Object.keys(allTopics);
   if (!entries.length) return;
-  el.innerHTML = entries.map(([topic,d]) => {
-    const p = topic.split('/');
-    return `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e30">
-      <div><div style="font-weight:500;color:#fff;font-size:12px">${p[1]||topic}</div><div style="font-size:10px;color:#555">${p[2]||'value'}</div></div>
-      <div style="text-align:right"><div style="font-weight:600;color:#a78bfa;font-size:13px">${d.value}</div><div style="font-size:10px;color:#444">${new Date(d.time).toLocaleTimeString()}</div></div>
-    </div>`;
+  var html = entries.slice(-6).map(function(topic) {
+    var d = allTopics[topic];
+    var p = topic.split('/');
+    return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e30">' +
+      '<div><div style="font-weight:500;color:#fff;font-size:12px">' + (p[1]||topic) + '</div><div style="font-size:10px;color:#555">' + (p[2]||'value') + '</div></div>' +
+      '<div style="text-align:right"><div style="font-weight:600;color:#a78bfa;font-size:13px">' + d.value + '</div><div style="font-size:10px;color:#444">' + new Date(d.time).toLocaleTimeString() + '</div></div>' +
+      '</div>';
   }).join('');
+  el.innerHTML = html;
 }
 
 function addLog(topic, value, time) {
-  const box = document.getElementById('full-log');
+  var box = document.getElementById('full-log');
   if (!box) return;
-  const line = document.createElement('div');
+  var line = document.createElement('div');
   line.style.marginBottom = '3px';
-  line.innerHTML = `<span style="color:#444">[${time}]</span> <span style="color:#5DCAA5">${topic}</span>: <span style="color:#FAC775">${value}</span>`;
+  line.innerHTML = '<span style="color:#444">[' + time + ']</span> <span style="color:#5DCAA5">' + topic + '</span>: <span style="color:#FAC775">' + value + '</span>';
   box.insertBefore(line, box.firstChild);
   if (box.children.length > 200) box.removeChild(box.lastChild);
 }
 
-// ── Charts ────────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// CHARTS
+// ═══════════════════════════════════════════════
 function initCharts() {
-  homeChart = mkChart('home-chart', '#7c3aed');
+  homeChart  = mkChart('home-chart', '#7c3aed');
   anTempChart = mkChart('an-temp', '#7c3aed');
-  anHumChart = mkChart('an-hum', '#4A90D9');
-  ddChart = mkChart('dd-chart', '#22c55e');
+  anHumChart  = mkChart('an-hum', '#4A90D9');
+  ddChart     = mkChart('dd-chart', '#22c55e');
 }
 
 function mkChart(id, color) {
-  const el = document.getElementById(id);
+  var el = document.getElementById(id);
   if (!el) return null;
   return new Chart(el.getContext('2d'), {
     type: 'line',
-    data: { labels: [], datasets: [{ data: [], borderColor: color, backgroundColor: color+'18', borderWidth: 2, pointRadius: 0, tension: 0.4, fill: true }] },
-    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false, grid: { color: '#1e1e30' }, ticks: { color: '#444', font: { size: 10 } } }, x: { ticks: { maxTicksLimit: 6, color: '#444', font: { size: 10 } }, grid: { color: '#1e1e30' } } } }
+    data: { labels: [], datasets: [{ data: [], borderColor: color, backgroundColor: color + '18', borderWidth: 2, pointRadius: 0, tension: 0.4, fill: true }] },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: false, grid: { color: '#1e1e30' }, ticks: { color: '#444', font: { size: 10 } } },
+        x: { ticks: { maxTicksLimit: 6, color: '#444', font: { size: 10 } }, grid: { color: '#1e1e30' } }
+      }
+    }
   });
 }
 
 function updateAnalytics() {
   document.getElementById('an-msgs').textContent = msgCount;
   document.getElementById('an-streams').textContent = Object.keys(allTopics).length;
-  if (tempHist.length) {
-    const t = tempHist.map(x=>x.v);
-    document.getElementById('an-peak').textContent = Math.max(...t).toFixed(1);
-    document.getElementById('an-avg').textContent = (t.reduce((a,b)=>a+b,0)/t.length).toFixed(1);
-    anTempChart.data.labels = tempHist.map(x=>x.t);
-    anTempChart.data.datasets[0].data = t;
+  if (tempHist.length && anTempChart) {
+    var temps = tempHist.map(function(x) { return x.v; });
+    document.getElementById('an-peak').textContent = Math.max.apply(null, temps).toFixed(1);
+    document.getElementById('an-avg').textContent = (temps.reduce(function(a,b){return a+b;},0)/temps.length).toFixed(1);
+    anTempChart.data.labels = tempHist.map(function(x){return x.t;});
+    anTempChart.data.datasets[0].data = temps;
     anTempChart.update();
   }
-  if (humHist.length) {
-    anHumChart.data.labels = humHist.map(x=>x.t);
-    anHumChart.data.datasets[0].data = humHist.map(x=>x.v);
+  if (humHist.length && anHumChart) {
+    anHumChart.data.labels = humHist.map(function(x){return x.t;});
+    anHumChart.data.datasets[0].data = humHist.map(function(x){return x.v;});
     anHumChart.update();
   }
 }
 
-// ── Load all data ─────────────────────────────────────
+// ═══════════════════════════════════════════════
+// LOAD ALL
+// ═══════════════════════════════════════════════
 async function loadAll() {
   await loadDevices();
   await loadAutomations();
   await loadLocations();
 }
 
-// ── Devices ───────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// DEVICES
+// ═══════════════════════════════════════════════
 async function loadDevices() {
   try {
-    const res = await api('/api/my-devices');
+    var res = await apiCall('/api/my-devices');
     allDevices = await res.json();
     document.getElementById('hs-devices').textContent = allDevices.length;
-    document.getElementById('hs-online').textContent = allDevices.filter(d=>d.online).length;
-    const grid = document.getElementById('device-grid');
-    const homeDevs = document.getElementById('home-devices');
+    document.getElementById('hs-online').textContent = allDevices.filter(function(d){return d.online;}).length;
+
+    var grid = document.getElementById('device-grid');
+    var homeDevs = document.getElementById('home-devices');
+
     if (!allDevices.length) {
       grid.innerHTML = '<div class="empty">No devices yet — click + New Device</div>';
       homeDevs.innerHTML = '<div class="empty" style="padding:20px 0">No devices</div>';
-      return;
+    } else {
+      grid.innerHTML = allDevices.map(function(d) {
+        return '<div class="device-card" onclick="openDeviceDash(' + d.id + ')">' +
+          '<div class="device-card-top">' +
+            '<div><div class="device-card-name">' + d.name + '</div><div class="device-card-type">' + d.type + (d.location ? ' · ' + d.location : '') + '</div></div>' +
+            '<div class="device-card-actions" onclick="event.stopPropagation()">' +
+              '<span class="badge ' + (d.online ? 'badge-green' : 'badge-red') + '">' + (d.online ? 'Online' : 'Offline') + '</span>' +
+              '<button class="btn btn-xs btn-danger" onclick="deleteDevice(' + d.id + ')">&#128465;</button>' +
+            '</div>' +
+          '</div>' +
+          (d.description ? '<div style="font-size:11px;color:#555;margin-bottom:8px">' + d.description + '</div>' : '') +
+          '<div class="token-box" onclick="copyText(\'' + (d.api_key||'') + '\');event.stopPropagation()" title="Click to copy API key">' +
+            '&#128273; ' + (d.api_key ? d.api_key.substring(0,32) + '...' : 'No key') +
+          '</div>' +
+          '<div class="device-stats">' +
+            '<div class="device-stat"><div class="device-stat-val">' + d.type + '</div><div class="device-stat-label">Type</div></div>' +
+            '<div class="device-stat"><div class="device-stat-val">' + (d.last_seen ? timeAgo(d.last_seen) : 'Never') + '</div><div class="device-stat-label">Last Seen</div></div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      homeDevs.innerHTML = allDevices.slice(0,4).map(function(d) {
+        return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e30">' +
+          '<div style="font-size:12px;color:#fff;font-weight:500">' + d.name + '</div>' +
+          '<span class="badge ' + (d.online ? 'badge-green' : 'badge-red') + '" style="font-size:10px">' + (d.online ? 'Online' : 'Offline') + '</span>' +
+        '</div>';
+      }).join('');
     }
-    grid.innerHTML = allDevices.map(d => `
-      <div class="device-card" onclick="openDeviceDash(${d.id})">
-        <div class="device-card-top">
-          <div>
-            <div class="device-card-name">${d.name}</div>
-            <div class="device-card-type">${d.type} ${d.location ? '· ' + d.location : ''}</div>
-          </div>
-          <div class="device-card-actions" onclick="event.stopPropagation()">
-            <span class="badge ${d.online ? 'badge-green' : 'badge-red'}">${d.online ? 'Online' : 'Offline'}</span>
-            <button class="btn btn-xs btn-danger" onclick="deleteDevice(${d.id})">🗑</button>
-          </div>
-        </div>
-        ${d.description ? `<div style="font-size:11px;color:#555;margin-bottom:8px">${d.description}</div>` : ''}
-        <div class="token-box" onclick="copyText('${d.api_key||''}');event.stopPropagation()" title="Click to copy API key">
-          🔑 ${d.api_key ? d.api_key.substring(0,32) + '...' : 'No key'}
-        </div>
-        <div class="device-stats">
-          <div class="device-stat"><div class="device-stat-val">${d.type}</div><div class="device-stat-label">Type</div></div>
-          <div class="device-stat"><div class="device-stat-val">${d.last_seen ? timeAgo(d.last_seen) : 'Never'}</div><div class="device-stat-label">Last Seen</div></div>
-        </div>
-      </div>`).join('');
-    homeDevs.innerHTML = allDevices.slice(0,4).map(d => `
-      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e30;cursor:pointer" onclick="openDeviceDash(${d.id});nav('pg-devices',document.querySelector('.nav-item:nth-child(5)'))">
-        <div style="font-size:12px;color:#fff;font-weight:500">${d.name}</div>
-        <span class="badge ${d.online ? 'badge-green' : 'badge-red'}" style="font-size:10px">${d.online ? 'Online' : 'Offline'}</span>
-      </div>`).join('');
-    const sels = ['auto-tdev','auto-adev'];
-    sels.forEach(id => {
-      const sel = document.getElementById(id);
-      if (sel) sel.innerHTML = '<option value="">Select device...</option>' + allDevices.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');
+
+    // Populate device selects for automations
+    ['auto-tdev','auto-adev'].forEach(function(selId) {
+      var sel = document.getElementById(selId);
+      if (sel) {
+        sel.innerHTML = '<option value="">Select device...</option>' + allDevices.map(function(d){
+          return '<option value="' + d.id + '">' + d.name + '</option>';
+        }).join('');
+      }
     });
-  } catch(e) {}
+  } catch(e) { console.error('loadDevices error:', e); }
 }
 
 async function addDevice() {
-  const name = document.getElementById('nd-name').value;
-  const type = document.getElementById('nd-type').value;
-  const location = document.getElementById('nd-location').value;
-  const description = document.getElementById('nd-desc').value;
-  const err = document.getElementById('nd-err');
-  if (!name) { err.textContent = 'Name required'; err.style.display = 'block'; return; }
+  var name     = document.getElementById('nd-name').value.trim();
+  var type     = document.getElementById('nd-type').value;
+  var location = document.getElementById('nd-location').value.trim();
+  var desc     = document.getElementById('nd-desc').value.trim();
+  var errEl    = document.getElementById('nd-err');
+  errEl.style.display = 'none';
+  if (!name) { errEl.textContent = 'Device name is required'; errEl.style.display = 'block'; return; }
   try {
-    const res = await api('/api/my-devices', 'POST', { name, type, location, description });
-    const data = await res.json();
-    if (data.error) { err.textContent = data.error; err.style.display = 'block'; return; }
+    var res  = await apiCall('/api/my-devices', 'POST', { name: name, type: type, location: location, description: desc });
+    var data = await res.json();
+    if (data.error) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
     closeModal('modal-add-device');
     document.getElementById('nd-name').value = '';
+    document.getElementById('nd-location').value = '';
+    document.getElementById('nd-desc').value = '';
     await loadDevices();
-    alert('Device registered!\n\nAPI Key:\n' + data.api_key + '\n\nCopy and save this — your device needs it!');
-  } catch(e) { err.textContent = 'Failed'; err.style.display = 'block'; }
+    alert('Device registered!\n\nAPI Key:\n' + data.api_key + '\n\nCopy and save this key — your device needs it!');
+  } catch(e) { errEl.textContent = 'Failed to register device'; errEl.style.display = 'block'; }
 }
 
 async function deleteDevice(id) {
-  if (!confirm('Delete this device?')) return;
-  await api('/api/my-devices/' + id, 'DELETE');
+  if (!confirm('Delete this device and all its data?')) return;
+  await apiCall('/api/my-devices/' + id, 'DELETE');
+  if (currentDeviceId === id) showDeviceList();
   loadDevices();
 }
 
-// ── Per-Device Dashboard ──────────────────────────────
+// ═══════════════════════════════════════════════
+// PER-DEVICE DASHBOARD
+// ═══════════════════════════════════════════════
 async function openDeviceDash(id) {
   currentDeviceId = id;
-  const device = allDevices.find(d => d.id == id);
+  var device = allDevices.find(function(d){ return d.id == id; });
   if (!device) return;
   document.getElementById('device-view-list').style.display = 'none';
   document.getElementById('device-view-dash').style.display = 'block';
@@ -802,76 +917,120 @@ async function openDeviceDash(id) {
   document.getElementById('dd-meta').textContent = device.type + (device.location ? ' · ' + device.location : '') + ' · ' + device.device_key;
   document.getElementById('dd-status').textContent = device.online ? 'Online' : 'Offline';
   document.getElementById('dd-status').className = 'badge ' + (device.online ? 'badge-green' : 'badge-red');
+  document.getElementById('dd-stats').innerHTML = '';
+  if (ddChart) { ddChart.data.labels = []; ddChart.data.datasets[0].data = []; ddChart.update(); }
   await loadDeviceWidgets(id);
   await loadDeviceReadings(id);
 }
 
 function showDeviceList() {
   currentDeviceId = null;
+  wEditMode = false;
   document.getElementById('device-view-list').style.display = 'block';
   document.getElementById('device-view-dash').style.display = 'none';
 }
 
 function toggleWidgetEdit() {
   wEditMode = !wEditMode;
-  const canvas = document.getElementById('device-widget-canvas');
+  var canvas = document.getElementById('device-widget-canvas');
   canvas.classList.toggle('edit-mode', wEditMode);
-  document.getElementById('dd-edit-btn').textContent = wEditMode ? '✓ Done' : '✏ Edit';
+  document.getElementById('dd-edit-btn').textContent = wEditMode ? '&#10003; Done' : '&#9998; Edit';
 }
 
 async function loadDeviceWidgets(deviceId) {
   try {
-    const res = await api('/api/my-devices/' + deviceId + '/widgets');
-    const widgets = await res.json();
+    var res = await apiCall('/api/my-devices/' + deviceId + '/widgets');
+    var widgets = await res.json();
     deviceWidgets[deviceId] = widgets;
     renderDeviceWidgets(deviceId);
   } catch(e) {}
 }
 
 function renderDeviceWidgets(deviceId) {
-  const canvas = document.getElementById('device-widget-canvas');
-  const widgets = deviceWidgets[deviceId] || [];
-  if (!widgets.length) { canvas.innerHTML = '<div class="empty" style="grid-column:1/-1">No widgets — click + Widget to add one</div>'; return; }
-  canvas.innerHTML = widgets.map(w => renderWidget(w, deviceId)).join('');
-  widgets.forEach(w => {
+  var canvas = document.getElementById('device-widget-canvas');
+  var widgets = deviceWidgets[deviceId] || [];
+  if (!widgets.length) {
+    canvas.innerHTML = '<div class="empty" style="grid-column:1/-1">No widgets — click + Widget to add one</div>';
+    return;
+  }
+  canvas.innerHTML = widgets.map(function(w){ return renderWidget(w, deviceId); }).join('');
+  widgets.forEach(function(w) {
     if (w.widget_type === 'chart') initWidgetChart(w);
     if (w.widget_type === 'slider') {
-      const sl = document.getElementById('sl-' + w.id);
-      if (sl) sl.oninput = () => { document.getElementById('slv-' + w.id).textContent = sl.value; sendCmd(deviceId, w.pin, sl.value); };
+      var sl = document.getElementById('sl-' + w.id);
+      if (sl) {
+        sl.oninput = (function(widget) {
+          return function() {
+            document.getElementById('slv-' + widget.id).textContent = sl.value;
+            sendCmd(deviceId, widget.pin, sl.value);
+          };
+        })(w);
+      }
     }
   });
   if (wEditMode) canvas.classList.add('edit-mode');
 }
 
 function renderWidget(w, deviceId) {
-  const cfg = w.config || {};
-  let body = '';
+  var cfg = w.config || {};
+  var body = '';
   switch(w.widget_type) {
-    case 'button': body = `<button class="w-btn" id="wbtn-${w.id}" onmousedown="wBtnPress(${deviceId},'${w.pin}','${w.id}')" onmouseup="wBtnRelease('${w.id}')" ontouchstart="wBtnPress(${deviceId},'${w.pin}','${w.id}')" ontouchend="wBtnRelease('${w.id}')">${w.label}</button>`; break;
-    case 'switch': body = `<div class="sw-wrap"><button class="w-sw" id="wsw-${w.id}" onclick="wToggle(${deviceId},'${w.pin}','${w.id}')"></button><div class="sw-lbl" id="swl-${w.id}">OFF</div></div>`; break;
-    case 'slider': body = `<div style="width:100%"><div class="slval" id="slv-${w.id}">${cfg.min||0}</div><input type="range" class="w-slider" id="sl-${w.id}" min="${cfg.min||0}" max="${cfg.max||100}" value="${cfg.min||0}"></div>`; break;
-    case 'display': body = `<div class="w-disp"><div class="w-disp-val" id="wdv-${w.id}">--</div><div class="w-disp-unit">${cfg.unit||''}</div></div>`; break;
-    case 'label': body = `<div style="font-size:16px;font-weight:600;color:#a78bfa;text-align:center" id="wlv-${w.id}">${w.label}</div>`; break;
-    case 'gauge': body = `<div class="gauge-wrap"><div class="gauge-bar"><div class="gauge-fill" id="gf-${w.id}" style="width:0%"></div></div><div class="gauge-val" id="gv-${w.id}">0 ${cfg.unit||''}</div></div>`; break;
-    case 'radial': body = `<div class="w-radial"><svg viewBox="0 0 100 60"><path d="M10,55 A45,45 0 0,1 90,55" fill="none" stroke="#1e1e30" stroke-width="8" stroke-linecap="round"/><path id="rp-${w.id}" d="M10,55 A45,45 0 0,1 90,55" fill="none" stroke="#7c3aed" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 141"/></svg><div class="w-radial-val" id="rv-${w.id}">0 ${cfg.unit||''}</div></div>`; break;
-    case 'number': body = `<div class="w-num"><button class="w-nbtn" onclick="wNum(${deviceId},'${w.pin}','${w.id}',-1)">−</button><div class="w-nval" id="nbv-${w.id}">0</div><button class="w-nbtn" onclick="wNum(${deviceId},'${w.pin}','${w.id}',1)">+</button></div>`; break;
-    case 'chart': body = `<div style="width:100%"><canvas id="wc-${w.id}" height="70"></canvas></div>`; break;
-    case 'terminal': body = `<div style="width:100%"><div class="w-term" id="wt-${w.id}"><div style="color:#7c3aed">Terminal · ${w.pin}</div></div><input class="w-term-input" placeholder="Send command..." onkeydown="if(event.key==='Enter'){sendTermCmd(${deviceId},'${w.pin}','${w.id}',this)}"></div>`; break;
-    case 'alarm': body = `<div class="w-alarm" id="wa-${w.id}"><div class="w-alarm-icon">🔔</div><div class="w-alarm-st">Monitoring ${w.pin}</div></div>`; break;
-    case 'segmented': body = `<div class="w-seg">${(cfg.opts||['A','B','C']).map((o,i)=>`<button class="w-seg-btn${i===0?' active':''}" id="seg-${w.id}-${i}" onclick="wSeg(${deviceId},'${w.pin}','${w.id}',${i},'${o}')">${o}</button>`).join('')}</div>`; break;
-    case 'menu': body = `<select style="width:100%;background:#0a0a14;border:1px solid #1e1e30;border-radius:7px;padding:7px 10px;color:#fff;font-size:13px;outline:none" onchange="sendCmd(${deviceId},'${w.pin}',this.value)">${(cfg.opts||['Option 1']).map(o=>`<option>${o}</option>`).join('')}</select>`; break;
-    case 'text-input': body = `<div style="width:100%;display:flex;gap:6px"><input style="flex:1;background:#0a0a14;border:1px solid #1e1e30;border-radius:6px;padding:7px;color:#fff;font-size:12px;outline:none" id="ti-${w.id}" placeholder="Type value..."><button class="btn btn-sm" onclick="sendCmd(${deviceId},'${w.pin}',document.getElementById('ti-${w.id}').value)">Send</button></div>`; break;
-    default: body = `<div class="empty" style="padding:10px">${w.widget_type}</div>`;
+    case 'button':
+      body = '<button class="w-btn" id="wbtn-' + w.id + '" onmousedown="wBtnPress(' + deviceId + ',\'' + w.pin + '\',' + w.id + ')" onmouseup="wBtnRelease(' + w.id + ')" ontouchstart="wBtnPress(' + deviceId + ',\'' + w.pin + '\',' + w.id + ')" ontouchend="wBtnRelease(' + w.id + ')">' + w.label + '</button>';
+      break;
+    case 'switch':
+      body = '<div class="sw-wrap"><button class="w-sw" id="wsw-' + w.id + '" onclick="wToggle(' + deviceId + ',\'' + w.pin + '\',' + w.id + ')"></button><div class="sw-lbl" id="swl-' + w.id + '">OFF</div></div>';
+      break;
+    case 'slider':
+      body = '<div style="width:100%"><div class="slval" id="slv-' + w.id + '">' + (cfg.min||0) + '</div><input type="range" class="w-slider" id="sl-' + w.id + '" min="' + (cfg.min||0) + '" max="' + (cfg.max||100) + '" value="' + (cfg.min||0) + '"></div>';
+      break;
+    case 'display':
+      body = '<div class="w-disp"><div class="w-disp-val" id="wdv-' + w.id + '">--</div><div class="w-disp-unit">' + (cfg.unit||'') + '</div></div>';
+      break;
+    case 'label':
+      body = '<div style="font-size:16px;font-weight:600;color:#a78bfa;text-align:center" id="wlv-' + w.id + '">' + w.label + '</div>';
+      break;
+    case 'gauge':
+      body = '<div class="gauge-wrap"><div class="gauge-bar"><div class="gauge-fill" id="gf-' + w.id + '" style="width:0%"></div></div><div class="gauge-val" id="gv-' + w.id + '">0 ' + (cfg.unit||'') + '</div></div>';
+      break;
+    case 'radial':
+      body = '<div class="w-radial"><svg viewBox="0 0 100 60"><path d="M10,55 A45,45 0 0,1 90,55" fill="none" stroke="#1e1e30" stroke-width="8" stroke-linecap="round"/><path id="rp-' + w.id + '" d="M10,55 A45,45 0 0,1 90,55" fill="none" stroke="#7c3aed" stroke-width="8" stroke-linecap="round" stroke-dasharray="0 141"/></svg><div class="w-radial-val" id="rv-' + w.id + '">0 ' + (cfg.unit||'') + '</div></div>';
+      break;
+    case 'number':
+      body = '<div class="w-num"><button class="w-nbtn" onclick="wNum(' + deviceId + ',\'' + w.pin + '\',' + w.id + ',-1)">&#8722;</button><div class="w-nval" id="nbv-' + w.id + '">0</div><button class="w-nbtn" onclick="wNum(' + deviceId + ',\'' + w.pin + '\',' + w.id + ',1)">+</button></div>';
+      break;
+    case 'chart':
+      body = '<div style="width:100%"><canvas id="wc-' + w.id + '" height="70"></canvas></div>';
+      break;
+    case 'terminal':
+      body = '<div style="width:100%"><div class="w-term" id="wt-' + w.id + '"><div style="color:#7c3aed">Terminal &middot; ' + w.pin + '</div></div><input class="w-term-input" id="wti-' + w.id + '" placeholder="Send command..." onkeydown="if(event.key===\'Enter\')sendTermCmd(' + deviceId + ',\'' + w.pin + '\',' + w.id + ')"></div>';
+      break;
+    case 'alarm':
+      body = '<div class="w-alarm" id="wa-' + w.id + '"><div class="w-alarm-icon">&#128276;</div><div class="w-alarm-st">Monitoring ' + w.pin + '</div></div>';
+      break;
+    case 'segmented':
+      var opts = cfg.opts || ['A','B','C'];
+      body = '<div class="w-seg">' + opts.map(function(o,i){ return '<button class="w-seg-btn' + (i===0?' active':'') + '" id="seg-' + w.id + '-' + i + '" onclick="wSeg(' + deviceId + ',\'' + w.pin + '\',' + w.id + ',' + i + ',\'' + o + '\')">' + o + '</button>'; }).join('') + '</div>';
+      break;
+    case 'menu':
+      var mopts = cfg.opts || ['Option 1'];
+      body = '<select style="width:100%;background:#0a0a14;border:1px solid #1e1e30;border-radius:7px;padding:7px 10px;color:#fff;font-size:13px;outline:none" onchange="sendCmd(' + deviceId + ',\'' + w.pin + '\',this.value)">' + mopts.map(function(o){ return '<option>' + o + '</option>'; }).join('') + '</select>';
+      break;
+    case 'text-input':
+      body = '<div style="width:100%;display:flex;gap:6px"><input style="flex:1;background:#0a0a14;border:1px solid #1e1e30;border-radius:6px;padding:7px;color:#fff;font-size:12px;outline:none" id="ti-' + w.id + '" placeholder="Type value..."><button class="btn btn-sm" onclick="sendCmd(' + deviceId + ',\'' + w.pin + '\',document.getElementById(\'ti-' + w.id + '\').value)">Send</button></div>';
+      break;
+    default:
+      body = '<div class="empty" style="padding:10px">' + w.widget_type + '</div>';
   }
-  return `<div class="widget-box" id="wb-${w.id}">
-    <div class="wh"><span class="wlabel">${w.label}</span><span class="wpin">${w.pin}</span></div>
-    <div class="wbody">${body}</div>
-    <button class="wdel" onclick="deleteWidget(${deviceId},${w.id})">×</button>
-  </div>`;
+  return '<div class="widget-box" id="wb-' + w.id + '">' +
+    '<div class="wh"><span class="wlabel">' + w.label + '</span><span class="wpin">' + w.pin + '</span></div>' +
+    '<div class="wbody">' + body + '</div>' +
+    '<button class="wdel" onclick="deleteWidget(' + deviceId + ',' + w.id + ')">&#215;</button>' +
+  '</div>';
 }
 
 function initWidgetChart(w) {
-  const el = document.getElementById('wc-' + w.id);
+  var el = document.getElementById('wc-' + w.id);
   if (!el) return;
   widgetCharts[w.id] = new Chart(el.getContext('2d'), {
     type: 'line',
@@ -882,45 +1041,45 @@ function initWidgetChart(w) {
 
 function updateDeviceWidgets(topic, value) {
   if (!currentDeviceId) return;
-  const widgets = deviceWidgets[currentDeviceId] || [];
-  const parts = topic.split('/');
-  const pin = parts[2] || '';
-  const v = parseFloat(value);
-  const t = new Date().toLocaleTimeString();
-  widgets.forEach(w => {
-    if (w.pin.toLowerCase() !== pin.toLowerCase()) return;
-    const cfg = w.config || {};
+  var widgets = deviceWidgets[currentDeviceId] || [];
+  var parts = topic.split('/');
+  var pin = (parts[2] || '').toLowerCase();
+  var v = parseFloat(value);
+  var t = new Date().toLocaleTimeString();
+  widgets.forEach(function(w) {
+    if (w.pin.toLowerCase() !== pin) return;
+    var cfg = w.config || {};
     switch(w.widget_type) {
-      case 'display': { const el = document.getElementById('wdv-' + w.id); if(el) el.textContent = isNaN(v) ? value : v.toFixed(2); break; }
-      case 'label': { const el = document.getElementById('wlv-' + w.id); if(el) el.textContent = value; break; }
+      case 'display': { var el = document.getElementById('wdv-' + w.id); if(el) el.textContent = isNaN(v) ? value : v.toFixed(2); break; }
+      case 'label':   { var el = document.getElementById('wlv-' + w.id); if(el) el.textContent = value; break; }
       case 'gauge': {
-        const min = cfg.min||0, max = cfg.max||100;
-        const pct = Math.min(100, Math.max(0, (v-min)/(max-min)*100));
-        const f = document.getElementById('gf-' + w.id); if(f) f.style.width = pct + '%';
-        const gv = document.getElementById('gv-' + w.id); if(gv) gv.textContent = v.toFixed(1) + ' ' + (cfg.unit||'');
+        var mn = cfg.min||0, mx = cfg.max||100;
+        var pct = Math.min(100, Math.max(0, (v-mn)/(mx-mn)*100));
+        var f = document.getElementById('gf-' + w.id); if(f) f.style.width = pct + '%';
+        var gv = document.getElementById('gv-' + w.id); if(gv) gv.textContent = v.toFixed(1) + ' ' + (cfg.unit||'');
         break;
       }
       case 'radial': {
-        const min = cfg.min||0, max = cfg.max||100;
-        const pct = Math.min(1, Math.max(0, (v-min)/(max-min)));
-        const p = document.getElementById('rp-' + w.id); if(p) p.setAttribute('stroke-dasharray', (pct*141) + ' 141');
-        const rv = document.getElementById('rv-' + w.id); if(rv) rv.textContent = v.toFixed(1) + ' ' + (cfg.unit||'');
+        var mn2 = cfg.min||0, mx2 = cfg.max||100;
+        var pct2 = Math.min(1, Math.max(0, (v-mn2)/(mx2-mn2)));
+        var p = document.getElementById('rp-' + w.id); if(p) p.setAttribute('stroke-dasharray', (pct2*141) + ' 141');
+        var rv = document.getElementById('rv-' + w.id); if(rv) rv.textContent = v.toFixed(1) + ' ' + (cfg.unit||'');
         break;
       }
       case 'chart': {
-        const ch = widgetCharts[w.id];
+        var ch = widgetCharts[w.id];
         if(ch) { ch.data.labels.push(t); ch.data.datasets[0].data.push(v); if(ch.data.labels.length>20){ch.data.labels.shift();ch.data.datasets[0].data.shift();} ch.update('none'); }
         break;
       }
       case 'terminal': {
-        const term = document.getElementById('wt-' + w.id);
-        if(term) { const line = document.createElement('div'); line.style.color='#aaa'; line.textContent='['+t+'] '+pin+': '+value; term.appendChild(line); term.scrollTop=term.scrollHeight; }
+        var term = document.getElementById('wt-' + w.id);
+        if(term) { var line = document.createElement('div'); line.style.color='#aaa'; line.textContent='['+t+'] '+pin+': '+value; term.appendChild(line); term.scrollTop=term.scrollHeight; }
         break;
       }
       case 'alarm': {
-        const alarm = document.getElementById('wa-' + w.id);
-        const triggered = !isNaN(v) && v > (cfg.threshold || 100);
-        if(alarm) { alarm.classList.toggle('triggered', triggered); alarm.querySelector('.w-alarm-st').textContent = triggered ? '⚠ ALARM: ' + v.toFixed(1) : 'OK · monitoring'; }
+        var alarm = document.getElementById('wa-' + w.id);
+        var triggered = !isNaN(v) && v > (cfg.threshold || 100);
+        if(alarm) { alarm.classList.toggle('triggered', triggered); alarm.querySelector('.w-alarm-st').textContent = triggered ? '&#9888; ALARM: ' + v.toFixed(1) : 'OK · monitoring'; }
         break;
       }
     }
@@ -929,22 +1088,22 @@ function updateDeviceWidgets(topic, value) {
 
 function updateDeviceDashStats(topic, value) {
   if (!currentDeviceId) return;
-  const parts = topic.split('/');
-  const devKey = parts[1];
-  const device = allDevices.find(d => d.device_key === devKey);
+  var parts = topic.split('/');
+  var devKey = parts[1];
+  var device = allDevices.find(function(d){ return d.device_key === devKey; });
   if (!device || device.id !== currentDeviceId) return;
-  const pin = parts[2];
-  const v = parseFloat(value);
-  const statsEl = document.getElementById('dd-stats');
+  var pin = parts[2];
+  var v = parseFloat(value);
+  var statsEl = document.getElementById('dd-stats');
   if (!statsEl) return;
-  const existingStats = {};
-  statsEl.querySelectorAll('[data-pin]').forEach(el => { existingStats[el.dataset.pin] = el; });
-  if (existingStats[pin]) {
-    existingStats[pin].querySelector('.device-stat-val').textContent = isNaN(v) ? value : v.toFixed(1);
+  var existing = statsEl.querySelector('[data-pin="' + pin + '"]');
+  if (existing) {
+    existing.querySelector('.stat-value').textContent = isNaN(v) ? value : v.toFixed(1);
   } else {
-    const div = document.createElement('div');
-    div.className = 'stat-card'; div.dataset.pin = pin;
-    div.innerHTML = `<div class="stat-label">${pin}</div><div class="stat-value" style="font-size:20px">${isNaN(v)?value:v.toFixed(1)}</div><div class="stat-sub">live</div>`;
+    var div = document.createElement('div');
+    div.className = 'stat-card';
+    div.dataset.pin = pin;
+    div.innerHTML = '<div class="stat-label">' + pin + '</div><div class="stat-value" style="font-size:20px">' + (isNaN(v)?value:v.toFixed(1)) + '</div><div class="stat-sub">live</div>';
     statsEl.appendChild(div);
   }
   if (ddChart && (pin === 'temperature' || pin === 'temp')) {
@@ -957,317 +1116,415 @@ function updateDeviceDashStats(topic, value) {
 
 async function loadDeviceReadings(deviceId) {
   try {
-    const res = await api('/api/my-devices/' + deviceId + '/readings?limit=20');
-    const readings = await res.json();
-    const el = document.getElementById('dd-readings');
+    var res = await apiCall('/api/my-devices/' + deviceId + '/readings?limit=20');
+    var readings = await res.json();
+    var el = document.getElementById('dd-readings');
     if (!readings.length) { el.innerHTML = '<div class="empty" style="padding:15px 0">No readings yet</div>'; return; }
-    el.innerHTML = `<table><thead><tr><th>Pin</th><th>Value</th><th>Time</th></tr></thead><tbody>${readings.map(r=>`<tr><td>${r.pin}</td><td style="color:#a78bfa;font-weight:600">${r.value}</td><td style="color:#444;font-size:11px">${new Date(r.recorded_at).toLocaleString()}</td></tr>`).join('')}</tbody></table>`;
+    el.innerHTML = '<table><thead><tr><th>Pin</th><th>Value</th><th>Time</th></tr></thead><tbody>' +
+      readings.map(function(r){ return '<tr><td>' + r.pin + '</td><td style="color:#a78bfa;font-weight:600">' + r.value + '</td><td style="color:#444;font-size:11px">' + new Date(r.recorded_at).toLocaleString() + '</td></tr>'; }).join('') +
+      '</tbody></table>';
   } catch(e) {}
 }
 
-// ── Widget actions ────────────────────────────────────
+// ═══════════════════════════════════════════════
+// WIDGET ACTIONS
+// ═══════════════════════════════════════════════
 async function sendCmd(deviceId, pin, value) {
-  try { await api('/api/my-devices/' + deviceId + '/command', 'POST', { command: pin, value: String(value) }); }
+  try { await apiCall('/api/my-devices/' + deviceId + '/command', 'POST', { command: pin, value: String(value) }); }
   catch(e) {}
 }
 
-function wBtnPress(deviceId, pin, wid) { document.getElementById('wbtn-'+wid)?.classList.add('pressed'); sendCmd(deviceId, pin, '1'); }
-function wBtnRelease(wid) { document.getElementById('wbtn-'+wid)?.classList.remove('pressed'); }
+function wBtnPress(deviceId, pin, wid) { var b = document.getElementById('wbtn-'+wid); if(b) b.classList.add('pressed'); sendCmd(deviceId, pin, '1'); }
+function wBtnRelease(wid) { var b = document.getElementById('wbtn-'+wid); if(b) b.classList.remove('pressed'); }
 function wToggle(deviceId, pin, wid) {
-  const sw = document.getElementById('wsw-'+wid);
-  const isOn = sw.classList.toggle('on');
-  document.getElementById('swl-'+wid).textContent = isOn ? 'ON' : 'OFF';
+  var sw = document.getElementById('wsw-'+wid);
+  var isOn = sw.classList.toggle('on');
+  var lbl = document.getElementById('swl-'+wid); if(lbl) lbl.textContent = isOn ? 'ON' : 'OFF';
   sendCmd(deviceId, pin, isOn ? '1' : '0');
 }
 function wNum(deviceId, pin, wid, delta) {
-  const el = document.getElementById('nbv-'+wid);
-  const v = (parseInt(el.textContent)||0) + delta;
+  var el = document.getElementById('nbv-'+wid);
+  var v = (parseInt(el.textContent)||0) + delta;
   el.textContent = v;
   sendCmd(deviceId, pin, v);
 }
 function wSeg(deviceId, pin, wid, idx, val) {
-  document.querySelectorAll('[id^="seg-'+wid+'-"]').forEach(b=>b.classList.remove('active'));
-  document.getElementById('seg-'+wid+'-'+idx)?.classList.add('active');
+  document.querySelectorAll('[id^="seg-'+wid+'-"]').forEach(function(b){ b.classList.remove('active'); });
+  var active = document.getElementById('seg-'+wid+'-'+idx); if(active) active.classList.add('active');
   sendCmd(deviceId, pin, val);
 }
-function sendTermCmd(deviceId, pin, wid, input) {
-  const term = document.getElementById('wt-'+wid);
-  if (term) { const line = document.createElement('div'); line.style.color='#7c3aed'; line.textContent='> '+input.value; term.appendChild(line); term.scrollTop=term.scrollHeight; }
+function sendTermCmd(deviceId, pin, wid) {
+  var input = document.getElementById('wti-'+wid);
+  if (!input || !input.value) return;
+  var term = document.getElementById('wt-'+wid);
+  if(term) { var line = document.createElement('div'); line.style.color='#7c3aed'; line.textContent='> '+input.value; term.appendChild(line); term.scrollTop=term.scrollHeight; }
   sendCmd(deviceId, pin, input.value);
   input.value = '';
 }
 
-// ── Widget type picker ────────────────────────────────
-let pendingWType = null;
+// ═══════════════════════════════════════════════
+// WIDGET CONFIG MODAL
+// ═══════════════════════════════════════════════
 function selectWidgetType(type) {
   pendingWType = type;
   document.getElementById('mw-step1').style.display = 'none';
   document.getElementById('mw-step2').style.display = 'block';
-  document.getElementById('mw-title').textContent = 'Configure ' + type;
+  document.getElementById('mw-title').textContent = 'Configure ' + type.charAt(0).toUpperCase() + type.slice(1);
   document.getElementById('wc-label').value = '';
   document.getElementById('wc-pin').value = '';
-  const extra = document.getElementById('wc-extra');
+  document.getElementById('wc-err').style.display = 'none';
+  var extra = document.getElementById('wc-extra');
   extra.innerHTML = '';
-  if (['slider','gauge','radial'].includes(type)) extra.innerHTML += `<div class="frow"><div class="fg"><label>Min</label><input type="number" id="wc-min" value="0"></div><div class="fg"><label>Max</label><input type="number" id="wc-max" value="100"></div></div>`;
-  if (['gauge','display','radial','alarm'].includes(type)) extra.innerHTML += `<div class="fg"><label>Unit</label><input type="text" id="wc-unit" placeholder="e.g. °C"></div>`;
-  if (['segmented','menu'].includes(type)) extra.innerHTML += `<div class="fg"><label>Options (comma separated)</label><input type="text" id="wc-opts" placeholder="Low,Medium,High"></div>`;
-  if (type === 'alarm') extra.innerHTML += `<div class="fg"><label>Trigger Threshold</label><input type="number" id="wc-thresh" placeholder="e.g. 35"></div>`;
+  if (['slider','gauge','radial'].includes(type)) {
+    extra.innerHTML += '<div class="frow"><div class="fg"><label>Min</label><input type="number" id="wc-min" value="0"></div><div class="fg"><label>Max</label><input type="number" id="wc-max" value="100"></div></div>';
+  }
+  if (['gauge','display','radial','alarm'].includes(type)) {
+    extra.innerHTML += '<div class="fg"><label>Unit</label><input type="text" id="wc-unit" placeholder="e.g. C, %, V"></div>';
+  }
+  if (['segmented','menu'].includes(type)) {
+    extra.innerHTML += '<div class="fg"><label>Options (comma separated)</label><input type="text" id="wc-opts" placeholder="Low,Medium,High"></div>';
+  }
+  if (type === 'alarm') {
+    extra.innerHTML += '<div class="fg"><label>Trigger Threshold</label><input type="number" id="wc-thresh" placeholder="e.g. 35"></div>';
+  }
+}
+
+function backToWidgetStep1() {
+  document.getElementById('mw-step2').style.display = 'none';
+  document.getElementById('mw-step1').style.display = 'block';
+  document.getElementById('mw-title').textContent = 'Add Widget';
 }
 
 async function confirmWidget() {
   if (!currentDeviceId) return;
-  const label = document.getElementById('wc-label').value || pendingWType;
-  const pin = document.getElementById('wc-pin').value || 'V0';
-  const config = {
-    min: parseFloat(document.getElementById('wc-min')?.value || 0),
-    max: parseFloat(document.getElementById('wc-max')?.value || 100),
-    unit: document.getElementById('wc-unit')?.value || '',
-    opts: document.getElementById('wc-opts')?.value?.split(',').map(s=>s.trim()) || [],
-    threshold: parseFloat(document.getElementById('wc-thresh')?.value || 100),
+  var label = document.getElementById('wc-label').value.trim() || pendingWType;
+  var pin   = document.getElementById('wc-pin').value.trim() || 'V0';
+  var optsEl = document.getElementById('wc-opts');
+  var config = {
+    min:       parseFloat((document.getElementById('wc-min')   || {}).value || 0),
+    max:       parseFloat((document.getElementById('wc-max')   || {}).value || 100),
+    unit:             ((document.getElementById('wc-unit')  || {}).value || ''),
+    opts: optsEl ? optsEl.value.split(',').map(function(s){return s.trim();}) : [],
+    threshold: parseFloat((document.getElementById('wc-thresh') || {}).value || 100),
   };
   try {
-    const res = await api('/api/my-devices/' + currentDeviceId + '/widgets', 'POST', { widget_type: pendingWType, label, pin, config, position: (deviceWidgets[currentDeviceId]||[]).length });
+    await apiCall('/api/my-devices/' + currentDeviceId + '/widgets', 'POST', {
+      widget_type: pendingWType, label: label, pin: pin, config: config,
+      position: (deviceWidgets[currentDeviceId] || []).length
+    });
     await loadDeviceWidgets(currentDeviceId);
     closeModal('modal-add-widget');
-    document.getElementById('mw-step1').style.display = 'block';
-    document.getElementById('mw-step2').style.display = 'none';
-  } catch(e) {}
+    backToWidgetStep1();
+  } catch(e) { document.getElementById('wc-err').textContent = 'Failed to add widget'; document.getElementById('wc-err').style.display = 'block'; }
 }
 
 async function deleteWidget(deviceId, wid) {
-  await api('/api/my-devices/' + deviceId + '/widgets/' + wid, 'DELETE');
+  await apiCall('/api/my-devices/' + deviceId + '/widgets/' + wid, 'DELETE');
   await loadDeviceWidgets(deviceId);
 }
 
-// ── Automations ───────────────────────────────────────
+// ═══════════════════════════════════════════════
+// AUTOMATIONS
+// ═══════════════════════════════════════════════
 async function loadAutomations() {
   try {
-    const res = await api('/api/automations');
-    const autos = await res.json();
-    document.getElementById('hs-autos').textContent = autos.filter(a=>a.active).length;
-    const el = document.getElementById('auto-list');
+    var res   = await apiCall('/api/automations');
+    var autos = await res.json();
+    document.getElementById('hs-autos').textContent = autos.filter(function(a){return a.active;}).length;
+    var el = document.getElementById('auto-list');
     if (!autos.length) { el.innerHTML = '<div class="empty">No automations yet</div>'; return; }
-    el.innerHTML = autos.map(a => `
-      <div class="auto-card">
-        <div class="auto-info">
-          <div class="auto-name">${a.name}</div>
-          <div class="auto-desc">When <strong style="color:#a78bfa">${a.trigger_device_name||'device'}</strong> · ${a.trigger_pin} ${a.trigger_condition} ${a.trigger_value}</div>
-          <div class="auto-desc">→ ${a.action_type === 'device_command' ? 'Send ' + a.action_value + ' to ' + (a.action_device_name||'device') + ' · ' + a.action_pin : 'Send notification'}</div>
-          <div class="auto-meta">${a.last_triggered ? 'Last triggered: ' + new Date(a.last_triggered).toLocaleString() : 'Never triggered'}</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
-          <label class="toggle-pill"><input type="checkbox" ${a.active?'checked':''} onchange="toggleAuto(${a.id},this.checked)"><span class="pill"></span></label>
-          <button class="btn btn-xs btn-danger" onclick="deleteAuto(${a.id})">Delete</button>
-        </div>
-      </div>`).join('');
+    el.innerHTML = autos.map(function(a) {
+      return '<div class="auto-card">' +
+        '<div class="auto-info">' +
+          '<div class="auto-name">' + a.name + '</div>' +
+          '<div class="auto-desc">When <strong style="color:#a78bfa">' + (a.trigger_device_name||'device') + '</strong> &middot; ' + a.trigger_pin + ' ' + a.trigger_condition + ' ' + a.trigger_value + '</div>' +
+          '<div class="auto-desc">&#8594; ' + (a.action_type === 'device_command' ? 'Send ' + a.action_value + ' to ' + (a.action_device_name||'device') + ' &middot; ' + a.action_pin : 'Send notification') + '</div>' +
+          '<div class="auto-meta">' + (a.last_triggered ? 'Last triggered: ' + new Date(a.last_triggered).toLocaleString() : 'Never triggered') + '</div>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">' +
+          '<label class="toggle-pill"><input type="checkbox" ' + (a.active?'checked':'') + ' onchange="toggleAuto(' + a.id + ',this.checked)"><span class="pill"></span></label>' +
+          '<button class="btn btn-xs btn-danger" onclick="deleteAuto(' + a.id + ')">Delete</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
   } catch(e) {}
 }
 
 async function addAutomation() {
-  const name = document.getElementById('auto-name').value;
-  const trigger_device_id = document.getElementById('auto-tdev').value;
-  const trigger_pin = document.getElementById('auto-tpin').value;
-  const trigger_condition = document.getElementById('auto-tcond').value;
-  const trigger_value = document.getElementById('auto-tval').value;
-  const action_type = document.getElementById('auto-atype').value;
-  const action_device_id = document.getElementById('auto-adev')?.value;
-  const action_pin = document.getElementById('auto-apin')?.value;
-  const action_value = document.getElementById('auto-aval')?.value;
-  const err = document.getElementById('auto-err');
-  if (!name || !trigger_device_id || !trigger_pin || !trigger_value) { err.textContent = 'Fill all trigger fields'; err.style.display = 'block'; return; }
+  var name        = document.getElementById('auto-name').value.trim();
+  var tdev        = document.getElementById('auto-tdev').value;
+  var tpin        = document.getElementById('auto-tpin').value.trim();
+  var tcond       = document.getElementById('auto-tcond').value;
+  var tval        = document.getElementById('auto-tval').value;
+  var atype       = document.getElementById('auto-atype').value;
+  var adev        = (document.getElementById('auto-adev')||{}).value;
+  var apin        = (document.getElementById('auto-apin')||{}).value;
+  var aval        = (document.getElementById('auto-aval')||{}).value;
+  var errEl       = document.getElementById('auto-err');
+  errEl.style.display = 'none';
+  if (!name || !tdev || !tpin || !tval) { errEl.textContent = 'Fill all trigger fields'; errEl.style.display = 'block'; return; }
   try {
-    const res = await api('/api/automations', 'POST', { name, trigger_device_id, trigger_pin, trigger_condition, trigger_value: parseFloat(trigger_value), action_type, action_device_id, action_pin, action_value });
-    const data = await res.json();
-    if (data.error) { err.textContent = data.error; err.style.display = 'block'; return; }
+    var res  = await apiCall('/api/automations', 'POST', { name:name, trigger_device_id:tdev, trigger_pin:tpin, trigger_condition:tcond, trigger_value:parseFloat(tval), action_type:atype, action_device_id:adev, action_pin:apin, action_value:aval });
+    var data = await res.json();
+    if (data.error) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
     closeModal('modal-add-auto');
     loadAutomations();
-  } catch(e) { err.textContent = 'Failed'; err.style.display = 'block'; }
+  } catch(e) { errEl.textContent = 'Failed'; errEl.style.display = 'block'; }
 }
 
-async function toggleAuto(id, active) { await api('/api/automations/' + id, 'PUT', { active }); loadAutomations(); }
-async function deleteAuto(id) { if(!confirm('Delete?')) return; await api('/api/automations/' + id, 'DELETE'); loadAutomations(); }
-
+async function toggleAuto(id, active) { await apiCall('/api/automations/' + id, 'PUT', { active: active }); loadAutomations(); }
+async function deleteAuto(id) { if(!confirm('Delete this automation?')) return; await apiCall('/api/automations/' + id, 'DELETE'); loadAutomations(); }
 function updateAutoAction() {
-  const type = document.getElementById('auto-atype').value;
+  var type = document.getElementById('auto-atype').value;
   document.getElementById('auto-action-device').style.display = type === 'device_command' ? 'block' : 'none';
 }
 
-// ── Alerts ────────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// ALERTS
+// ═══════════════════════════════════════════════
 function addAlertRule() {
-  const name = document.getElementById('al-name').value;
-  const sensor = document.getElementById('al-sensor').value;
-  const cond = document.getElementById('al-cond').value;
-  const val = parseFloat(document.getElementById('al-val').value);
+  var name   = document.getElementById('al-name').value.trim();
+  var sensor = document.getElementById('al-sensor').value;
+  var cond   = document.getElementById('al-cond').value;
+  var val    = parseFloat(document.getElementById('al-val').value);
   if (isNaN(val)) { alert('Enter a valid number'); return; }
-  alertRules.push({ id: Date.now(), name: name || sensor + ' ' + cond + ' ' + val, sensor, cond, val });
+  alertRules.push({ id: Date.now(), name: name || sensor + ' ' + cond + ' ' + val, sensor: sensor, cond: cond, val: val });
   localStorage.setItem('iot_alerts', JSON.stringify(alertRules));
   closeModal('modal-add-alert');
   renderAlertRules();
 }
 
 function renderAlertRules() {
-  const el = document.getElementById('alert-rules-list');
+  var el = document.getElementById('alert-rules-list');
   if (!el) return;
   if (!alertRules.length) { el.innerHTML = '<div class="empty">No alert rules — click + Add Alert</div>'; return; }
-  el.innerHTML = alertRules.map(a => `
-    <div class="auto-card">
-      <div class="auto-info"><div class="auto-name">${a.name}</div><div class="auto-desc">${a.sensor} ${a.cond} ${a.val}</div></div>
-      <button class="btn btn-xs btn-danger" onclick="delAlert(${a.id})">Delete</button>
-    </div>`).join('');
+  el.innerHTML = alertRules.map(function(a) {
+    return '<div class="auto-card">' +
+      '<div class="auto-info"><div class="auto-name">' + a.name + '</div><div class="auto-desc">' + a.sensor + ' ' + a.cond + ' ' + a.val + '</div></div>' +
+      '<button class="btn btn-xs btn-danger" onclick="delAlert(' + a.id + ')">Delete</button>' +
+    '</div>';
+  }).join('');
 }
 
-function delAlert(id) { alertRules = alertRules.filter(a=>a.id!==id); localStorage.setItem('iot_alerts',JSON.stringify(alertRules)); renderAlertRules(); }
+function delAlert(id) {
+  alertRules = alertRules.filter(function(a){ return a.id !== id; });
+  localStorage.setItem('iot_alerts', JSON.stringify(alertRules));
+  renderAlertRules();
+}
 
 function checkAlerts(sensor, value, time) {
-  alertRules.forEach(rule => {
+  if (isNaN(value)) return;
+  alertRules.forEach(function(rule) {
     if (rule.sensor !== sensor) return;
-    const hit = (rule.cond==='above'&&value>rule.val)||(rule.cond==='below'&&value<rule.val)||(rule.cond==='equals'&&value==rule.val);
-    if (hit) { triggeredAlerts.unshift({...rule, actual:value, time}); if(triggeredAlerts.length>50) triggeredAlerts.pop(); renderTriggered(); }
+    var hit = (rule.cond==='above'&&value>rule.val)||(rule.cond==='below'&&value<rule.val)||(rule.cond==='equals'&&value==rule.val);
+    if (hit) {
+      triggeredAlerts.unshift({ name: rule.name, sensor: sensor, cond: rule.cond, val: rule.val, actual: value, time: time });
+      if (triggeredAlerts.length > 50) triggeredAlerts.pop();
+      renderTriggered();
+    }
   });
 }
 
 function renderTriggered() {
-  const el = document.getElementById('triggered-list');
+  var el = document.getElementById('triggered-list');
   if (!el) return;
   if (!triggeredAlerts.length) { el.innerHTML = '<div class="empty">No alerts triggered yet</div>'; return; }
-  el.innerHTML = triggeredAlerts.map(a => `<div class="alert-item"><div class="alert-title">⚠ ${a.name}</div><div class="alert-detail">${a.sensor} = ${a.actual?.toFixed?.(1)||a.actual} (threshold: ${a.cond} ${a.val}) at ${a.time}</div></div>`).join('');
+  el.innerHTML = triggeredAlerts.map(function(a) {
+    return '<div class="alert-item"><div class="alert-title">&#9888; ' + a.name + '</div><div class="alert-detail">' + a.sensor + ' = ' + (a.actual.toFixed ? a.actual.toFixed(1) : a.actual) + ' (threshold: ' + a.cond + ' ' + a.val + ') at ' + a.time + '</div></div>';
+  }).join('');
 }
 
-// ── Users ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// USERS
+// ═══════════════════════════════════════════════
 async function loadUsers() {
   try {
-    const res = await api('/api/org/members');
-    const members = await res.json();
-    const el = document.getElementById('users-table');
+    var res     = await apiCall('/api/org/members');
+    var members = await res.json();
+    var el      = document.getElementById('users-table');
     if (!members.length) { el.innerHTML = '<div class="empty">No members</div>'; return; }
-    el.innerHTML = `<table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th></th></tr></thead><tbody>${members.map(m=>`<tr><td style="font-weight:500;color:#fff">${m.name||'—'}</td><td>${m.email}</td><td><span class="badge ${m.role==='admin'?'badge-purple':m.role==='developer'?'badge-green':'badge-yellow'}">${m.role}</span></td><td style="font-size:11px;color:#444">${new Date(m.created_at).toLocaleDateString()}</td><td>${m.id!==currentUser?.id?`<button class="btn btn-xs btn-danger" onclick="removeMember(${m.id})">Remove</button>`:''}</td></tr>`).join('')}</tbody></table>`;
+    el.innerHTML = '<table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th></th></tr></thead><tbody>' +
+      members.map(function(m) {
+        return '<tr>' +
+          '<td style="font-weight:500;color:#fff">' + (m.name||'—') + '</td>' +
+          '<td>' + m.email + '</td>' +
+          '<td><span class="badge ' + (m.role==='admin'?'badge-purple':m.role==='developer'?'badge-green':'badge-yellow') + '">' + m.role + '</span></td>' +
+          '<td style="font-size:11px;color:#444">' + new Date(m.created_at).toLocaleDateString() + '</td>' +
+          '<td>' + (currentUser && m.id !== currentUser.id ? '<button class="btn btn-xs btn-danger" onclick="removeMember(' + m.id + ')">Remove</button>' : '') + '</td>' +
+        '</tr>';
+      }).join('') +
+    '</tbody></table>';
   } catch(e) {}
 }
 
 async function inviteUser() {
-  const email = document.getElementById('inv-email').value;
-  const role = document.getElementById('inv-role').value;
-  const err = document.getElementById('inv-err');
-  if (!email) { err.textContent = 'Enter email'; err.style.display = 'block'; return; }
+  var email = document.getElementById('inv-email').value.trim();
+  var role  = document.getElementById('inv-role').value;
+  var errEl = document.getElementById('inv-err');
+  errEl.style.display = 'none';
+  if (!email) { errEl.textContent = 'Enter an email address'; errEl.style.display = 'block'; return; }
   try {
-    const res = await api('/api/org/invite', 'POST', { email, role });
-    const data = await res.json();
-    if (data.error) { err.textContent = data.error; err.style.display = 'block'; return; }
+    var res  = await apiCall('/api/org/invite', 'POST', { email: email, role: role });
+    var data = await res.json();
+    if (data.error) { errEl.textContent = data.error; errEl.style.display = 'block'; return; }
     closeModal('modal-invite');
+    document.getElementById('inv-email').value = '';
     alert('Invite link:\n' + data.invite_link + '\n\nShare this with ' + email);
-  } catch(e) { err.textContent = 'Failed'; err.style.display = 'block'; }
+  } catch(e) { errEl.textContent = 'Failed'; errEl.style.display = 'block'; }
 }
 
-async function removeMember(id) { if(!confirm('Remove member?')) return; await api('/api/org/members/'+id,'DELETE'); loadUsers(); }
+async function removeMember(id) {
+  if (!confirm('Remove this member?')) return;
+  await apiCall('/api/org/members/' + id, 'DELETE');
+  loadUsers();
+}
 
-// ── Locations ─────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// LOCATIONS
+// ═══════════════════════════════════════════════
 async function loadLocations() {
   try {
-    const res = await api('/api/locations');
-    const locs = await res.json();
-    const el = document.getElementById('loc-grid');
+    var res  = await apiCall('/api/locations');
+    var locs = await res.json();
+    var el   = document.getElementById('loc-grid');
     if (!locs.length) { el.innerHTML = '<div class="empty">No locations yet</div>'; return; }
-    el.innerHTML = locs.map(l => `
-      <div class="device-card">
-        <div class="device-card-top">
-          <div><div class="device-card-name">📍 ${l.name}</div><div class="device-card-type">${l.address||'No address'}</div></div>
-          <button class="btn btn-xs btn-danger" onclick="deleteLoc(${l.id})">🗑</button>
-        </div>
-        <div style="font-size:12px;color:#555;margin-top:8px">${l.device_count||0} devices · ${l.lat&&l.lng?l.lat.toFixed(4)+', '+l.lng.toFixed(4):'No coordinates'}</div>
-      </div>`).join('');
+    el.innerHTML = locs.map(function(l) {
+      return '<div class="device-card">' +
+        '<div class="device-card-top">' +
+          '<div><div class="device-card-name">&#128205; ' + l.name + '</div><div class="device-card-type">' + (l.address||'No address') + '</div></div>' +
+          '<button class="btn btn-xs btn-danger" onclick="deleteLoc(' + l.id + ')">&#128465;</button>' +
+        '</div>' +
+        '<div style="font-size:12px;color:#555;margin-top:8px">' + (l.device_count||0) + ' devices &middot; ' + (l.lat&&l.lng ? l.lat.toFixed(4)+', '+l.lng.toFixed(4) : 'No coordinates') + '</div>' +
+      '</div>';
+    }).join('');
   } catch(e) {}
 }
 
 async function addLocation() {
-  const name = document.getElementById('loc-name').value;
-  const address = document.getElementById('loc-addr').value;
-  const lat = document.getElementById('loc-lat').value;
-  const lng = document.getElementById('loc-lng').value;
+  var name = document.getElementById('loc-name').value.trim();
   if (!name) return;
-  await api('/api/locations', 'POST', { name, address, lat: parseFloat(lat)||null, lng: parseFloat(lng)||null });
+  var addr = document.getElementById('loc-addr').value.trim();
+  var lat  = parseFloat(document.getElementById('loc-lat').value) || null;
+  var lng  = parseFloat(document.getElementById('loc-lng').value) || null;
+  await apiCall('/api/locations', 'POST', { name: name, address: addr, lat: lat, lng: lng });
   closeModal('modal-add-loc');
+  document.getElementById('loc-name').value = '';
+  document.getElementById('loc-addr').value = '';
   loadLocations();
 }
 
-async function deleteLoc(id) { if(!confirm('Delete location?')) return; await api('/api/locations/'+id,'DELETE'); loadLocations(); }
+async function deleteLoc(id) {
+  if (!confirm('Delete this location?')) return;
+  await apiCall('/api/locations/' + id, 'DELETE');
+  loadLocations();
+}
 
-// ── Snapshots ─────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// SNAPSHOTS
+// ═══════════════════════════════════════════════
 async function loadSnapshots() {
   try {
-    const res = await api('/api/snapshots');
-    const snaps = await res.json();
-    const el = document.getElementById('snapshots-list');
+    var res   = await apiCall('/api/snapshots');
+    var snaps = await res.json();
+    var el    = document.getElementById('snapshots-list');
     if (!snaps.length) { el.innerHTML = '<div class="empty">No snapshots yet</div>'; return; }
-    el.innerHTML = snaps.map(s => `
-      <div class="auto-card">
-        <div class="auto-info">
-          <div class="auto-name">📸 ${s.name}</div>
-          <div class="auto-meta">${new Date(s.created_at).toLocaleString()} · ${Object.keys(s.data||{}).length} data points</div>
-        </div>
-        <button class="btn btn-xs btn-danger" onclick="deleteSnap(${s.id})">Delete</button>
-      </div>`).join('');
+    el.innerHTML = snaps.map(function(s) {
+      return '<div class="auto-card">' +
+        '<div class="auto-info">' +
+          '<div class="auto-name">&#128247; ' + s.name + '</div>' +
+          '<div class="auto-meta">' + new Date(s.created_at).toLocaleString() + ' &middot; ' + Object.keys(s.data||{}).length + ' data points</div>' +
+        '</div>' +
+        '<button class="btn btn-xs btn-danger" onclick="deleteSnap(' + s.id + ')">Delete</button>' +
+      '</div>';
+    }).join('');
   } catch(e) {}
 }
 
 async function createSnapshot() {
-  const name = prompt('Snapshot name:', 'Snapshot ' + new Date().toLocaleString());
+  var name = prompt('Snapshot name:', 'Snapshot ' + new Date().toLocaleString());
   if (!name) return;
-  await api('/api/snapshots', 'POST', { name });
+  await apiCall('/api/snapshots', 'POST', { name: name });
   loadSnapshots();
 }
 
-async function deleteSnap(id) { await api('/api/snapshots/'+id,'DELETE'); loadSnapshots(); }
+async function deleteSnap(id) {
+  await apiCall('/api/snapshots/' + id, 'DELETE');
+  loadSnapshots();
+}
 
-// ── Notifications ─────────────────────────────────────
+// ═══════════════════════════════════════════════
+// NOTIFICATIONS
+// ═══════════════════════════════════════════════
 async function loadNotifs() {
   try {
-    const res = await api('/api/notifications');
-    notifs = await res.json();
-    const unread = notifs.filter(n=>!n.read).length;
-    const count = document.getElementById('notif-count');
+    var res   = await apiCall('/api/notifications');
+    notifs    = await res.json();
+    var unread = notifs.filter(function(n){ return !n.read; }).length;
+    var count = document.getElementById('notif-count');
     if (unread > 0) { count.textContent = unread; count.style.display = 'flex'; } else { count.style.display = 'none'; }
-    const list = document.getElementById('notif-list');
+    var list = document.getElementById('notif-list');
     if (!notifs.length) { list.innerHTML = '<div class="empty" style="padding:20px 0">No notifications</div>'; return; }
-    list.innerHTML = notifs.map(n => `<div class="notif-item ${n.read?'':'unread'}"><div class="notif-item-title">${n.title}</div><div class="notif-item-msg">${n.message}</div><div class="notif-item-time">${new Date(n.created_at).toLocaleString()}</div></div>`).join('');
+    list.innerHTML = notifs.map(function(n) {
+      return '<div class="notif-item ' + (n.read?'':'unread') + '">' +
+        '<div class="notif-item-title">' + n.title + '</div>' +
+        '<div class="notif-item-msg">' + n.message + '</div>' +
+        '<div class="notif-item-time">' + new Date(n.created_at).toLocaleString() + '</div>' +
+      '</div>';
+    }).join('');
   } catch(e) {}
 }
 
-async function markNotifsRead() { await api('/api/notifications/read', 'PUT'); loadNotifs(); }
+async function markNotifsRead() { await apiCall('/api/notifications/read', 'PUT'); loadNotifs(); }
 function toggleNotifPanel() { document.getElementById('notif-panel').classList.toggle('open'); }
 
-// ── Settings ──────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════════
 async function loadSettings() {
   try {
-    const res = await api('/api/org');
-    const data = await res.json();
-    document.getElementById('set-org-name').value = data.org?.name || '';
-    document.getElementById('set-user-info').textContent = currentUser?.name + ' · ' + currentUser?.email;
-    document.getElementById('set-role-chip').textContent = currentUser?.role || 'admin';
+    var res  = await apiCall('/api/org');
+    var data = await res.json();
+    document.getElementById('set-org-name').value = (data.org && data.org.name) ? data.org.name : '';
+    document.getElementById('set-user-info').textContent = (currentUser ? currentUser.name + ' · ' + currentUser.email : '');
+    document.getElementById('set-role-chip').textContent = currentUser ? (currentUser.role || 'admin') : 'admin';
   } catch(e) {}
 }
 
 async function saveOrgSettings() {
-  const name = document.getElementById('set-org-name').value;
-  await api('/api/org', 'PUT', { name });
+  var name = document.getElementById('set-org-name').value.trim();
+  if (!name) return;
+  await apiCall('/api/org', 'PUT', { name: name });
   document.getElementById('sb-org').textContent = name;
   alert('Saved!');
 }
 
-// ── Helpers ───────────────────────────────────────────
-async function api(url, method='GET', body=null) {
-  const opts = { method, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token } };
+// ═══════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════
+function apiCall(url, method, body) {
+  method = method || 'GET';
+  var opts = { method: method, headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token } };
   if (body) opts.body = JSON.stringify(body);
   return fetch(url, opts);
 }
 
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-document.addEventListener('click', e => { if(e.target.classList.contains('modal-overlay')) e.target.classList.remove('open'); if(!e.target.closest('#notif-panel')&&!e.target.closest('#notif-btn')) document.getElementById('notif-panel').classList.remove('open'); });
 
-function copyText(text) { navigator.clipboard.writeText(text).then(()=>alert('Copied: ' + text.substring(0,40) + '...')).catch(()=>{}); }
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+  if (!e.target.closest('#notif-panel') && !e.target.closest('#notif-btn')) {
+    document.getElementById('notif-panel').classList.remove('open');
+  }
+});
+
+function copyText(text) {
+  if (!text) return;
+  navigator.clipboard.writeText(text).then(function(){ alert('Copied!'); }).catch(function(){});
+}
 
 function timeAgo(date) {
-  const s = Math.floor((Date.now() - new Date(date)) / 1000);
+  var s = Math.floor((Date.now() - new Date(date)) / 1000);
   if (s < 60) return s + 's ago';
   if (s < 3600) return Math.floor(s/60) + 'm ago';
   if (s < 86400) return Math.floor(s/3600) + 'h ago';
